@@ -10,7 +10,7 @@
 <!-- Google Fonts & Tailwind CSS -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 
 <!-- jsPDF para generación de Fichas Técnicas PDF -->
@@ -21,15 +21,15 @@
     theme: {
       extend: {
         colors: {
-          paper: '#FAF7F2',       // Blanco Cálido / Crema
-          papercard: '#FFFFFF',   // Blanco Puro para tarjetas
-          wine: '#4A121A',        // Vino Profundo
-          winemuted: '#7A2E3B',   // Vino Medio
-          coppergold: '#C59B63',  // Oro Cobrizo
-          copperlight: '#E8D5B7', // Oro Cobrizo Suave
-          royalgreen: '#123829',  // Verde Royal
+          paper: '#FAF7F2',
+          papercard: '#FFFFFF',
+          wine: '#4A121A',
+          winemuted: '#7A2E3B',
+          coppergold: '#C59B63',
+          copperlight: '#E8D5B7',
+          royalgreen: '#123829',
           royalgreenlight: '#1B4D3E',
-          softgray: '#EFEBE4',    // Bordes
+          softgray: '#EFEBE4',
         },
         fontFamily: {
           display: ['Fraunces', 'Georgia', 'serif'],
@@ -59,7 +59,7 @@
   .btn-green {
     background: var(--royalgreen);
     color: #FAF7F2;
-    font-weight: 600;
+    font-weight: 700;
     transition: all 0.3s ease;
   }
   .btn-green:hover {
@@ -76,11 +76,11 @@
   .card-bright:hover {
     transform: translateY(-5px);
     border-color: #C59B63;
-    box-shadow: 0 18px 36px rgba(74, 18, 26, 0.08);
+    box-shadow: 0 18px 36px rgba(74, 18, 26, 0.18);
   }
 
   .modal-backdrop {
-    background: rgba(74, 18, 26, 0.45);
+    background: rgba(74, 18, 26, 0.65);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
@@ -99,14 +99,13 @@
     border-color: #123829;
   }
 
-  /* Animación del carrusel infinito */
   @keyframes marquee {
     0% { transform: translateX(0%); }
     100% { transform: translateX(-50%); }
   }
   .animate-marquee {
     display: flex;
-    width: 200%;
+    width: max-content;
     animation: marquee 30s linear infinite;
   }
   .animate-marquee:hover {
@@ -133,20 +132,19 @@
 <header class="border-b hairline bg-paper/90 sticky top-0 z-40 backdrop-blur-md">
   <div class="max-w-7xl mx-auto px-6 py-3 flex flex-wrap justify-between items-center gap-4">
     <div class="flex flex-col">
-      <span class="font-display text-lg sm:text-xl text-wine font-semibold tracking-wide">Red Inmobiliaria de Networking Estratégico</span>
-      <span class="text-[9px] tracking-[0.24em] text-coppergold uppercase font-bold">By Edgardo de Real</span>
+      <span class="font-display text-lg sm:text-xl text-wine font-bold tracking-wide">Red Inmobiliaria de Networking Estratégico</span>
+      <span class="text-[9px] tracking-[0.24em] text-coppergold uppercase font-extrabold">By Edgardo de Real</span>
     </div>
     <div class="flex items-center gap-3">
-      <!-- Botón modificado a dos renglones -->
-      <button onclick="scrollToRINE()" class="text-[11px] leading-tight text-left text-wine bg-copperlight/40 border border-coppergold/50 px-3 py-1.5 rounded-lg hover:bg-copperlight/80 transition-all font-semibold flex items-center gap-1.5">
+      <button onclick="scrollToRINE()" class="text-[11px] leading-tight text-left text-wine bg-copperlight/40 border border-coppergold/50 px-3 py-1.5 rounded-lg hover:bg-copperlight/80 transition-all font-bold flex items-center gap-1.5">
         <span>✨</span>
         <span>
           Catálogo Red Inmobiliaria<br>
-          <span class="text-[9px] text-coppergold font-bold">de Networking Estratégico</span>
+          <span class="text-[9px] text-coppergold font-black">de Networking Estratégico</span>
         </span>
       </button>
 
-      <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20formar%20una%20alianza%20estrat%C3%A9gica%20o%20consultar%20tu%20portafolio." target="_blank" class="hidden sm:inline-flex items-center gap-2 text-xs text-wine border border-coppergold/50 px-4 py-2 rounded-lg hover:bg-copperlight/30 transition-colors">
+      <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20formar%20una%20alianza%20estrat%C3%A9gica%20o%20consultar%20tu%20portafolio." target="_blank" class="hidden sm:inline-flex items-center gap-2 text-xs text-wine font-bold border border-coppergold/50 px-4 py-2 rounded-lg hover:bg-copperlight/30 transition-colors">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-royalgreen"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.1-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.3c-.22.62-1.28 1.2-1.77 1.24-.45.04-.94.23-3.17-.66-2.68-1.07-4.4-3.8-4.53-3.98-.13-.18-1.08-1.44-1.08-2.74 0-1.3.68-1.94.92-2.2.24-.26.53-.33.7-.33h.5c.16 0 .38-.06.6.46.22.53.75 1.83.82 1.96.06.13.1.29.02.47-.08.18-.13.29-.26.44-.13.16-.27.35-.39.47-.13.13-.27.27-.11.53.15.26.68 1.12 1.47 1.82 1.01.9 1.86 1.18 2.12 1.31.26.13.42.11.57-.06.15-.18.65-.76.83-1.02.18-.26.35-.21.6-.13.24.09 1.55.73 1.82.86.26.13.44.2.5.31.06.13.06.72-.16 1.35z"/></svg>
         Contacto Directo
       </a>
@@ -154,101 +152,101 @@
   </div>
 </header>
 
-<!-- SECCIÓN INTRODUCTORIA -->
+<!-- INTRODUCCIÓN Y CARRUSEL PRINCIPAL -->
 <main class="flex-1 max-w-7xl mx-auto px-6 py-10 sm:py-14 w-full relative z-10">
   <div class="max-w-3xl mb-10">
-    <h1 class="font-display font-light text-3xl sm:text-5xl leading-tight text-wine">
+    <h1 class="font-display font-light text-3xl sm:text-5xl leading-tight text-wine font-semibold">
       Ahora formas parte de la red de networking inmobiliario que va a revolucionar la Riviera Maya.
     </h1>
-    <p class="mt-6 text-winemuted text-base leading-relaxed">
-      Esta plataforma simplifica la consulta de nuestro portafolio disponible en Cancún y la Riviera Maya. Diseñada especialmente para ti, socio estratégico con clientes interesados en adquirir, rentar o invertir en residencias, lotes y macrolotes.
+    <p class="mt-6 text-winemuted text-base leading-relaxed font-medium">
+      Esta plataforma simplifica la consulta de nuestro portafolio disponible en Cancún y la Riviera Maya.
     </p>
   </div>
 
-  <!-- SECCIÓN CARRUSEL PROPIEDADES DESTACADAS -->
   <section class="mb-12">
     <div class="flex items-center justify-between mb-4">
-      <h2 class="font-display text-xl sm:text-2xl text-wine font-semibold flex items-center gap-2">
-        <span>⭐</span> Propiedades Destacadas
+      <h2 class="font-display text-xl sm:text-2xl text-wine font-bold flex items-center gap-2">
+        <span>⭐</span> Propiedades Destacadas (<span id="carrousell-count">0</span>)
       </h2>
       <span class="text-xs text-coppergold font-mono uppercase font-bold tracking-wider">Pausa al pasar mouse &bull; Clic para ver ficha</span>
     </div>
     <div class="overflow-hidden relative w-full bg-papercard border hairline rounded-2xl p-4 shadow-sm">
       <div id="carrousell-container" class="animate-marquee gap-6">
-        <!-- Renderizado dinámico del carrusel interactivo desde JS -->
-        <div class="text-xs text-winemuted py-6 text-center w-full">Cargando propiedades destacadas...</div>
+        <div class="text-xs text-winemuted py-6 text-center w-full">Cargando propiedades del carrusel...</div>
       </div>
     </div>
   </section>
 
-  <!-- GRID DE TARJETAS PRINCIPALES -->
+  <!-- TARJETAS DE CATEGORÍA -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
     
-    <!-- Botón 1: Venta -->
-    <button onclick="openModal('modalVenta')" class="card-bright text-left p-6 rounded-2xl flex flex-col justify-between h-64 group relative overflow-hidden shadow-sm">
-      <div class="absolute -right-4 -top-4 w-28 h-28 bg-copperlight/40 rounded-full group-hover:scale-150 transition-transform"></div>
-      <div>
-        <h2 class="font-display text-2xl text-wine group-hover:text-royalgreen transition-colors mt-2">Propiedades en Venta</h2>
-        <p class="text-xs text-winemuted mt-3 line-clamp-3">Residencias, villas de lujo y departamentos en entrega inmediata con certeza jurídica.</p>
+    <button onclick="openModal('modalVenta')" class="card-bright text-left p-6 rounded-2xl flex flex-col justify-between h-72 group relative overflow-hidden shadow-sm">
+      <img src="https://lh3.googleusercontent.com/d/1F9aLMGGRxu_SeVf8Brryxx0QczvDYP6j" alt="Venta" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+      <div class="absolute inset-0 bg-wine/85"></div>
+      
+      <div class="relative z-10">
+        <h2 class="font-display text-2xl text-white font-extrabold group-hover:text-copperlight transition-colors mt-2 tracking-wide">Propiedades en Venta</h2>
+        <p class="text-xs text-white/95 font-medium mt-3 line-clamp-3 leading-relaxed">Residencias, villas de lujo y departamentos en entrega inmediata con certeza jurídica.</p>
       </div>
-      <div class="flex justify-between items-center mt-6 pt-4 border-t hairline w-full">
-        <span class="text-[11px] text-wine font-bold uppercase">Explorar Catálogo</span>
-        <span class="text-coppergold group-hover:translate-x-1 transition-transform font-bold">→</span>
-      </div>
-    </button>
-
-    <!-- Botón 2: Renta -->
-    <button onclick="openModal('modalRenta')" class="card-bright text-left p-6 rounded-2xl flex flex-col justify-between h-64 group relative overflow-hidden shadow-sm">
-      <div class="absolute -right-4 -top-4 w-28 h-28 bg-copperlight/40 rounded-full group-hover:scale-150 transition-transform"></div>
-      <div>
-        <h2 class="font-display text-2xl text-wine group-hover:text-royalgreen transition-colors mt-2">Propiedades Residenciales en Renta</h2>
-        <p class="text-xs text-winemuted mt-3 line-clamp-3">Opciones seleccionadas para renta residencial a largo plazo en las ubicaciones más cotizadas.</p>
-      </div>
-      <div class="flex justify-between items-center mt-6 pt-4 border-t hairline w-full">
-        <span class="text-[11px] text-wine font-bold uppercase">Ver Disponibles</span>
-        <span class="text-coppergold group-hover:translate-x-1 transition-transform font-bold">→</span>
+      <div class="relative z-10 flex justify-between items-center mt-6 pt-4 border-t border-white/30 w-full">
+        <span class="text-[11px] text-copperlight font-extrabold uppercase tracking-widest">Explorar (<span id="count-Venta">0</span>)</span>
+        <span class="text-copperlight group-hover:translate-x-1 transition-transform font-bold text-lg">→</span>
       </div>
     </button>
 
-    <!-- Botón 3: Lotes -->
-    <button onclick="openModal('modalLotes')" class="card-bright text-left p-6 rounded-2xl flex flex-col justify-between h-64 group relative overflow-hidden shadow-sm">
-      <div class="absolute -right-4 -top-4 w-28 h-28 bg-royalgreen/10 rounded-full group-hover:scale-150 transition-transform"></div>
-      <div>
-        <h2 class="font-display text-2xl text-wine group-hover:text-royalgreen transition-colors mt-2">Lotes &amp; Macrolotes</h2>
-        <p class="text-xs text-winemuted mt-3 line-clamp-3">Suelo estratégico escriturado desde 220 m² hasta macrolotes para desarrollo.</p>
+    <button onclick="openModal('modalRenta')" class="card-bright text-left p-6 rounded-2xl flex flex-col justify-between h-72 group relative overflow-hidden shadow-sm">
+      <img src="https://lh3.googleusercontent.com/d/1my0zIdo1prc-2joOwGBOK6EnSsQztlKc" alt="Renta" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+      <div class="absolute inset-0 bg-wine/85"></div>
+
+      <div class="relative z-10">
+        <h2 class="font-display text-2xl text-white font-extrabold group-hover:text-copperlight transition-colors mt-2 tracking-wide">Propiedades Residenciales en Renta</h2>
+        <p class="text-xs text-white/95 font-medium mt-3 line-clamp-3 leading-relaxed">Opciones seleccionadas para renta residencial a largo plazo en las ubicaciones más cotizadas.</p>
       </div>
-      <div class="flex justify-between items-center mt-6 pt-4 border-t hairline w-full">
-        <span class="text-[11px] text-wine font-bold uppercase">Suelo Disponible</span>
-        <span class="text-royalgreen group-hover:translate-x-1 transition-transform font-bold">→</span>
+      <div class="relative z-10 flex justify-between items-center mt-6 pt-4 border-t border-white/30 w-full">
+        <span class="text-[11px] text-copperlight font-extrabold uppercase tracking-widest">Explorar (<span id="count-Renta">0</span>)</span>
+        <span class="text-copperlight group-hover:translate-x-1 transition-transform font-bold text-lg">→</span>
       </div>
     </button>
 
-    <!-- Botón 4: Networking (RINE) -->
-    <button id="card-rine" onclick="openModal('modalNetworking')" class="card-bright text-left p-6 rounded-2xl border-2 border-royalgreen/30 flex flex-col justify-between h-64 group relative overflow-hidden shadow-sm bg-royalgreen/5">
-      <div class="absolute -right-4 -top-4 w-28 h-28 bg-royalgreen/10 rounded-full group-hover:scale-150 transition-transform"></div>
-      <div>
-        <h2 class="font-display text-2xl text-wine group-hover:text-royalgreen transition-colors mt-2">Red Inmobiliaria de Networking Estratégico</h2>
-        <p class="text-xs text-winemuted mt-3 line-clamp-3">Encuentra la conexión perfecta que te ayude a concretar la operación que tienes en las manos.</p>
+    <button onclick="openModal('modalLotes')" class="card-bright text-left p-6 rounded-2xl flex flex-col justify-between h-72 group relative overflow-hidden shadow-sm">
+      <img src="https://lh3.googleusercontent.com/d/1f0w5K-uq1GFY_jByHfHPREDK5trY63CJ" alt="Lotes" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+      <div class="absolute inset-0 bg-wine/85"></div>
+
+      <div class="relative z-10">
+        <h2 class="font-display text-2xl text-white font-extrabold group-hover:text-copperlight transition-colors mt-2 tracking-wide">Lotes &amp; Macrolotes</h2>
+        <p class="text-xs text-white/95 font-medium mt-3 line-clamp-3 leading-relaxed">Suelo estratégico escriturado desde 220 m² hasta macrolotes para desarrollo.</p>
       </div>
-      <div class="flex justify-between items-center mt-6 pt-4 border-t border-royalgreen/20 w-full">
-        <span class="text-[11px] text-royalgreen font-bold uppercase">Catálogo RINE</span>
-        <span class="text-royalgreen group-hover:translate-x-1 transition-transform font-bold">→</span>
+      <div class="relative z-10 flex justify-between items-center mt-6 pt-4 border-t border-white/30 w-full">
+        <span class="text-[11px] text-copperlight font-extrabold uppercase tracking-widest">Explorar (<span id="count-Lotes">0</span>)</span>
+        <span class="text-copperlight group-hover:translate-x-1 transition-transform font-bold text-lg">→</span>
+      </div>
+    </button>
+
+    <button id="card-rine" onclick="openModal('modalNetworking')" class="card-bright text-left p-6 rounded-2xl border-2 border-coppergold/40 flex flex-col justify-between h-72 group relative overflow-hidden shadow-sm">
+      <img src="https://lh3.googleusercontent.com/d/13nb5yNvuDbdDDoN8AsnCM4DXcF1xI35_" alt="RINE" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+      <div class="absolute inset-0 bg-royalgreen/90"></div>
+
+      <div class="relative z-10">
+        <h2 class="font-display text-2xl text-white font-extrabold group-hover:text-copperlight transition-colors mt-2 tracking-wide">Red Inmobiliaria de Networking Estratégico</h2>
+        <p class="text-xs text-white/95 font-medium mt-3 line-clamp-3 leading-relaxed">Encuentra la conexión perfecta que te ayude a concretar la operación que tienes en las manos.</p>
+      </div>
+      <div class="relative z-10 flex justify-between items-center mt-6 pt-4 border-t border-white/30 w-full">
+        <span class="text-[11px] text-copperlight font-extrabold uppercase tracking-widest">Catálogo RINE (<span id="count-Networking">0</span>)</span>
+        <span class="text-copperlight group-hover:translate-x-1 transition-transform font-bold text-lg">→</span>
       </div>
     </button>
 
   </div>
 </main>
 
-<!-- MODAL DETALLE INDIVIDUAL (Para clics en el carrusel o vista previa rápida) -->
-<div id="modalDetalleUnico" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-3 md:p-6">
-  <div class="bg-papercard border hairline w-full max-w-3xl max-h-[90vh] flex flex-col rounded-2xl shadow-2xl relative overflow-hidden">
+<!-- MODAL INDIVIDUAL DESPLEGADO -->
+<div id="modalDetalleUnico" class="fixed inset-0 z-[60] modal-backdrop hidden flex items-center justify-center p-3 md:p-6">
+  <div class="bg-papercard border hairline w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl shadow-2xl relative overflow-hidden">
     <div class="p-4 border-b hairline flex justify-between items-center bg-paper">
-      <span class="text-xs font-mono text-coppergold font-bold uppercase">Detalle de Propiedad Destacada</span>
-      <button onclick="closeModal('modalDetalleUnico')" class="text-wine border border-coppergold/40 text-xs px-2.5 py-1 rounded-lg">✕ Cerrar</button>
+      <span class="text-xs font-mono text-coppergold font-bold uppercase">Ficha Técnica Detallada</span>
+      <button onclick="closeModal('modalDetalleUnico')" class="text-wine border border-coppergold/40 text-xs px-2.5 py-1 rounded-lg font-extrabold hover:bg-copperlight/30">✕ Cerrar</button>
     </div>
-    <div id="contenidoDetalleUnico" class="p-6 overflow-y-auto modal-scroll">
-      <!-- Se llena dinámicamente -->
-    </div>
+    <div id="contenidoDetalleUnico" class="p-6 overflow-y-auto modal-scroll"></div>
   </div>
 </div>
 
@@ -258,14 +256,14 @@
     <div>
       <span class="font-display text-wine font-bold">Edgardo de Real</span> — Cancún, Quintana Roo.
     </div>
-    <div class="flex gap-6">
+    <div class="flex gap-6 font-bold">
       <a href="https://www.instagram.com/edgardodereal_/" target="_blank" class="hover:text-coppergold transition-colors">@edgardodereal_</a>
       <a href="https://gruposalo.com" target="_blank" class="hover:text-coppergold transition-colors">Grupo Salo Inmobiliario</a>
     </div>
   </div>
 </footer>
 
-<!-- SCRIPT DE GENERACIÓN DE MODALES Y PAGINACIÓN -->
+<!-- MODALES DE CATEGORÍA -->
 <script>
   function crearModalHTML(idModal, tituloModal, subtituloModal, esNetworking = false) {
     const pestana = idModal.replace('modal', '');
@@ -273,43 +271,18 @@
       <div id="${idModal}" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-3 md:p-6">
         <div class="bg-papercard border hairline w-full max-w-6xl max-h-[92vh] flex flex-col rounded-2xl shadow-2xl relative overflow-hidden">
           
-          <!-- Encabezado del Modal -->
           <div class="p-5 border-b hairline flex justify-between items-center bg-paper">
             <div>
               <span class="text-[10px] text-coppergold font-mono tracking-widest uppercase font-bold">${subtituloModal}</span>
-              <h2 class="font-display text-xl sm:text-2xl text-wine">${tituloModal}</h2>
+              <h2 class="font-display text-xl sm:text-2xl text-wine font-bold">${tituloModal}</h2>
             </div>
             <div class="flex items-center gap-2">
-              ${esNetworking ? `
-                <button onclick="toggleVistaAsociados()" class="text-wine bg-copperlight/30 hover:bg-copperlight/60 border border-coppergold/40 text-xs px-3 py-1.5 rounded-lg transition-colors font-medium flex items-center gap-1">
-                  👥 Lista de Asociados
-                </button>
-              ` : ''}
-              <button onclick="closeModal('${idModal}')" class="text-wine hover:text-royalgreen text-xs flex items-center gap-1.5 border border-coppergold/40 px-3 py-1.5 rounded-lg transition-colors bg-papercard font-medium">
+              <button onclick="closeModal('${idModal}')" class="text-wine hover:text-royalgreen text-xs flex items-center gap-1.5 border border-coppergold/40 px-3 py-1.5 rounded-lg transition-colors bg-papercard font-bold">
                 ✕ Volver al menú
               </button>
             </div>
           </div>
 
-          ${esNetworking ? `
-            <div id="vista-asociados" class="hidden p-5 bg-paper border-b hairline max-h-60 overflow-y-auto modal-scroll">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-wine mb-3">Directorio de Agentes &amp; Asociados RINE</h3>
-              <div id="tabla-asociados" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
-                <!-- Se llena con JS -->
-              </div>
-            </div>
-
-            <div class="px-5 py-3 bg-royalgreen/10 border-b border-royalgreen/20 flex flex-col sm:flex-row justify-between items-center gap-3">
-              <p class="text-xs text-wine">
-                🤝 **¿Eres agente o broker?** Suma tus propiedades compartidas a nuestra red para promoverlas en conjunto.
-              </p>
-              <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20soy%20agente%20inmobiliario%20y%20me%20gustar%C3%ADa%20sumar%20una%20propiedad%20a%20la%20Red%20de%20Networking." target="_blank" class="btn-green px-3.5 py-1.5 rounded-md text-[11px] whitespace-nowrap">
-                Subir propiedad a la Red
-              </a>
-            </div>
-          ` : ''}
-
-          <!-- BARRA DE FILTROS EN TIEMPO REAL -->
           <div class="p-4 bg-paper border-b hairline grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
             <input type="text" id="search-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="🔍 Buscar nombre/zona..." class="filter-input col-span-2 sm:col-span-1" />
 
@@ -322,12 +295,10 @@
             </select>
 
             <input type="number" id="precioMin-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Precio Mín ($)" class="filter-input" />
-
             <input type="number" id="precioMax-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Precio Máx ($)" class="filter-input" />
-
             <input type="number" id="m2Min-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="M² Terreno Mín" class="filter-input" />
 
-            <select id="orden-${pestana}" onchange="aplicarFiltros('${pestana}')" class="filter-input border-coppergold text-wine font-semibold">
+            <select id="orden-${pestana}" onchange="aplicarFiltros('${pestana}')" class="filter-input border-coppergold text-wine font-bold">
               <option value="recientes">Ordenar: Predeterminado</option>
               <option value="precio-desc">Precio: Mayor a Menor</option>
               <option value="precio-asc">Precio: Menor a Mayor</option>
@@ -335,21 +306,17 @@
             </select>
           </div>
 
-          <!-- Contenedor Grid con Scroll -->
           <div class="p-5 overflow-y-auto modal-scroll flex-1 bg-paper/50 flex flex-col justify-between">
-            <div id="grid-${pestana}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <!-- Renderizado dinámico desde JS -->
-            </div>
+            <div id="grid-${pestana}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-            <!-- CONTROLES DE PAGINACIÓN (20 en 20) -->
             <div class="mt-6 pt-4 border-t hairline flex justify-between items-center text-xs">
-              <span id="info-paginacion-${pestana}" class="text-winemuted font-medium">Mostrando 0 de 0 propiedades</span>
+              <span id="info-paginacion-${pestana}" class="text-winemuted font-semibold">Mostrando 0 propiedades</span>
               <div class="flex items-center gap-2">
-                <button id="btn-prev-${pestana}" onclick="cambiarPagina('${pestana}', -1)" class="px-3 py-1.5 border border-coppergold/40 rounded-lg bg-papercard text-wine font-bold disabled:opacity-30">
+                <button id="btn-prev-${pestana}" onclick="cambiarPagina('${pestana}', -1)" class="px-3 py-1.5 border border-coppergold/40 rounded-lg bg-papercard text-wine font-extrabold disabled:opacity-30">
                   ← Anterior
                 </button>
-                <span id="num-pagina-${pestana}" class="font-bold text-wine px-2">1</span>
-                <button id="btn-next-${pestana}" onclick="cambiarPagina('${pestana}', 1)" class="px-3 py-1.5 border border-coppergold/40 rounded-lg bg-papercard text-wine font-bold disabled:opacity-30">
+                <span id="num-pagina-${pestana}" class="font-extrabold text-wine px-2">1</span>
+                <button id="btn-next-${pestana}" onclick="cambiarPagina('${pestana}', 1)" class="px-3 py-1.5 border border-coppergold/40 rounded-lg bg-papercard text-wine font-extrabold disabled:opacity-30">
                   Siguiente →
                 </button>
               </div>
@@ -360,22 +327,31 @@
     `;
   }
 
-  document.write(crearModalHTML('modalVenta', 'Propiedades en Venta', 'Catálogo Auditado'));
-  document.write(crearModalHTML('modalRenta', 'Propiedades Residenciales en Renta', 'Catálogo Residencial'));
+  document.write(crearModalHTML('modalVenta', 'Propiedades en Venta', 'Catálogo Venta'));
+  document.write(crearModalHTML('modalRenta', 'Propiedades Residenciales en Renta', 'Catálogo Renta'));
   document.write(crearModalHTML('modalLotes', 'Lotes & Macrolotes', 'Suelo Estratégico'));
   document.write(crearModalHTML('modalNetworking', 'Red Inmobiliaria de Networking Estratégico', 'Catálogo RINE', true));
 </script>
 
-<!-- MOTOR JAVASCRIPT: LECTURA, CARRUSEL INTERACTIVO & PAGINACIÓN (20 EN 20) -->
+<!-- MOTOR SCRIPT -->
 <script>
   const SHEET_ID = '192oLS5Pqh5IBrMYlp2RbE6ASol8BrHh9Naacegjzva8';
-  const CATEGORIAS = ['Venta', 'Renta', 'Lotes', 'Networking'];
+  
+  const SHEETS_MAPPING = {
+    'Venta': 'Venta',
+    'Renta': 'Renta',
+    'Lotes': 'Lotes',
+    'Networking': 'red inmobiliaria de networking estrategico'
+  };
+
   const ITEMS_POR_PAGINA = 20;
 
   let catalogoOriginal = { Venta: [], Renta: [], Lotes: [], Networking: [] };
   let catalogoFiltrado = { Venta: [], Renta: [], Lotes: [], Networking: [] };
   let paginaActual = { Venta: 1, Renta: 1, Lotes: 1, Networking: 1 };
   let carrousellOriginal = [];
+  
+  let fotoActualIndex = {};
 
   function openModal(id) {
     document.getElementById(id).classList.remove('hidden');
@@ -383,7 +359,10 @@
   }
   function closeModal(id) {
     document.getElementById(id).classList.add('hidden');
-    document.body.style.overflow = '';
+    const hayModalesAbiertos = document.querySelectorAll('.modal-backdrop:not(.hidden)').length > 0;
+    if (!hayModalesAbiertos) {
+      document.body.style.overflow = '';
+    }
   }
 
   function scrollToRINE() {
@@ -395,19 +374,76 @@
     }
   }
 
-  function toggleVistaAsociados() {
-    const vista = document.getElementById('vista-asociados');
-    if (vista) vista.classList.toggle('hidden');
+  function formatearUrlImagen(url) {
+    if (!url) return '';
+    url = url.trim();
+    if (url.includes('drive.google.com')) {
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        return `https://lh3.googleusercontent.com/d/${match[1]}`;
+      }
+    }
+    return url;
+  }
+
+  // OBTENER PRECIO CON FORMATO MONETARIO COMPLETO + "MXN"
+  function obtenerPrecioItem(item) {
+    if (!item) return 'Consultar';
+    
+    let raw = '';
+
+    for (const key in item) {
+      const k = key.toLowerCase().trim();
+      if (
+        k.includes('precio') || 
+        k.includes('renta') || 
+        k.includes('costo') || 
+        k.includes('valor') || 
+        k.includes('monto')
+      ) {
+        if (item[key] && item[key].trim().length > 0) {
+          raw = item[key].trim();
+          break;
+        }
+      }
+    }
+
+    if (!raw) return 'Consultar';
+
+    // Limpieza de números
+    const num = raw.replace(/[^0-9.]/g, '');
+    if (num && !isNaN(num) && parseFloat(num) > 0) {
+      const numFormatted = parseFloat(num).toLocaleString('es-MX');
+      return `$${numFormatted} MXN`;
+    }
+
+    // Si ya contiene letras o texto descriptivo, asegurar que lleve la coletilla MXN
+    if (!raw.toUpperCase().includes('MXN') && !raw.toUpperCase().includes('USD')) {
+      return `${raw} MXN`;
+    }
+
+    return raw;
+  }
+
+  function extraerTodasLasFotos(item) {
+    const fotos = [];
+    for (let i = 1; i <= 10; i++) {
+      const url = item[`foto${i}`] || item[`foto_${i}`];
+      const formateada = formatearUrlImagen(url);
+      if (formateada && formateada.length > 5) {
+        fotos.push(formateada);
+      }
+    }
+    return fotos;
   }
 
   window.addEventListener('DOMContentLoaded', () => {
-    CATEGORIAS.forEach(categoria => {
+    Object.keys(SHEETS_MAPPING).forEach(categoria => {
       cargarDatosPestana(categoria);
     });
     cargarCarrusel();
   });
 
-  // Carrusel Interactivo de Google Sheets
   async function cargarCarrusel() {
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Carrousell`;
     try {
@@ -425,10 +461,13 @@
           return item;
         }).filter(item => item.titulo || item.id);
 
+        const countElem = document.getElementById('carrousell-count');
+        if (countElem) countElem.innerText = carrousellOriginal.length;
+
         renderizarCarrusel(carrousellOriginal);
       }
     } catch (e) {
-      console.log("Cargando carrusel por defecto...");
+      console.error("Error al cargar carrusel", e);
     }
   }
 
@@ -436,21 +475,21 @@
     const container = document.getElementById('carrousell-container');
     if (!container || items.length === 0) return;
 
-    const itemsBucle = [...items, ...items];
     container.innerHTML = '';
 
-    itemsBucle.forEach((item, idx) => {
-      const foto = item.foto1 || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80';
-      const realIndex = idx % items.length;
+    items.forEach((item, idx) => {
+      const fotos = extraerTodasLasFotos(item);
+      const foto = fotos[0] || '';
+      const precio = obtenerPrecioItem(item);
       
       const card = `
-        <div onclick="verDetalleCarrusel(${realIndex})" class="w-72 sm:w-80 flex-shrink-0 bg-paper border hairline rounded-xl overflow-hidden shadow-xs flex items-center gap-3 p-2.5 cursor-pointer hover:border-coppergold transition-all">
-          <img src="${foto}" class="w-20 h-20 object-cover rounded-lg flex-shrink-0" alt="${item.titulo}" />
+        <div onclick="abrirFichaDetalle('Carrousell', ${idx})" class="w-72 sm:w-80 flex-shrink-0 bg-paper border hairline rounded-xl overflow-hidden shadow-xs flex items-center gap-3 p-2.5 cursor-pointer hover:border-coppergold transition-all">
+          ${foto ? `<img src="${foto}" class="w-20 h-20 object-cover rounded-lg flex-shrink-0" alt="${item.titulo}" />` : '<div class="w-20 h-20 bg-softgray rounded-lg flex-shrink-0"></div>'}
           <div class="overflow-hidden">
             <span class="text-[9px] text-coppergold uppercase font-bold tracking-wider block">📍 ${item.ubicación || item.ubicacion || 'Cancún'}</span>
             <h4 class="font-display text-xs text-wine font-bold truncate">${item.titulo || 'Destacado'}</h4>
-            <span class="text-xs font-bold text-royalgreen block mt-1">${item.precio || 'Consultar'}</span>
-            <span class="text-[9px] text-winemuted underline">Ver ficha →</span>
+            <span class="text-xs font-bold text-royalgreen block mt-1">${precio}</span>
+            <span class="text-[9px] text-winemuted font-bold underline">Ver Ficha Completa →</span>
           </div>
         </div>
       `;
@@ -458,38 +497,10 @@
     });
   }
 
-  function verDetalleCarrusel(index) {
-    const item = carrousellOriginal[index];
-    if (!item) return;
-
-    const foto = item.foto1 || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80';
-    const waMsg = encodeURIComponent(`Hola Edgardo, me interesa la propiedad destacada:\n\n*${item.titulo}*\n📍 Ubicación: ${item.ubicación || item.ubicacion || 'Cancún'}\n💰 Precio: ${item.precio || 'Consultar'}`);
-
-    const html = `
-      <div class="flex flex-col md:flex-row gap-6">
-        <img src="${foto}" class="w-full md:w-1/2 h-64 object-cover rounded-xl" alt="${item.titulo}" />
-        <div class="flex-1 flex flex-col justify-between">
-          <div>
-            <span class="text-xs text-coppergold font-bold uppercase">📍 ${item.ubicación || item.ubicacion || 'Cancún'}</span>
-            <h3 class="font-display text-xl text-wine font-bold mt-1">${item.titulo}</h3>
-            <p class="text-2xl text-royalgreen font-bold mt-2">${item.precio || 'Consultar'}</p>
-            <p class="text-xs text-winemuted mt-4 leading-relaxed">${item.descripción || item.descripcion || 'Propiedad auditada y disponible en portafolio exclusivo.'}</p>
-          </div>
-          <div class="mt-6 pt-4 border-t hairline flex flex-col gap-2">
-            <a href="https://wa.me/529981550066?text=${waMsg}" target="_blank" class="btn-green text-center py-2.5 rounded-lg text-xs font-bold">
-              Solicitar por WhatsApp
-            </a>
-          </div>
-        </div>
-      </div>
-    `;
-
-    document.getElementById('contenidoDetalleUnico').innerHTML = html;
-    openModal('modalDetalleUnico');
-  }
-
-  async function cargarDatosPestana(pestana) {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${pestana}`;
+  async function cargarDatosPestana(pestanaKey) {
+    const sheetName = SHEETS_MAPPING[pestanaKey];
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+    
     try {
       const response = await fetch(url);
       const csvText = await response.text();
@@ -505,39 +516,16 @@
           return item;
         }).filter(item => item.titulo || item.id);
         
-        catalogoOriginal[pestana] = data;
-        aplicarFiltros(pestana);
+        catalogoOriginal[pestanaKey] = data;
 
-        if (pestana === 'Networking') {
-          renderizarTablaAsociados(data);
-        }
+        const countElem = document.getElementById(`count-${pestanaKey}`);
+        if (countElem) countElem.innerText = data.length;
+
+        aplicarFiltros(pestanaKey);
       }
     } catch (e) {
-      console.log(`Cargando datos de ${pestana}...`);
+      console.error(`Error al cargar la pestaña: ${sheetName}`, e);
     }
-  }
-
-  function renderizarTablaAsociados(items) {
-    const tabla = document.getElementById('tabla-asociados');
-    if (!tabla) return;
-
-    tabla.innerHTML = '';
-    items.forEach(item => {
-      const card = `
-        <div class="bg-papercard p-3 border hairline rounded-lg flex flex-col justify-between">
-          <div>
-            <div class="font-bold text-wine">${item.asesor || item.agente || 'Agente Aliado'}</div>
-            <div class="text-[10px] text-coppergold font-semibold">${item.agencia || 'Agencia Independiente'}</div>
-            <div class="text-[10px] text-winemuted mt-1">🏠 ${item.titulo || 'Propiedad en Red'}</div>
-          </div>
-          <div class="mt-2 pt-2 border-t hairline text-[10px] flex justify-between items-center">
-            <span class="text-royalgreen font-bold">📞 ${item.telefono || item.celular || '9981550066'}</span>
-            <a href="mailto:${item.correo || 'contacto@redinmobiliaria.com'}" class="text-winemuted underline">Email</a>
-          </div>
-        </div>
-      `;
-      tabla.innerHTML += card;
-    });
   }
 
   function parseCSV(text) {
@@ -584,7 +572,7 @@
       const tit = (item.titulo || '').toLowerCase();
       const ubi = (item.ubicación || item.ubicacion || '').toLowerCase();
       const tip = (item.tipo || '').toLowerCase();
-      const pNum = extraerNumero(item.precio);
+      const pNum = extraerNumero(obtenerPrecioItem(item));
       const m2Terreno = extraerNumero(item.terreno);
 
       const coincideTexto = !busqueda || tit.includes(busqueda) || ubi.includes(busqueda);
@@ -596,9 +584,9 @@
     });
 
     if (orden === 'precio-desc') {
-      lista.sort((a, b) => extraerNumero(b.precio) - extraerNumero(a.precio));
+      lista.sort((a, b) => extraerNumero(obtenerPrecioItem(b)) - extraerNumero(obtenerPrecioItem(a)));
     } else if (orden === 'precio-asc') {
-      lista.sort((a, b) => extraerNumero(a.precio) - extraerNumero(b.precio));
+      lista.sort((a, b) => extraerNumero(obtenerPrecioItem(a)) - extraerNumero(obtenerPrecioItem(b)));
     } else if (orden === 'm2-desc') {
       lista.sort((a, b) => extraerNumero(b.terreno) - extraerNumero(a.terreno));
     }
@@ -608,7 +596,6 @@
     renderizarPagina(pestana);
   }
 
-  // Paginación Dinámica (20 en 20)
   function cambiarPagina(pestana, delta) {
     const totalPaginas = Math.ceil(catalogoFiltrado[pestana].length / ITEMS_POR_PAGINA) || 1;
     paginaActual[pestana] += delta;
@@ -627,7 +614,6 @@
     const fin = Math.min(inicio + ITEMS_POR_PAGINA, totalItems);
     const itemsPagina = items.slice(inicio, fin);
 
-    // Actualizar etiquetas
     const infoText = document.getElementById(`info-paginacion-${pestana}`);
     const numText = document.getElementById(`num-pagina-${pestana}`);
     const btnPrev = document.getElementById(`btn-prev-${pestana}`);
@@ -641,6 +627,31 @@
     renderizarGrid(pestana, itemsPagina, inicio);
   }
 
+  function navegarFotoManual(cardKey, delta, totalFotos) {
+    if (!totalFotos || totalFotos <= 1) return;
+    if (fotoActualIndex[cardKey] === undefined) fotoActualIndex[cardKey] = 0;
+    
+    fotoActualIndex[cardKey] = (fotoActualIndex[cardKey] + delta + totalFotos) % totalFotos;
+    const nuevoIndex = fotoActualIndex[cardKey];
+
+    const imgElem = document.getElementById(`img-${cardKey}`);
+    const dots = document.querySelectorAll(`.dot-${cardKey}`);
+
+    if (imgElem && imgElem.dataset[`foto${nuevoIndex}`]) {
+      imgElem.src = imgElem.dataset[`foto${nuevoIndex}`];
+    }
+
+    dots.forEach((dot, idx) => {
+      if (idx === nuevoIndex) {
+        dot.classList.add('bg-coppergold', 'w-3');
+        dot.classList.remove('bg-white/70', 'w-1.5');
+      } else {
+        dot.classList.remove('bg-coppergold', 'w-3');
+        dot.classList.add('bg-white/70', 'w-1.5');
+      }
+    });
+  }
+
   function renderizarGrid(pestana, items, offsetIndex = 0) {
     const grid = document.getElementById(`grid-${pestana}`);
     if (!grid) return;
@@ -650,7 +661,7 @@
     if (items.length === 0) {
       grid.innerHTML = `
         <div class="col-span-full py-12 text-center text-winemuted">
-          <p class="text-sm">No se encontraron propiedades con los filtros seleccionados.</p>
+          <p class="text-sm">No se encontraron propiedades disponibles en esta sección.</p>
         </div>
       `;
       return;
@@ -658,8 +669,12 @@
 
     items.forEach((item, index) => {
       const realIndex = offsetIndex + index;
-      const fotos = [item.foto1, item.foto2, item.foto3, item.foto4, item.foto5].filter(f => f && f.length > 5);
-      const fotoPortada = fotos[0] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80';
+      const cardKey = `${pestana}-${realIndex}`;
+      fotoActualIndex[cardKey] = 0;
+
+      const fotos = extraerTodasLasFotos(item);
+      const fotoPortada = fotos[0] || '';
+      const precioVal = obtenerPrecioItem(item);
 
       let numTelefono = "529981550066";
       if (pestana === 'Networking' && (item.telefono || item.celular || item.whatsapp)) {
@@ -667,28 +682,34 @@
         if (numTelefono.length === 10) numTelefono = "52" + numTelefono;
       }
 
-      const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad registrada en la Red de Networking:\n\n*${item.titulo || 'Propiedad'}*\n📍 Ubicación: ${item.ubicación || item.ubicacion || 'Cancún'}\n💰 Precio: ${item.precio || 'Consultar'}\n📐 Terreno: ${item.terreno || 'N/A'}`);
+      const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad:\n\n*${item.titulo || 'Propiedad'}*\n📍 Ubicación: ${item.ubicación || item.ubicacion || 'Cancún'}\n💰 Precio: ${precioVal}`);
+
+      const datasetFotosAttr = fotos.map((f, i) => `data-foto${i}="${f}"`).join(' ');
 
       const cardHTML = `
         <div class="bg-papercard border hairline rounded-xl flex flex-col justify-between overflow-hidden relative group shadow-sm hover:shadow-md transition-all">
-          <div class="relative h-52 bg-paper overflow-hidden">
-            <img id="img-${pestana}-${realIndex}" src="${fotoPortada}" alt="${item.titulo}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="relative h-52 bg-paper overflow-hidden select-none">
+            ${fotoPortada ? `<img id="img-${cardKey}" src="${fotoPortada}" ${datasetFotosAttr} alt="${item.titulo}" class="w-full h-full object-cover transition-all duration-300" />` : '<div class="w-full h-full bg-softgray flex items-center justify-center text-xs text-winemuted">Sin Imagen</div>'}
             
             <div class="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
-              ${item.terreno ? `<span class="bg-papercard/90 backdrop-blur-md text-[10px] text-wine px-2 py-0.5 border hairline rounded-md font-semibold">📐 ${item.terreno}</span>` : ''}
-              ${(item.construcción || item.construccion) ? `<span class="bg-papercard/90 backdrop-blur-md text-[10px] text-wine px-2 py-0.5 border hairline rounded-md font-semibold">🏠 ${item.construcción || item.construccion}</span>` : ''}
+              ${item.terreno ? `<span class="bg-papercard/90 backdrop-blur-md text-[10px] text-wine px-2 py-0.5 border hairline rounded-md font-extrabold">📐 ${item.terreno}</span>` : ''}
+              ${(item.construcción || item.construccion) ? `<span class="bg-papercard/90 backdrop-blur-md text-[10px] text-wine px-2 py-0.5 border hairline rounded-md font-extrabold">🏠 ${item.construcción || item.construccion}</span>` : ''}
             </div>
 
+            <!-- ETIQUETA DE PRECIO SOBRE FOTO CON MONEDA MXN -->
             <div class="absolute top-3 right-3 z-10">
-              <span class="bg-royalgreen text-paper font-bold text-[11px] px-2.5 py-1 rounded-md shadow-md">
-                ${item.precio || 'Consultar'}
+              <span class="bg-royalgreen text-paper font-extrabold text-[11px] px-2.5 py-1 rounded-md shadow-md">
+                ${precioVal}
               </span>
             </div>
 
             ${fotos.length > 1 ? `
+              <button onclick="navegarFotoManual('${cardKey}', -1,${fotos.length})" class="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-black/40 hover:bg-black/70 text-white rounded-full flex items-center justify-center text-xs font-extrabold transition-all">‹</button>
+              <button onclick="navegarFotoManual('${cardKey}', 1,${fotos.length})" class="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-black/40 hover:bg-black/70 text-white rounded-full flex items-center justify-center text-xs font-extrabold transition-all">›</button>
+
               <div class="absolute bottom-2 left-0 right-0 flex justify-center gap-1 z-10">
                 ${fotos.map((f, fIdx) => `
-                  <button onclick="cambiarFoto('${pestana}-${realIndex}', '${f}')" class="w-2 h-2 rounded-full bg-white/70 hover:bg-coppergold transition-colors"></button>
+                  <span class="dot-${cardKey} h-1.5 rounded-full transition-all duration-300 ${fIdx === 0 ? 'bg-coppergold w-3' : 'bg-white/70 w-1.5'}"></span>
                 `).join('')}
               </div>
             ` : ''}
@@ -696,24 +717,35 @@
 
           <div class="p-5 flex-1 flex flex-col justify-between">
             <div>
-              <div class="flex items-center justify-between gap-2 mb-2">
+              <div class="flex items-center justify-between gap-2 mb-1">
                 <span class="text-[10px] text-coppergold uppercase tracking-wider font-mono font-bold">📍 ${item.ubicación || item.ubicacion || 'Cancún'}</span>
-                <span class="text-[9px] text-winemuted bg-paper px-2 py-0.5 rounded-md border border-coppergold/30 font-medium">${item.estado || 'Disponible'}</span>
+                <span class="text-[9px] text-winemuted bg-paper px-2 py-0.5 rounded-md border border-coppergold/30 font-bold">${item.estado || 'Disponible'}</span>
               </div>
-              <h3 class="font-display text-lg text-wine leading-snug font-semibold">${item.titulo || 'Propiedad Exclusiva'}</h3>
-              <p class="text-xs text-winemuted mt-2 line-clamp-3">${item.descripción || item.descripcion || 'Contáctanos directamente para obtener los detalles completos.'}</p>
-              ${pestana === 'Networking' && item.asesor ? `<p class="text-[10px] text-coppergold font-bold mt-2">👤 Asesor Aliado: ${item.asesor}</p>` : ''}
+
+              <h3 class="font-display text-lg text-wine leading-snug font-bold">${item.titulo || 'Propiedad Exclusiva'}</h3>
+              
+              <!-- DESPLIEGUE CLARO DEL PRECIO CON "MXN" -->
+              <p class="text-sm font-extrabold text-royalgreen mt-1">${precioVal}</p>
+
+              <p class="text-xs text-winemuted mt-2 line-clamp-2 font-medium whitespace-pre-line">${item.descripción || item.descripcion || ''}</p>
+              
+              ${pestana === 'Networking' && item.asesor ? `<p class="text-[10px] text-coppergold font-bold mt-2">👤 Asesor: ${item.asesor}</p>` : ''}
             </div>
 
-            <div class="mt-5 pt-4 border-t hairline flex flex-col gap-2">
-              <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="btn-green text-center py-2.5 rounded-lg text-xs flex items-center justify-center gap-2">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.1-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.3c-.22.62-1.28 1.2-1.77 1.24-.45.04-.94.23-3.17-.66-2.68-1.07-4.4-3.8-4.53-3.98-.13-.18-1.08-1.44-1.08-2.74 0-1.3.68-1.94.92-2.2.24-.26.53-.33.7-.33h.5c.16 0 .38-.06.6.46.22.53.75 1.83.82 1.96.06.13.1.29.02.47-.08.18-.13.29-.26.44-.13.16-.27.35-.39.47-.13.13-.27.27-.11.53.15.26.68 1.12 1.47 1.82 1.01.9 1.86 1.18 2.12 1.31.26.13.42.11.57-.06.15-.18.65-.76.83-1.02.18-.26.35-.21.6-.13.24.09 1.55.73 1.82.86.26.13.44.2.5.31.06.13.06.72-.16 1.35z"/></svg>
-                Solicitar por WhatsApp
-              </a>
-
-              <button onclick="generarFichaPDF('${pestana}', ${realIndex})" class="text-[11px] text-winemuted hover:text-coppergold py-1 text-center transition-colors flex items-center justify-center gap-1 font-medium">
-                📄 Descargar Ficha Técnica PDF
+            <div class="mt-4 pt-3 border-t hairline flex flex-col gap-2">
+              <button onclick="abrirFichaDetalle('${pestana}', ${realIndex})" class="w-full text-center py-2 bg-copperlight/30 hover:bg-copperlight/60 border border-coppergold/40 rounded-lg text-xs font-bold text-wine transition-all">
+                🔍 Ver Ficha Completa (${fotos.length} fotos)
               </button>
+
+              <div class="grid grid-cols-2 gap-2">
+                <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="btn-green text-center py-2 rounded-lg text-[11px] flex items-center justify-center gap-1">
+                  WhatsApp
+                </a>
+
+                <button onclick="generarFichaPDF('${pestana}', ${realIndex})" class="text-[10px] text-winemuted border border-coppergold/30 hover:text-coppergold rounded-lg py-2 text-center transition-colors font-bold">
+                  📄 PDF
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -722,59 +754,228 @@
     });
   }
 
-  function cambiarFoto(id, src) {
-    const img = document.getElementById(`img-${id}`);
-    if (img) img.src = src;
+  // ABRIR FICHA DETALLADA CON PRECIO EN MXN
+  function abrirFichaDetalle(pestana, realIndex) {
+    const item = pestana === 'Carrousell' ? carrousellOriginal[realIndex] : catalogoOriginal[pestana][realIndex];
+    if (!item) return;
+
+    const modalKey = `modal-detail-${pestana}-${realIndex}`;
+    fotoActualIndex[modalKey] = 0;
+
+    const fotos = extraerTodasLasFotos(item);
+    const precioVal = obtenerPrecioItem(item);
+
+    let numTelefono = "529981550066";
+    if (pestana === 'Networking' && (item.telefono || item.celular || item.whatsapp)) {
+      numTelefono = (item.telefono || item.celular || item.whatsapp).replace(/[^0-9]/g, '');
+      if (numTelefono.length === 10) numTelefono = "52" + numTelefono;
+    }
+
+    const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad:\n\n*${item.titulo || 'Propiedad'}*\n📍 Ubicación: ${item.ubicación || item.ubicacion || 'Cancún'}\n💰 Precio: ${precioVal}`);
+
+    const datasetFotosAttr = fotos.map((f, i) => `data-foto${i}="${f}"`).join(' ');
+
+    const html = `
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- CARRUSEL DE FOTOS -->
+        <div class="w-full lg:w-1/2 flex flex-col gap-3">
+          <div class="relative h-72 sm:h-80 bg-paper border hairline rounded-xl overflow-hidden select-none">
+            ${fotos[0] ? `<img id="img-${modalKey}" src="${fotos[0]}" ${datasetFotosAttr} alt="${item.titulo}" class="w-full h-full object-cover transition-all duration-300" />` : '<div class="w-full h-full bg-softgray flex items-center justify-center text-xs text-winemuted">Sin Imagen Disponibles</div>'}
+
+            ${fotos.length > 1 ? `
+              <button onclick="navegarFotoManual('${modalKey}', -1,${fotos.length})" class="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 bg-black/50 hover:bg-black/80 text-white rounded-full flex items-center justify-center text-sm font-extrabold transition-all">‹</button>
+              <button onclick="navegarFotoManual('${modalKey}', 1,${fotos.length})" class="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 bg-black/50 hover:bg-black/80 text-white rounded-full flex items-center justify-center text-sm font-extrabold transition-all">›</button>
+
+              <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+                ${fotos.map((f, fIdx) => `
+                  <span class="dot-${modalKey} h-2 rounded-full transition-all duration-300 ${fIdx === 0 ? 'bg-coppergold w-4' : 'bg-white/70 w-2'}"></span>
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+
+          ${fotos.length > 1 ? `
+            <div class="flex items-center gap-2 overflow-x-auto py-1 modal-scroll">
+              ${fotos.map((f, fIdx) => `
+                <img src="${f}" onclick="navegarFotoManual('${modalKey}', ${fIdx - (fotoActualIndex[modalKey] || 0)}, ${fotos.length})" class="w-16 h-12 object-cover rounded-md border hairline cursor-pointer hover:border-coppergold transition-all flex-shrink-0" />
+              `).join('')}
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- INFORMACIÓN DETALLADA -->
+        <div class="w-full lg:w-1/2 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center gap-2 mb-2">
+              <span class="text-xs text-coppergold font-extrabold uppercase">📍 ${item.ubicación || item.ubicacion || 'Cancún'}</span>
+              <span class="text-xs bg-royalgreen/10 text-royalgreen font-extrabold px-2.5 py-0.5 rounded-md">${item.estado || 'Disponible'}</span>
+            </div>
+
+            <h2 class="font-display text-2xl text-wine font-extrabold leading-snug">${item.titulo || 'Propiedad Exclusiva'}</h2>
+            
+            <p class="text-2xl text-royalgreen font-extrabold mt-3">${precioVal}</p>
+
+            <div class="grid grid-cols-2 gap-3 mt-4 py-3 border-y hairline text-xs">
+              <div><span class="font-bold text-winemuted">📐 Terreno:</span> <span class="font-extrabold text-wine">${item.terreno || 'N/A'}</span></div>
+              <div><span class="font-bold text-winemuted">🏠 Construcción:</span> <span class="font-extrabold text-wine">${item.construcción || item.construccion || 'N/A'}</span></div>
+              ${item.asesor ? `<div class="col-span-2"><span class="font-bold text-winemuted">👤 Asesor Encargado:</span> <span class="font-extrabold text-coppergold">${item.asesor}</span></div>` : ''}
+            </div>
+
+            <div class="mt-4">
+              <h4 class="text-xs font-extrabold text-wine uppercase mb-1">Descripción Completa:</h4>
+              <div class="text-xs text-winemuted leading-relaxed font-medium max-h-56 overflow-y-auto modal-scroll whitespace-pre-line p-1">${item.descripción || item.descripcion || 'Sin descripción detallada.'}</div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t hairline flex flex-col sm:flex-row gap-3">
+            <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="btn-green flex-1 text-center py-3 rounded-lg text-xs font-extrabold">
+              Solicitar por WhatsApp
+            </a>
+            <button onclick="generarFichaPDF('${pestana}', ${realIndex})" class="border border-coppergold/50 text-wine hover:bg-copperlight/30 px-4 py-3 rounded-lg text-xs font-extrabold">
+              📄 Descargar PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('contenidoDetalleUnico').innerHTML = html;
+    openModal('modalDetalleUnico');
   }
 
-  function generarFichaPDF(pestana, index) {
-    const item = catalogoOriginal[pestana][index];
+  // GENERAR PDF
+  async function generarFichaPDF(pestana, index) {
+    const item = pestana === 'Carrousell' ? carrousellOriginal[index] : catalogoOriginal[pestana][index];
     if (!item) return;
 
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    const doc = new jsPDF('p', 'mm', 'a4');
 
-    doc.setFillColor(74, 18, 26);
-    doc.rect(0, 0, 210, 40, 'F');
+    const vinoHex = [74, 18, 26];
+    const oroHex = [197, 155, 99];
+    const verdeHex = [18, 56, 41];
 
-    doc.setTextColor(197, 155, 99);
-    doc.setFontSize(18);
-    doc.text('Edgardo de Real', 15, 20);
+    const precioVal = obtenerPrecioItem(item);
+
+    doc.setFillColor(...vinoHex);
+    doc.rect(0, 0, 210, 38, 'F');
+
+    doc.setTextColor(...oroHex);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.text('EDGARDO DE REAL', 15, 18);
+
+    doc.setFontSize(8);
+    doc.setTextColor(250, 247, 242);
+    doc.text('RED INMOBILIARIA DE NETWORKING ESTRATEGICO', 15, 26);
+    doc.text('FICHA TECNICA EJECUTIVA', 140, 26);
+
+    doc.setTextColor(...vinoHex);
+    doc.setFontSize(14);
+    doc.text(item.titulo || 'Propiedad Exclusiva', 15, 50);
+
+    doc.setFontSize(10);
+    doc.setTextColor(80, 80, 80);
+    doc.text(`Ubicacion: ${item.ubicación || item.ubicacion || 'Cancún, Q. Roo'}`, 15, 59);
+    doc.text(`Precio: ${precioVal}`, 15, 66);
+    doc.text(`Terreno: ${item.terreno || 'N/A'}  |  Construccion: ${item.construcción || item.construccion || 'N/A'}`, 15, 73);
+
+    doc.setDrawColor(...oroHex);
+    doc.setLineWidth(0.5);
+    doc.line(15, 79, 195, 79);
 
     doc.setFontSize(9);
-    doc.setTextColor(250, 247, 242);
-    doc.text('RED INMOBILIARIA DE NETWORKING ESTRATEGICO', 15, 28);
-    doc.text('FICHA TECNICA DE PROPIEDAD', 140, 28);
-
-    doc.setTextColor(74, 18, 26);
-    doc.setFontSize(16);
-    doc.text(item.titulo || 'Propiedad Exclusiva', 15, 55);
-
-    doc.setFontSize(11);
-    doc.setTextColor(100, 100, 100);
-    doc.text(`Ubicacion: ${item.ubicación || item.ubicacion || 'Cancun, Q. Roo'}`, 15, 65);
-    doc.text(`Precio: ${item.precio || 'Consultar'}`, 15, 73);
-    doc.text(`Terreno: ${item.terreno || 'N/A'} | Construccion: ${item.construcción || item.construccion || 'N/A'}`, 15, 81);
-
-    doc.setDrawColor(197, 155, 99);
-    doc.line(15, 88, 195, 88);
-
-    doc.setFontSize(10);
     doc.setTextColor(40, 40, 40);
-    const desc = doc.splitTextToSize(item.descripción || item.descripcion || 'Propiedad disponible bajo el criterio de Red Inmobiliaria de Networking Estratégico.', 180);
-    doc.text(desc, 15, 98);
+    doc.setFont('helvetica', 'normal');
+    const descLines = doc.splitTextToSize(item.descripción || item.descripcion || 'Propiedad verificada y disponible dentro de la Red Inmobiliaria de Networking Estratégico.', 180);
+    doc.text(descLines, 15, 87);
 
-    doc.setFillColor(18, 56, 41);
-    doc.rect(0, 260, 210, 37, 'F');
+    const fotos = extraerTodasLasFotos(item);
 
-    doc.setTextColor(197, 155, 99);
-    doc.setFontSize(10);
-    doc.text('Contacto Directo & Red de Aliados:', 15, 272);
-    doc.setTextColor(250, 247, 242);
-    doc.text(`WhatsApp: +${item.telefono || '52 998 155 0066'} | Red Inmobiliaria RINE`, 15, 282);
+    if (fotos.length > 0) {
+      doc.addPage();
+      
+      let yPos = 30;
+      let xPos = 15;
+
+      function renderHeaderGaleria() {
+        doc.setFillColor(...vinoHex);
+        doc.rect(0, 0, 210, 20, 'F');
+        doc.setTextColor(...oroHex);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`GALERIA FOTOGRAFICA COMPLETA — ${item.titulo || 'Propiedad'}`, 15, 13);
+      }
+
+      renderHeaderGaleria();
+
+      const imgWidth = 85;
+      const imgHeight = 58;
+
+      for (let i = 0; i < fotos.length; i++) {
+        if (yPos > 200) {
+          doc.addPage();
+          renderHeaderGaleria();
+          yPos = 30;
+          xPos = 15;
+        }
+
+        try {
+          const imgBase64 = await cargarImagenBase64(fotos[i]);
+          if (imgBase64) {
+            doc.addImage(imgBase64, 'JPEG', xPos, yPos, imgWidth, imgHeight);
+            
+            if (xPos === 15) {
+              xPos = 110;
+            } else {
+              xPos = 15;
+              yPos += imgHeight + 10;
+            }
+          }
+        } catch (err) {
+          console.log(`Error procesando foto ${i + 1} para PDF`);
+        }
+      }
+    }
+
+    const totalPages = doc.internal.getNumberOfPages();
+    for (let p = 1; p <= totalPages; p++) {
+      doc.setPage(p);
+      doc.setFillColor(...verdeHex);
+      doc.rect(0, 267, 210, 30, 'F');
+
+      doc.setTextColor(...oroHex);
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'bold');
+      doc.text('CONTACTO DIRECTO & RED DE ALIADOS:', 15, 277);
+
+      doc.setTextColor(250, 247, 242);
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`WhatsApp: +${item.telefono || '52 998 155 0066'}  |  Instagram: @edgardodereal_`, 15, 285);
+    }
 
     const filename = `Ficha_${(item.titulo || 'Propiedad').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
     doc.save(filename);
+  }
+
+  function cargarImagenBase64(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.onload = function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(this, 0, 0);
+        resolve(canvas.toDataURL('image/jpeg'));
+      };
+      img.onerror = function () {
+        resolve(null);
+      };
+      img.src = url;
+    });
   }
 </script>
 
