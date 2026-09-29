@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Red Inmobiliaria de Networking Estratégico — By Edgardo de Real</title>
+<meta name="description" content="Portal interactivo para alianzas estratégicas y catálogo filtrable en Venta, Renta, Lotes y Red Inmobiliaria.">
+<meta name="theme-color" content="#FAF7F2">
+
+<!-- Google Fonts & Tailwind CSS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- jsPDF para generación de Fichas Técnicas PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          paper: '#FAF7F2',       // Blanco Cálido / Crema
+          papercard: '#FFFFFF',   // Blanco Puro para tarjetas
+          wine: '#4A121A',        // Vino Profundo
+          winemuted: '#7A2E3B',   // Vino Medio
+          coppergold: '#C59B63',  // Oro Cobrizo
+          copperlight: '#E8D5B7', // Oro Cobrizo Suave
+          royalgreen: '#123829',  // Verde Royal
+          royalgreenlight: '#1B4D3E',
+          softgray: '#EFEBE4',    // Bordes
+        },
+        fontFamily: {
+          display: ['Fraunces', 'Georgia', 'serif'],
+          sans: ['Manrope', '-apple-system', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  :root {
+    --paper:#FAF7F2; --papercard:#FFFFFF; --wine:#4A121A; --winemuted:#7A2E3B;
+    --coppergold:#C59B63; --copperlight:#E8D5B7; --royalgreen:#123829; --softgray:#EFEBE4;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--wine);
+    font-family: 'Manrope', -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3,h4,.font-display { font-family: 'Fraunces', 'Georgia', serif; }
+  
+  .hairline { border-color: rgba(197, 155, 99, 0.25); }
+
+  .btn-green {
+    background: var(--royalgreen);
+    color: #FAF7F2;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .btn-green:hover {
+    background: #1B4D3E;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(18, 56, 41, 0.25);
+  }
+
+  .card-bright {
+    background: #FFFFFF;
+    border: 1px solid rgba(197, 155, 99, 0.25);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .card-bright:hover {
+    transform: translateY(-5px);
+    border-color: #C59B63;
+    box-shadow: 0 18px 36px rgba(74, 18, 26, 0.08);
+  }
+
+  .modal-backdrop {
+    background: rgba(74, 18, 26, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .filter-input {
+    background: #FFFFFF;
+    border: 1px solid rgba(197, 155, 99, 0.3);
+    color: #4A121A;
+    font-size: 0.75rem;
+    padding: 0.45rem 0.65rem;
+    border-radius: 0.375rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .filter-input:focus {
+    border-color: #123829;
+  }
+
+  /* Animación del carrusel infinito */
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    display: flex;
+    width: 200%;
+    animation: marquee 30s linear infinite;
+  }
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+
+  .rine-highlight {
+    animation: pulseGlow 1.5s ease-in-out 2;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 rgba(197, 155, 99, 0); }
+    50% { box-shadow: 0 0 25px rgba(197, 155, 99, 0.6); border-color: #C59B63; }
+  }
+
+  .modal-scroll::-webkit-scrollbar { width: 6px; }
+  .modal-scroll::-webkit-scrollbar-track { background: #FAF7F2; }
+  .modal-scroll::-webkit-scrollbar-thumb { background: #C59B63; border-radius: 3px; }
+</style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+
+<!-- HEADER PRINCIPAL -->
+<header class="border-b hairline bg-paper/90 sticky top-0 z-40 backdrop-blur-md">
+  <div class="max-w-7xl mx-auto px-6 py-3 flex flex-wrap justify-between items-center gap-4">
+    <div class="flex flex-col">
+      <span class="font-display text-lg sm:text-xl text-wine font-semibold tracking-wide">Red Inmobiliaria de Networking Estratégico</span>
+      <span class="text-[9px] tracking-[0.24em] text-coppergold uppercase font-bold">By Edgardo de Real</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <!-- Botón modificado a dos renglones -->
+      <button onclick="scrollToRINE()" class="text-[11px] leading-tight text-left text-wine bg-copperlight/40 border border-coppergold/50 px-3 py-1.5 rounded-lg hover:bg-copperlight/80 transition-all font-semibold flex items-center gap-1.5">
+        <span>✨</span>
+        <span>
+          Catálogo Red Inmobiliaria<br>
+          <span class="text-[9px] text-coppergold font-bold">de Networking Estratégico</span>
+        </span>
+      </button>
+
+      <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20formar%20una%20alianza%20estrat%C3%A9gica%20o%20consultar%20tu%20portafolio." target="_blank" class="hidden sm:inline-flex items-center gap-2 text-xs text-wine border border-coppergold/50 px-4 py-2 rounded-lg hover:bg-copperlight/30 transition-colors">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-royalgreen"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.1-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.3c-.22.62-1.28 1.2-1.77 1.24-.45.04-.94.23-3.17-.66-2.68-1.07-4.4-3.8-4.53-3.98-.13-.18-1.08-1.44-1.08-2.74 0-1.3.68-1.94.92-2.2.24-.26.53-.33.7-.33h.5c.16 0 .38-.06.6.46.22.53.75 1.83.82 1.96.06.13.1.29.02.47-.08.18-.13.29-.26.44-.13.16-.27.35-.39.47-.13.13-.27.27-.11.53.15.26.68 1.12 1.47 1.82 1.01.9 1.86 1.18 2.12 1.31.26.13.42.11.57-.06.15-.18.65-.76.83-1.02.18-.26.35-.21.6-.13.24.09 1.55.73 1.82.86.26.13.44.2.5.31.06.13.06.72-.16 1.35z"/></svg>
+        Contacto Directo
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- SECCIÓN INTRODUCTORIA -->
+<main class="flex-1 max-w-7xl mx-auto px-6 py-10 sm:py-14 w-full relative z-10">
+  <div class="max-w-3xl mb-10">
+    <h1 class="font-display font-light text-3xl sm:text-5xl leading-tight text-wine">
+      Ahora formas parte de la red de networking inmobiliario que va a revolucionar la Riviera Maya.
+    </h1>
+    <p class="mt-6 text-winemuted text-base leading-relaxed">
+      Esta plataforma simplifica la consulta de nuestro portafolio disponible en Cancún y la Riviera Maya. Diseñada especialmente para ti, socio estratégico con clientes interesados en adquirir, rentar o invertir en residencias, lotes y macrolotes.
+    </p>
+  </div>
+
+  <!-- SECCIÓN CARRUSEL PROPIEDADES DESTACADAS -->
+  <section class="mb-12">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-display text-xl sm:text-2xl text-wine font-semibold flex items-center gap-2">
+        <span>⭐</span> Propiedades Destacadas
+      </h2>
+      <span class="text-xs text-coppergold font-mono uppercase font-bold tracking-wider">Pausa al pasar mouse &bull; Clic para ver ficha</span>
+    </div>
+    <div class="overflow-hidden relative w-full bg-papercard border hairline rounded-2xl p-4 shadow-sm">
+      <div id="carrousell-container" class="animate-marquee gap-6">
+        <!-- Renderizado dinámico del carrusel interactivo desde JS -->
+        <div class="text-xs text-winemuted py-6 text-center w-full">Cargando propiedades destacadas...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRID DE TARJETAS PRINCIPALES -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    
+    <!-- Botón 1: Venta -->
+    <button onclick="openModal('modalVenta')" class="card-bright text-left p-6 rounded-2xl flex flex-col justify-between h-64 group relative overflow-hidden shadow-sm">
+      <div class="absolute -right-4 -top-4 w-28 h-28 bg-copperlight/40 rounded-full group-hover:scale-150 transition-transform"></div>
+      <div>
+        <h2 class="font-display text-2xl text-wine group-hover:text-royalgreen transition-colors mt-2">Propiedades en Venta</h2>
+        <p class="text-xs text-winemuted mt-3 line-clamp-3">Residencias, villas de lujo y departamentos en entrega inmediata con certeza jurídica.</p>
+      </div>
+      <div class="flex justify-between items-center mt-6 pt-4 border-t hairline w-full">
+        <span class="text-[11px] text-wine font-bold uppercase">Explorar Catálogo</span>
+        <span class="text-coppergold group-hover:translate-x-1 transition-transform font-bold">→</span>
+      </div>
+    </button>
+
+    <!-- Botón 2: Renta -->
+    <button onclick="openModal('modalRenta')" class="card-bright text-left p-6 rounded-2xl flex flex-col justify-between h-64 group relative overflow-hidden shadow-sm">
+      <div class="absolute -right-4 -top-4 w-28 h-28 bg-copperlight/40 rounded-full group-hover:scale-150 transition-transform"></div>
+      <div>
+        <h2 class="font-display text-2xl text-wine group-hover:text-royalgreen transition-colors mt-2">Propiedades Residenciales en Renta</h2>
+        <p class="text-xs text-winemuted mt-3 line-clamp-3">Opciones seleccionadas para renta residencial a largo plazo en las ubicaciones más cotizadas.</p>
+      </div>
+      <div class="flex justify-between items-center mt-6 pt-4 border-t hairline w-full">
+        <span class="text-[11px] text-wine font-bold uppercase">Ver Disponibles</span>
+        <span class="text-coppergold group-hover:translate-x-1 transition-transform font-bold">→</span>
+      </div>
+    </button>
+
+    <!-- Botón 3: Lotes -->
+    <button onclick="openModal('modalLotes')" class="card-bright text-left p-6 rounded-2xl flex flex-col justify-between h-64 group relative overflow-hidden shadow-sm">
+      <div class="absolute -right-4 -top-4 w-28 h-28 bg-royalgreen/10 rounded-full group-hover:scale-150 transition-transform"></div>
+      <div>
+        <h2 class="font-display text-2xl text-wine group-hover:text-royalgreen transition-colors mt-2">Lotes &amp; Macrolotes</h2>
+        <p class="text-xs text-winemuted mt-3 line-clamp-3">Suelo estratégico escriturado desde 220 m² hasta macrolotes para desarrollo.</p>
+      </div>
+      <div class="flex justify-between items-center mt-6 pt-4 border-t hairline w-full">
+        <span class="text-[11px] text-wine font-bold uppercase">Suelo Disponible</span>
+        <span class="text-royalgreen group-hover:translate-x-1 transition-transform font-bold">→</span>
+      </div>
+    </button>
+
+    <!-- Botón 4: Networking (RINE) -->
+    <button id="card-rine" onclick="openModal('modalNetworking')" class="card-bright text-left p-6 rounded-2xl border-2 border-royalgreen/30 flex flex-col justify-between h-64 group relative overflow-hidden shadow-sm bg-royalgreen/5">
+      <div class="absolute -right-4 -top-4 w-28 h-28 bg-royalgreen/10 rounded-full group-hover:scale-150 transition-transform"></div>
+      <div>
+        <h2 class="font-display text-2xl text-wine group-hover:text-royalgreen transition-colors mt-2">Red Inmobiliaria de Networking Estratégico</h2>
+        <p class="text-xs text-winemuted mt-3 line-clamp-3">Encuentra la conexión perfecta que te ayude a concretar la operación que tienes en las manos.</p>
+      </div>
+      <div class="flex justify-between items-center mt-6 pt-4 border-t border-royalgreen/20 w-full">
+        <span class="text-[11px] text-royalgreen font-bold uppercase">Catálogo RINE</span>
+        <span class="text-royalgreen group-hover:translate-x-1 transition-transform font-bold">→</span>
+      </div>
+    </button>
+
+  </div>
+</main>
+
+<!-- MODAL DETALLE INDIVIDUAL (Para clics en el carrusel o vista previa rápida) -->
+<div id="modalDetalleUnico" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-3 md:p-6">
+  <div class="bg-papercard border hairline w-full max-w-3xl max-h-[90vh] flex flex-col rounded-2xl shadow-2xl relative overflow-hidden">
+    <div class="p-4 border-b hairline flex justify-between items-center bg-paper">
+      <span class="text-xs font-mono text-coppergold font-bold uppercase">Detalle de Propiedad Destacada</span>
+      <button onclick="closeModal('modalDetalleUnico')" class="text-wine border border-coppergold/40 text-xs px-2.5 py-1 rounded-lg">✕ Cerrar</button>
+    </div>
+    <div id="contenidoDetalleUnico" class="p-6 overflow-y-auto modal-scroll">
+      <!-- Se llena dinámicamente -->
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="border-t hairline py-8 bg-papercard mt-12">
+  <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center text-xs text-winemuted gap-4">
+    <div>
+      <span class="font-display text-wine font-bold">Edgardo de Real</span> — Cancún, Quintana Roo.
+    </div>
+    <div class="flex gap-6">
+      <a href="https://www.instagram.com/edgardodereal_/" target="_blank" class="hover:text-coppergold transition-colors">@edgardodereal_</a>
+      <a href="https://gruposalo.com" target="_blank" class="hover:text-coppergold transition-colors">Grupo Salo Inmobiliario</a>
+    </div>
+  </div>
+</footer>
+
+<!-- SCRIPT DE GENERACIÓN DE MODALES Y PAGINACIÓN -->
+<script>
+  function crearModalHTML(idModal, tituloModal, subtituloModal, esNetworking = false) {
+    const pestana = idModal.replace('modal', '');
+    return `
+      <div id="${idModal}" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-3 md:p-6">
+        <div class="bg-papercard border hairline w-full max-w-6xl max-h-[92vh] flex flex-col rounded-2xl shadow-2xl relative overflow-hidden">
+          
+          <!-- Encabezado del Modal -->
+          <div class="p-5 border-b hairline flex justify-between items-center bg-paper">
+            <div>
+              <span class="text-[10px] text-coppergold font-mono tracking-widest uppercase font-bold">${subtituloModal}</span>
+              <h2 class="font-display text-xl sm:text-2xl text-wine">${tituloModal}</h2>
+            </div>
+            <div class="flex items-center gap-2">
+              ${esNetworking ? `
+                <button onclick="toggleVistaAsociados()" class="text-wine bg-copperlight/30 hover:bg-copperlight/60 border border-coppergold/40 text-xs px-3 py-1.5 rounded-lg transition-colors font-medium flex items-center gap-1">
+                  👥 Lista de Asociados
+                </button>
+              ` : ''}
+              <button onclick="closeModal('${idModal}')" class="text-wine hover:text-royalgreen text-xs flex items-center gap-1.5 border border-coppergold/40 px-3 py-1.5 rounded-lg transition-colors bg-papercard font-medium">
+                ✕ Volver al menú
+              </button>
+            </div>
+          </div>
+
+          ${esNetworking ? `
+            <div id="vista-asociados" class="hidden p-5 bg-paper border-b hairline max-h-60 overflow-y-auto modal-scroll">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-wine mb-3">Directorio de Agentes &amp; Asociados RINE</h3>
+              <div id="tabla-asociados" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+                <!-- Se llena con JS -->
+              </div>
+            </div>
+
+            <div class="px-5 py-3 bg-royalgreen/10 border-b border-royalgreen/20 flex flex-col sm:flex-row justify-between items-center gap-3">
+              <p class="text-xs text-wine">
+                🤝 **¿Eres agente o broker?** Suma tus propiedades compartidas a nuestra red para promoverlas en conjunto.
+              </p>
+              <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20soy%20agente%20inmobiliario%20y%20me%20gustar%C3%ADa%20sumar%20una%20propiedad%20a%20la%20Red%20de%20Networking." target="_blank" class="btn-green px-3.5 py-1.5 rounded-md text-[11px] whitespace-nowrap">
+                Subir propiedad a la Red
+              </a>
+            </div>
+          ` : ''}
+
+          <!-- BARRA DE FILTROS EN TIEMPO REAL -->
+          <div class="p-4 bg-paper border-b hairline grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+            <input type="text" id="search-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="🔍 Buscar nombre/zona..." class="filter-input col-span-2 sm:col-span-1" />
+
+            <select id="tipo-${pestana}" onchange="aplicarFiltros('${pestana}')" class="filter-input">
+              <option value="">Todos los tipos</option>
+              <option value="Casa">Casas / Villas</option>
+              <option value="Departamento">Departamentos</option>
+              <option value="Terreno">Lotes / Terrenos</option>
+              <option value="Bodega">Bodegas</option>
+            </select>
+
+            <input type="number" id="precioMin-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Precio Mín ($)" class="filter-input" />
+
+            <input type="number" id="precioMax-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Precio Máx ($)" class="filter-input" />
+
+            <input type="number" id="m2Min-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="M² Terreno Mín" class="filter-input" />
+
+            <select id="orden-${pestana}" onchange="aplicarFiltros('${pestana}')" class="filter-input border-coppergold text-wine font-semibold">
+              <option value="recientes">Ordenar: Predeterminado</option>
+              <option value="precio-desc">Precio: Mayor a Menor</option>
+              <option value="precio-asc">Precio: Menor a Mayor</option>
+              <option value="m2-desc">M²: Mayor a Menor</option>
+            </select>
+          </div>
+
+          <!-- Contenedor Grid con Scroll -->
+          <div class="p-5 overflow-y-auto modal-scroll flex-1 bg-paper/50 flex flex-col justify-between">
+            <div id="grid-${pestana}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <!-- Renderizado dinámico desde JS -->
+            </div>
+
+            <!-- CONTROLES DE PAGINACIÓN (20 en 20) -->
+            <div class="mt-6 pt-4 border-t hairline flex justify-between items-center text-xs">
+              <span id="info-paginacion-${pestana}" class="text-winemuted font-medium">Mostrando 0 de 0 propiedades</span>
+              <div class="flex items-center gap-2">
+                <button id="btn-prev-${pestana}" onclick="cambiarPagina('${pestana}', -1)" class="px-3 py-1.5 border border-coppergold/40 rounded-lg bg-papercard text-wine font-bold disabled:opacity-30">
+                  ← Anterior
+                </button>
+                <span id="num-pagina-${pestana}" class="font-bold text-wine px-2">1</span>
+                <button id="btn-next-${pestana}" onclick="cambiarPagina('${pestana}', 1)" class="px-3 py-1.5 border border-coppergold/40 rounded-lg bg-papercard text-wine font-bold disabled:opacity-30">
+                  Siguiente →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  document.write(crearModalHTML('modalVenta', 'Propiedades en Venta', 'Catálogo Auditado'));
+  document.write(crearModalHTML('modalRenta', 'Propiedades Residenciales en Renta', 'Catálogo Residencial'));
+  document.write(crearModalHTML('modalLotes', 'Lotes & Macrolotes', 'Suelo Estratégico'));
+  document.write(crearModalHTML('modalNetworking', 'Red Inmobiliaria de Networking Estratégico', 'Catálogo RINE', true));
+</script>
+
+<!-- MOTOR JAVASCRIPT: LECTURA, CARRUSEL INTERACTIVO & PAGINACIÓN (20 EN 20) -->
+<script>
+  const SHEET_ID = '192oLS5Pqh5IBrMYlp2RbE6ASol8BrHh9Naacegjzva8';
+  const CATEGORIAS = ['Venta', 'Renta', 'Lotes', 'Networking'];
+  const ITEMS_POR_PAGINA = 20;
+
+  let catalogoOriginal = { Venta: [], Renta: [], Lotes: [], Networking: [] };
+  let catalogoFiltrado = { Venta: [], Renta: [], Lotes: [], Networking: [] };
+  let paginaActual = { Venta: 1, Renta: 1, Lotes: 1, Networking: 1 };
+  let carrousellOriginal = [];
+
+  function openModal(id) {
+    document.getElementById(id).classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  function scrollToRINE() {
+    const card = document.getElementById('card-rine');
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.classList.add('rine-highlight');
+      setTimeout(() => card.classList.remove('rine-highlight'), 3000);
+    }
+  }
+
+  function toggleVistaAsociados() {
+    const vista = document.getElementById('vista-asociados');
+    if (vista) vista.classList.toggle('hidden');
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    CATEGORIAS.forEach(categoria => {
+      cargarDatosPestana(categoria);
+    });
+    cargarCarrusel();
+  });
+
+  // Carrusel Interactivo de Google Sheets
+  async function cargarCarrusel() {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Carrousell`;
+    try {
+      const response = await fetch(url);
+      const csvText = await response.text();
+      const rows = parseCSV(csvText);
+      
+      if (rows.length > 1) {
+        const headers = rows[0].map(h => h.trim().toLowerCase());
+        carrousellOriginal = rows.slice(1).map(row => {
+          let item = {};
+          headers.forEach((header, index) => {
+            item[header] = row[index] ? row[index].trim() : '';
+          });
+          return item;
+        }).filter(item => item.titulo || item.id);
+
+        renderizarCarrusel(carrousellOriginal);
+      }
+    } catch (e) {
+      console.log("Cargando carrusel por defecto...");
+    }
+  }
+
+  function renderizarCarrusel(items) {
+    const container = document.getElementById('carrousell-container');
+    if (!container || items.length === 0) return;
+
+    const itemsBucle = [...items, ...items];
+    container.innerHTML = '';
+
+    itemsBucle.forEach((item, idx) => {
+      const foto = item.foto1 || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80';
+      const realIndex = idx % items.length;
+      
+      const card = `
+        <div onclick="verDetalleCarrusel(${realIndex})" class="w-72 sm:w-80 flex-shrink-0 bg-paper border hairline rounded-xl overflow-hidden shadow-xs flex items-center gap-3 p-2.5 cursor-pointer hover:border-coppergold transition-all">
+          <img src="${foto}" class="w-20 h-20 object-cover rounded-lg flex-shrink-0" alt="${item.titulo}" />
+          <div class="overflow-hidden">
+            <span class="text-[9px] text-coppergold uppercase font-bold tracking-wider block">📍 ${item.ubicación || item.ubicacion || 'Cancún'}</span>
+            <h4 class="font-display text-xs text-wine font-bold truncate">${item.titulo || 'Destacado'}</h4>
+            <span class="text-xs font-bold text-royalgreen block mt-1">${item.precio || 'Consultar'}</span>
+            <span class="text-[9px] text-winemuted underline">Ver ficha →</span>
+          </div>
+        </div>
+      `;
+      container.innerHTML += card;
+    });
+  }
+
+  function verDetalleCarrusel(index) {
+    const item = carrousellOriginal[index];
+    if (!item) return;
+
+    const foto = item.foto1 || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80';
+    const waMsg = encodeURIComponent(`Hola Edgardo, me interesa la propiedad destacada:\n\n*${item.titulo}*\n📍 Ubicación: ${item.ubicación || item.ubicacion || 'Cancún'}\n💰 Precio: ${item.precio || 'Consultar'}`);
+
+    const html = `
+      <div class="flex flex-col md:flex-row gap-6">
+        <img src="${foto}" class="w-full md:w-1/2 h-64 object-cover rounded-xl" alt="${item.titulo}" />
+        <div class="flex-1 flex flex-col justify-between">
+          <div>
+            <span class="text-xs text-coppergold font-bold uppercase">📍 ${item.ubicación || item.ubicacion || 'Cancún'}</span>
+            <h3 class="font-display text-xl text-wine font-bold mt-1">${item.titulo}</h3>
+            <p class="text-2xl text-royalgreen font-bold mt-2">${item.precio || 'Consultar'}</p>
+            <p class="text-xs text-winemuted mt-4 leading-relaxed">${item.descripción || item.descripcion || 'Propiedad auditada y disponible en portafolio exclusivo.'}</p>
+          </div>
+          <div class="mt-6 pt-4 border-t hairline flex flex-col gap-2">
+            <a href="https://wa.me/529981550066?text=${waMsg}" target="_blank" class="btn-green text-center py-2.5 rounded-lg text-xs font-bold">
+              Solicitar por WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('contenidoDetalleUnico').innerHTML = html;
+    openModal('modalDetalleUnico');
+  }
+
+  async function cargarDatosPestana(pestana) {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${pestana}`;
+    try {
+      const response = await fetch(url);
+      const csvText = await response.text();
+      const rows = parseCSV(csvText);
+      
+      if (rows.length > 1) {
+        const headers = rows[0].map(h => h.trim().toLowerCase());
+        const data = rows.slice(1).map(row => {
+          let item = {};
+          headers.forEach((header, index) => {
+            item[header] = row[index] ? row[index].trim() : '';
+          });
+          return item;
+        }).filter(item => item.titulo || item.id);
+        
+        catalogoOriginal[pestana] = data;
+        aplicarFiltros(pestana);
+
+        if (pestana === 'Networking') {
+          renderizarTablaAsociados(data);
+        }
+      }
+    } catch (e) {
+      console.log(`Cargando datos de ${pestana}...`);
+    }
+  }
+
+  function renderizarTablaAsociados(items) {
+    const tabla = document.getElementById('tabla-asociados');
+    if (!tabla) return;
+
+    tabla.innerHTML = '';
+    items.forEach(item => {
+      const card = `
+        <div class="bg-papercard p-3 border hairline rounded-lg flex flex-col justify-between">
+          <div>
+            <div class="font-bold text-wine">${item.asesor || item.agente || 'Agente Aliado'}</div>
+            <div class="text-[10px] text-coppergold font-semibold">${item.agencia || 'Agencia Independiente'}</div>
+            <div class="text-[10px] text-winemuted mt-1">🏠 ${item.titulo || 'Propiedad en Red'}</div>
+          </div>
+          <div class="mt-2 pt-2 border-t hairline text-[10px] flex justify-between items-center">
+            <span class="text-royalgreen font-bold">📞 ${item.telefono || item.celular || '9981550066'}</span>
+            <a href="mailto:${item.correo || 'contacto@redinmobiliaria.com'}" class="text-winemuted underline">Email</a>
+          </div>
+        </div>
+      `;
+      tabla.innerHTML += card;
+    });
+  }
+
+  function parseCSV(text) {
+    let p = '', c = '', r = [];
+    let q = false;
+    let row = [''];
+    for (let i = 0; i < text.length; i++) {
+      c = text[i];
+      let next = text[i+1];
+      if (c === '"') {
+        if (q && next === '"') { row[row.length - 1] += '"'; i++; }
+        else { q = !q; }
+      } else if (c === ',' && !q) {
+        row.push('');
+      } else if ((c === '\r' || c === '\n') && !q) {
+        if (c === '\r' && next === '\n') { i++; }
+        r.push(row);
+        row = [''];
+      } else {
+        row[row.length - 1] += c;
+      }
+    }
+    if (row.length > 1 || row[0] !== '') { r.push(row); }
+    return r;
+  }
+
+  function extraerNumero(texto) {
+    if (!texto) return 0;
+    const num = texto.toString().replace(/[^0-9.]/g, '');
+    return parseFloat(num) || 0;
+  }
+
+  function aplicarFiltros(pestana) {
+    let lista = [...catalogoOriginal[pestana]];
+
+    const busqueda = (document.getElementById(`search-${pestana}`)?.value || '').toLowerCase();
+    const tipo = (document.getElementById(`tipo-${pestana}`)?.value || '').toLowerCase();
+    const precioMin = parseFloat(document.getElementById(`precioMin-${pestana}`)?.value) || 0;
+    const precioMax = parseFloat(document.getElementById(`precioMax-${pestana}`)?.value) || Infinity;
+    const m2Min = parseFloat(document.getElementById(`m2Min-${pestana}`)?.value) || 0;
+    const orden = document.getElementById(`orden-${pestana}`)?.value || 'recientes';
+
+    lista = lista.filter(item => {
+      const tit = (item.titulo || '').toLowerCase();
+      const ubi = (item.ubicación || item.ubicacion || '').toLowerCase();
+      const tip = (item.tipo || '').toLowerCase();
+      const pNum = extraerNumero(item.precio);
+      const m2Terreno = extraerNumero(item.terreno);
+
+      const coincideTexto = !busqueda || tit.includes(busqueda) || ubi.includes(busqueda);
+      const coincideTipo = !tipo || tip.includes(tipo);
+      const coincidePrecio = pNum === 0 || (pNum >= precioMin && pNum <= precioMax);
+      const coincideM2 = m2Terreno >= m2Min;
+
+      return coincideTexto && coincideTipo && coincidePrecio && coincideM2;
+    });
+
+    if (orden === 'precio-desc') {
+      lista.sort((a, b) => extraerNumero(b.precio) - extraerNumero(a.precio));
+    } else if (orden === 'precio-asc') {
+      lista.sort((a, b) => extraerNumero(a.precio) - extraerNumero(b.precio));
+    } else if (orden === 'm2-desc') {
+      lista.sort((a, b) => extraerNumero(b.terreno) - extraerNumero(a.terreno));
+    }
+
+    catalogoFiltrado[pestana] = lista;
+    paginaActual[pestana] = 1;
+    renderizarPagina(pestana);
+  }
+
+  // Paginación Dinámica (20 en 20)
+  function cambiarPagina(pestana, delta) {
+    const totalPaginas = Math.ceil(catalogoFiltrado[pestana].length / ITEMS_POR_PAGINA) || 1;
+    paginaActual[pestana] += delta;
+
+    if (paginaActual[pestana] < 1) paginaActual[pestana] = 1;
+    if (paginaActual[pestana] > totalPaginas) paginaActual[pestana] = totalPaginas;
+
+    renderizarPagina(pestana);
+  }
+
+  function renderizarPagina(pestana) {
+    const items = catalogoFiltrado[pestana];
+    const totalItems = items.length;
+    const pag = paginaActual[pestana];
+    const inicio = (pag - 1) * ITEMS_POR_PAGINA;
+    const fin = Math.min(inicio + ITEMS_POR_PAGINA, totalItems);
+    const itemsPagina = items.slice(inicio, fin);
+
+    // Actualizar etiquetas
+    const infoText = document.getElementById(`info-paginacion-${pestana}`);
+    const numText = document.getElementById(`num-pagina-${pestana}`);
+    const btnPrev = document.getElementById(`btn-prev-${pestana}`);
+    const btnNext = document.getElementById(`btn-next-${pestana}`);
+
+    if (infoText) infoText.innerText = `Mostrando ${totalItems > 0 ? inicio + 1 : 0} a ${fin} de ${totalItems} propiedades`;
+    if (numText) numText.innerText = pag;
+    if (btnPrev) btnPrev.disabled = (pag === 1);
+    if (btnNext) btnNext.disabled = (fin >= totalItems);
+
+    renderizarGrid(pestana, itemsPagina, inicio);
+  }
+
+  function renderizarGrid(pestana, items, offsetIndex = 0) {
+    const grid = document.getElementById(`grid-${pestana}`);
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+
+    if (items.length === 0) {
+      grid.innerHTML = `
+        <div class="col-span-full py-12 text-center text-winemuted">
+          <p class="text-sm">No se encontraron propiedades con los filtros seleccionados.</p>
+        </div>
+      `;
+      return;
+    }
+
+    items.forEach((item, index) => {
+      const realIndex = offsetIndex + index;
+      const fotos = [item.foto1, item.foto2, item.foto3, item.foto4, item.foto5].filter(f => f && f.length > 5);
+      const fotoPortada = fotos[0] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80';
+
+      let numTelefono = "529981550066";
+      if (pestana === 'Networking' && (item.telefono || item.celular || item.whatsapp)) {
+        numTelefono = (item.telefono || item.celular || item.whatsapp).replace(/[^0-9]/g, '');
+        if (numTelefono.length === 10) numTelefono = "52" + numTelefono;
+      }
+
+      const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad registrada en la Red de Networking:\n\n*${item.titulo || 'Propiedad'}*\n📍 Ubicación: ${item.ubicación || item.ubicacion || 'Cancún'}\n💰 Precio: ${item.precio || 'Consultar'}\n📐 Terreno: ${item.terreno || 'N/A'}`);
+
+      const cardHTML = `
+        <div class="bg-papercard border hairline rounded-xl flex flex-col justify-between overflow-hidden relative group shadow-sm hover:shadow-md transition-all">
+          <div class="relative h-52 bg-paper overflow-hidden">
+            <img id="img-${pestana}-${realIndex}" src="${fotoPortada}" alt="${item.titulo}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            
+            <div class="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+              ${item.terreno ? `<span class="bg-papercard/90 backdrop-blur-md text-[10px] text-wine px-2 py-0.5 border hairline rounded-md font-semibold">📐 ${item.terreno}</span>` : ''}
+              ${(item.construcción || item.construccion) ? `<span class="bg-papercard/90 backdrop-blur-md text-[10px] text-wine px-2 py-0.5 border hairline rounded-md font-semibold">🏠 ${item.construcción || item.construccion}</span>` : ''}
+            </div>
+
+            <div class="absolute top-3 right-3 z-10">
+              <span class="bg-royalgreen text-paper font-bold text-[11px] px-2.5 py-1 rounded-md shadow-md">
+                ${item.precio || 'Consultar'}
+              </span>
+            </div>
+
+            ${fotos.length > 1 ? `
+              <div class="absolute bottom-2 left-0 right-0 flex justify-center gap-1 z-10">
+                ${fotos.map((f, fIdx) => `
+                  <button onclick="cambiarFoto('${pestana}-${realIndex}', '${f}')" class="w-2 h-2 rounded-full bg-white/70 hover:bg-coppergold transition-colors"></button>
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-[10px] text-coppergold uppercase tracking-wider font-mono font-bold">📍 ${item.ubicación || item.ubicacion || 'Cancún'}</span>
+                <span class="text-[9px] text-winemuted bg-paper px-2 py-0.5 rounded-md border border-coppergold/30 font-medium">${item.estado || 'Disponible'}</span>
+              </div>
+              <h3 class="font-display text-lg text-wine leading-snug font-semibold">${item.titulo || 'Propiedad Exclusiva'}</h3>
+              <p class="text-xs text-winemuted mt-2 line-clamp-3">${item.descripción || item.descripcion || 'Contáctanos directamente para obtener los detalles completos.'}</p>
+              ${pestana === 'Networking' && item.asesor ? `<p class="text-[10px] text-coppergold font-bold mt-2">👤 Asesor Aliado: ${item.asesor}</p>` : ''}
+            </div>
+
+            <div class="mt-5 pt-4 border-t hairline flex flex-col gap-2">
+              <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="btn-green text-center py-2.5 rounded-lg text-xs flex items-center justify-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.1-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.3c-.22.62-1.28 1.2-1.77 1.24-.45.04-.94.23-3.17-.66-2.68-1.07-4.4-3.8-4.53-3.98-.13-.18-1.08-1.44-1.08-2.74 0-1.3.68-1.94.92-2.2.24-.26.53-.33.7-.33h.5c.16 0 .38-.06.6.46.22.53.75 1.83.82 1.96.06.13.1.29.02.47-.08.18-.13.29-.26.44-.13.16-.27.35-.39.47-.13.13-.27.27-.11.53.15.26.68 1.12 1.47 1.82 1.01.9 1.86 1.18 2.12 1.31.26.13.42.11.57-.06.15-.18.65-.76.83-1.02.18-.26.35-.21.6-.13.24.09 1.55.73 1.82.86.26.13.44.2.5.31.06.13.06.72-.16 1.35z"/></svg>
+                Solicitar por WhatsApp
+              </a>
+
+              <button onclick="generarFichaPDF('${pestana}', ${realIndex})" class="text-[11px] text-winemuted hover:text-coppergold py-1 text-center transition-colors flex items-center justify-center gap-1 font-medium">
+                📄 Descargar Ficha Técnica PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      grid.innerHTML += cardHTML;
+    });
+  }
+
+  function cambiarFoto(id, src) {
+    const img = document.getElementById(`img-${id}`);
+    if (img) img.src = src;
+  }
+
+  function generarFichaPDF(pestana, index) {
+    const item = catalogoOriginal[pestana][index];
+    if (!item) return;
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFillColor(74, 18, 26);
+    doc.rect(0, 0, 210, 40, 'F');
+
+    doc.setTextColor(197, 155, 99);
+    doc.setFontSize(18);
+    doc.text('Edgardo de Real', 15, 20);
+
+    doc.setFontSize(9);
+    doc.setTextColor(250, 247, 242);
+    doc.text('RED INMOBILIARIA DE NETWORKING ESTRATEGICO', 15, 28);
+    doc.text('FICHA TECNICA DE PROPIEDAD', 140, 28);
+
+    doc.setTextColor(74, 18, 26);
+    doc.setFontSize(16);
+    doc.text(item.titulo || 'Propiedad Exclusiva', 15, 55);
+
+    doc.setFontSize(11);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Ubicacion: ${item.ubicación || item.ubicacion || 'Cancun, Q. Roo'}`, 15, 65);
+    doc.text(`Precio: ${item.precio || 'Consultar'}`, 15, 73);
+    doc.text(`Terreno: ${item.terreno || 'N/A'} | Construccion: ${item.construcción || item.construccion || 'N/A'}`, 15, 81);
+
+    doc.setDrawColor(197, 155, 99);
+    doc.line(15, 88, 195, 88);
+
+    doc.setFontSize(10);
+    doc.setTextColor(40, 40, 40);
+    const desc = doc.splitTextToSize(item.descripción || item.descripcion || 'Propiedad disponible bajo el criterio de Red Inmobiliaria de Networking Estratégico.', 180);
+    doc.text(desc, 15, 98);
+
+    doc.setFillColor(18, 56, 41);
+    doc.rect(0, 260, 210, 37, 'F');
+
+    doc.setTextColor(197, 155, 99);
+    doc.setFontSize(10);
+    doc.text('Contacto Directo & Red de Aliados:', 15, 272);
+    doc.setTextColor(250, 247, 242);
+    doc.text(`WhatsApp: +${item.telefono || '52 998 155 0066'} | Red Inmobiliaria RINE`, 15, 282);
+
+    const filename = `Ficha_${(item.titulo || 'Propiedad').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+    doc.save(filename);
+  }
+</script>
+
+</body>
+</html>
