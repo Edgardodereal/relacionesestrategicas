@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Conekta Broker Pro & RINE | Red Inmobiliaria</title>
+    <title>Edgardo de Real | Red Inmobiliaria de Networking Estratégico</title>
     <meta name="description" content="Red Inmobiliaria de Networking Estratégico. Catálogo filtrable en Venta, Renta, Lotes.">
     <meta name="theme-color" content="#f8fafc">
     
@@ -49,7 +49,6 @@
     </script>
     
     <style>
-        /* UI Premium */
         .glass-nav { 
             background: rgba(255, 255, 255, 0.85); 
             backdrop-filter: blur(12px); 
@@ -61,28 +60,22 @@
                         radial-gradient(circle at bottom left, rgba(20, 184, 166, 0.05), transparent 40%); 
         }
         .animate-on-load { opacity: 0; }
-        .delay-200 { animation-delay: 200ms; }
         
-        /* Marquee */
-        .marquee { overflow: hidden; position: relative; -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); }
-        .animate-marquee { animation: marquee 40s linear infinite; }
-        .marquee:hover .animate-marquee { animation-play-state: paused; }
-        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 0.5rem)); } }
+        /* Marquee Infinito real */
+        .marquee { overflow: hidden; position: relative; width: 100%; -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent); }
+        .marquee-track { display: flex; width: max-content; animation: scrollMarquee 35s linear infinite; }
+        .marquee:hover .marquee-track { animation-play-state: paused; }
+        @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         
-        /* Scrolls & Utilities */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-        .custom-scrollbar:hover::-webkit-scrollbar-thumb { background: #94a3b8; }
         
-        /* Carousel Dots */
         .dot-indicator { height: 6px; width: 6px; border-radius: 999px; background: rgba(255,255,255,0.7); transition: all 0.3s ease; }
         .dot-indicator.is-active { width: 18px; background: #14b8a6; }
         
-        /* RINE Highlight */
         @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(20, 184, 166, 0); } 50% { box-shadow: 0 0 0 8px rgba(20, 184, 166, 0.3); border-color: #14b8a6; } }
         .rine-highlight { animation: pulseGlow 1.5s ease-in-out 2; border-color: #14b8a6 !important; }
         
-        /* Toast */
         .toast-msg { position: fixed; left: 50%; bottom: 2rem; z-index: 100; transform: translate(-50%, 20px); max-width: calc(100% - 32px); padding: 12px 24px; border-radius: 8px; background: #042f2e; color: #fff; font-size: 14px; font-weight: 600; box-shadow: 0 10px 25px rgba(0,0,0,0.2); opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .toast-msg.show { opacity: 1; transform: translate(-50%, 0); }
     </style>
@@ -98,28 +91,46 @@
                 <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white">
                     <i class="ph-bold ph-buildings text-xl"></i>
                 </div>
-                <span class="font-bold text-xl tracking-tight text-slate-900">RINE<span class="text-brand-600">Net</span></span>
+                <span class="font-bold text-lg tracking-tight text-slate-900">Edgardo de Real <span class="text-brand-600 font-normal">| Red Inmobiliaria</span></span>
             </div>
 
             <!-- Links Desktop -->
             <div class="hidden md:flex space-x-6 items-center">
-                <button type="button" onclick="scrollToRINE()" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Catálogo Inmobiliario</button>
-                <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20formar%20una%20alianza%20estrat%C3%A9gica%20o%20consultar%20tu%20portafolio." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-brand-600 hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-500/30 transition-all active:scale-95 gap-2">
-                    <i class="ph-bold ph-whatsapp-logo text-lg"></i> Contacto Directo
-                </a>
+                <!-- Dropdown Catálogos -->
+                <div class="relative group">
+                    <button type="button" class="text-sm font-semibold text-slate-700 hover:text-brand-600 flex items-center gap-1.5 py-2 transition-colors">
+                        Catálogo Inmobiliario <i class="ph-bold ph-caret-down text-xs"></i>
+                    </button>
+                    <div class="absolute left-0 mt-0 w-64 bg-white border border-slate-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 z-50">
+                        <button type="button" onclick="openModalCatalogosEdgardo()" class="w-full text-left px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-600 flex items-center gap-2 transition-colors">
+                            <i class="ph-bold ph-house text-brand-500 text-lg"></i> Catálogo Edgardo de Real
+                        </button>
+                        <button type="button" onclick="openModal('modalNetworking')" class="w-full text-left px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-600 flex items-center gap-2 transition-colors">
+                            <i class="ph-bold ph-users-three text-brand-500 text-lg"></i> Catálogo de la red estratégica
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Botón de Likes Favoritos -->
+                <button type="button" onclick="openModalFavoritos()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold text-sm transition-colors">
+                    <i class="ph-fill ph-heart text-rose-500 text-base"></i> Favoritos (<span id="contador-likes">0</span>)
+                </button>
+
+                <div class="flex flex-col">
+                    <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20formar%20una%20alianza%20estrat%C3%A9gica%20o%20consultar%20tu%20portafolio." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-brand-600 hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-500/30 transition-all active:scale-95 gap-2">
+                        <i class="ph-bold ph-whatsapp-logo text-lg"></i> Contacto Directo
+                    </a>
+                    <span class="text-[10px] text-slate-500 text-center mt-0.5">¿Te interesa sumarte a la red o una propiedad?</span>
+                </div>
             </div>
         </div>
     </div>
 </nav>
 
 <!-- Hero Section -->
-<section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden hero-gradient">
+<section class="relative pt-32 pb-16 lg:pt-40 lg:pb-20 overflow-hidden hero-gradient">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center max-w-4xl mx-auto animate-on-load animate-fade-in-up">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 border border-brand-100 text-brand-600 text-sm font-semibold mb-6">
-                <span class="flex h-2 w-2 rounded-full bg-brand-500"></span>
-                By Edgardo de Real
-            </div>
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
                 El networking inmobiliario que <br />
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-teal-400">revoluciona la Riviera Maya.</span>
@@ -128,71 +139,87 @@
                 Plataforma interactiva para formar alianzas estratégicas y consultar nuestro portafolio disponible en Cancún y la Riviera Maya.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <button type="button" onclick="scrollToRINE()" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-full text-white bg-slate-900 hover:bg-slate-800 hover:shadow-xl hover:shadow-slate-900/20 transition-all active:scale-95 gap-2">
-                    Ver catálogo de la red <i class="ph-bold ph-arrow-right"></i>
-                </button>
-                <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20formar%20una%20alianza%20estrat%C3%A9gica%20o%20consultar%20tu%20portafolio." target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-slate-700 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all gap-2">
-                    <i class="ph-fill ph-whatsapp-logo text-brand-600 text-xl"></i> Hablar por WhatsApp
+                <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20formar%20una%20alianza%20estrat%C3%A9gica%20o%20consultar%20tu%20portafolio." target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-full text-white bg-slate-900 hover:bg-slate-800 hover:shadow-xl hover:shadow-slate-900/20 transition-all active:scale-95 gap-2">
+                    <i class="ph-bold ph-whatsapp-logo text-lg"></i> Hablar por WhatsApp
                 </a>
+                <button type="button" onclick="scrollToRINE()" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-slate-700 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all gap-2">
+                    Ver únicamente catálogo de la red <i class="ph-bold ph-arrow-right"></i>
+                </button>
             </div>
         </div>
     </div>
 </section>
 
+<!-- Carrusel Infinito Real (Ubicado entre el Header y las tarjetas) -->
+<section class="py-10 border-y border-slate-200/60 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 flex justify-between items-center">
+        <div>
+            <h2 class="text-xl font-bold text-slate-900">Propiedades destacadas (<span id="carrousell-count">0</span>)</h2>
+            <p class="text-slate-500 text-xs">Pasa el cursor para pausar el carrusel infinito.</p>
+        </div>
+    </div>
+    <div class="marquee w-full">
+        <div id="carrousell-container" class="marquee-track flex gap-4">
+            <!-- Se duplica mediante JS para lograr el efecto infinito impecable -->
+            <div class="text-slate-400 text-sm py-4 px-4">Cargando carrusel...</div>
+        </div>
+    </div>
+</section>
+
 <!-- Categorías (Tiles) -->
-<section class="py-24 bg-white relative">
+<section class="py-24 bg-slate-50 relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             
             <!-- Venta -->
-            <button type="button" onclick="openModal('modalVenta')" class="text-left bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
+            <button type="button" onclick="openModal('modalVenta')" class="text-left bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
                 <div class="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-600 transition-colors duration-300">
                     <i class="ph ph-house text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
                 </div>
                 <h4 class="text-xl font-bold text-slate-900 mb-3">Venta</h4>
                 <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Residencias, villas de lujo y departamentos en entrega inmediata con certeza jurídica.</p>
-                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-200/60">
+                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-100">
                     <span>Explorar (<span id="count-Venta">0</span>)</span>
                     <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </button>
             
             <!-- Renta -->
-            <button type="button" onclick="openModal('modalRenta')" class="text-left bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
+            <button type="button" onclick="openModal('modalRenta')" class="text-left bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
                 <div class="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-600 transition-colors duration-300">
                     <i class="ph ph-key text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
                 </div>
                 <h4 class="text-xl font-bold text-slate-900 mb-3">Renta Residencial</h4>
                 <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Opciones seleccionadas para renta a largo plazo en las ubicaciones más cotizadas.</p>
-                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-200/60">
+                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-100">
                     <span>Explorar (<span id="count-Renta">0</span>)</span>
                     <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </button>
 
             <!-- Lotes -->
-            <button type="button" onclick="openModal('modalLotes')" class="text-left bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
+            <button type="button" onclick="openModal('modalLotes')" class="text-left bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
                 <div class="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-600 transition-colors duration-300">
                     <i class="ph ph-map-trifold text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
                 </div>
                 <h4 class="text-xl font-bold text-slate-900 mb-3">Lotes & Macrolotes</h4>
                 <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Suelo estratégico escriturado desde 220 m² hasta macrolotes para desarrollo.</p>
-                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-200/60">
+                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-100">
                     <span>Explorar (<span id="count-Lotes">0</span>)</span>
                     <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </button>
 
             <!-- Networking (RINE) -->
-            <button type="button" id="card-rine" onclick="openModal('modalNetworking')" class="text-left bg-slate-50 rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full relative focus:outline-none focus:ring-2 focus:ring-brand-500">
+            <button type="button" id="card-rine" onclick="openModal('modalNetworking')" class="text-left bg-white rounded-2xl p-8 border border-brand-200 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full relative focus:outline-none focus:ring-2 focus:ring-brand-500">
                 <div class="absolute -top-3 -right-3 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md"><i class="ph-fill ph-star mr-1"></i>Top</div>
                 <div class="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-600 transition-colors duration-300">
                     <i class="ph ph-users-three text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
                 </div>
-                <h4 class="text-xl font-bold text-slate-900 mb-3">Red Networking</h4>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Encuentra la conexión perfecta que te ayude a concretar la operación que tienes en las manos.</p>
-                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-200/60">
-                    <span>Catálogo RINE (<span id="count-Networking">0</span>)</span>
+                <h4 class="text-xl font-bold text-slate-900 mb-3">Propiedades de la red de networking</h4>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Encuentra la propiedad perfecta de nuestra red de agentes que te ayudará a concretar la operación que tienes entre las manos.</p>
+                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-100">
+                    <span>Catalogo de la Red (<span id="count-Networking">0</span>)</span>
                     <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </button>
@@ -200,18 +227,54 @@
     </div>
 </section>
 
-<!-- Carrusel Destacadas -->
-<section class="py-16 border-t border-slate-100 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center md:text-left">
-        <h2 class="text-2xl font-bold text-slate-900 mb-2">Propiedades destacadas (<span id="carrousell-count">0</span>)</h2>
-        <p class="text-slate-500 text-sm">Se pausa al pasar el cursor. Toca una propiedad para ver su ficha.</p>
+<!-- Modal: Selector de Catálogos de Edgardo -->
+<div id="modalCatalogosEdgardo" class="modal-backdrop fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalCatalogosEdgardo')">
+  <div class="flex flex-col w-full max-w-xl bg-white rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up p-6">
+    <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+      <h3 class="text-xl font-bold text-slate-900">Catálogos de Edgardo de Real</h3>
+      <button type="button" onclick="closeModal('modalCatalogosEdgardo')" class="p-2 text-slate-400 hover:text-slate-700 rounded-lg"><i class="ph-bold ph-x text-xl"></i></button>
     </div>
-    <div class="marquee w-full">
-        <div id="carrousell-container" class="animate-marquee flex gap-4 w-max px-4">
-            <div class="text-slate-500 text-sm py-4">Cargando propiedades destacadas...</div>
+    <div class="grid grid-cols-1 gap-4">
+      <button type="button" onclick="closeModal('modalCatalogosEdgardo'); openModal('modalVenta');" class="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-brand-500 hover:bg-brand-50/50 transition-all text-left group">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center text-xl"><i class="ph-bold ph-house"></i></div>
+          <div><h4 class="font-bold text-slate-900 group-hover:text-brand-600">Propiedades en Venta</h4><p class="text-xs text-slate-500">Residencias y villas de lujo</p></div>
         </div>
+        <i class="ph-bold ph-arrow-right text-slate-400 group-hover:text-brand-600"></i>
+      </button>
+      <button type="button" onclick="closeModal('modalCatalogosEdgardo'); openModal('modalRenta');" class="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-brand-500 hover:bg-brand-50/50 transition-all text-left group">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center text-xl"><i class="ph-bold ph-key"></i></div>
+          <div><h4 class="font-bold text-slate-900 group-hover:text-brand-600">Renta Residencial</h4><p class="text-xs text-slate-500">Opciones a largo plazo</p></div>
+        </div>
+        <i class="ph-bold ph-arrow-right text-slate-400 group-hover:text-brand-600"></i>
+      </button>
+      <button type="button" onclick="closeModal('modalCatalogosEdgardo'); openModal('modalLotes');" class="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-brand-500 hover:bg-brand-50/50 transition-all text-left group">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center text-xl"><i class="ph-bold ph-map-trifold"></i></div>
+          <div><h4 class="font-bold text-slate-900 group-hover:text-brand-600">Lotes & Macrolotes</h4><p class="text-xs text-slate-500">Suelo estratégico</p></div>
+        </div>
+        <i class="ph-bold ph-arrow-right text-slate-400 group-hover:text-brand-600"></i>
+      </button>
     </div>
-</section>
+  </div>
+</div>
+
+<!-- Modal: Favoritos (Likes) -->
+<div id="modalFavoritos" class="modal-backdrop fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalFavoritos')">
+  <div class="flex flex-col w-full max-w-4xl h-[85vh] bg-white rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white">
+      <div class="flex items-center gap-2">
+        <i class="ph-fill ph-heart text-rose-500 text-2xl"></i>
+        <h3 class="text-xl font-bold text-slate-900">Mis Propiedades Favoritas</h3>
+      </div>
+      <button type="button" onclick="closeModal('modalFavoritos')" class="p-2 text-slate-400 hover:text-slate-700 rounded-lg"><i class="ph-bold ph-x text-xl"></i></button>
+    </div>
+    <div id="grid-favoritos" class="flex-1 overflow-y-auto p-6 bg-slate-50 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 custom-scrollbar">
+      <!-- Inyectado dinámicamente -->
+    </div>
+  </div>
+</div>
 
 <!-- Modal Detalle Único Ficha -->
 <div id="modalDetalleUnico" class="modal-backdrop fixed inset-0 z-[70] flex items-center justify-center p-4 md:p-6 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalDetalleUnico')">
@@ -237,7 +300,7 @@
                     </div>
                     <span class="font-bold text-xl text-white">RINE<span class="text-brand-500">Net</span></span>
                 </div>
-                <p class="text-slate-400 text-sm max-w-xs">El software inmobiliario que trabaja para ti. Diseñado para simplificar, optimizar y vender.</p>
+                <p class="text-slate-400 text-sm max-w-sm">La red de agentes inmobiliarios que está acelerando las conexiones en la Riviera Maya. Vende simple, seguro, y efectivo.</p>
             </div>
             
             <div class="text-left md:text-right">
@@ -250,7 +313,7 @@
             </div>
         </div>
         <div class="border-t border-slate-800 pt-8 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="text-slate-500 text-sm">© 2026 Red Inmobiliaria de Networking Estratégico. Todos los derechos reservados.</p>
+            <p class="text-slate-500 text-sm">© 2026 Red Inmobiliaria de Networking Estratégico. Todos los derechos reservados. | By Edgardo de Real</p>
         </div>
     </div>
 </footer>
@@ -259,7 +322,7 @@
 
 <!-- Generación Dinámica de Modales de Categoría -->
 <script>
-  function crearModalHTML(idModal, tituloModal, subtituloModal, esNetworking = false) {
+  function crearModalHTML(idModal, tituloModal, subtituloModal) {
     const pestana = idModal.replace('modal', '');
     return `
       <div id="${idModal}" class="modal-backdrop fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-6 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('${idModal}')">
@@ -321,10 +384,10 @@
   document.write(crearModalHTML('modalVenta', 'Propiedades en Venta', 'Catálogo Venta'));
   document.write(crearModalHTML('modalRenta', 'Renta Residencial', 'Catálogo Renta'));
   document.write(crearModalHTML('modalLotes', 'Lotes & Macrolotes', 'Suelo Estratégico'));
-  document.write(crearModalHTML('modalNetworking', 'Red Inmobiliaria RINE', 'Catálogo Networking', true));
+  document.write(crearModalHTML('modalNetworking', 'Propiedades de la red de networking', 'Catálogo de la Red'));
 </script>
 
-<!-- LÓGICA MOTOR (Sheets, Filtros, Renderizado, PDF) -->
+<!-- LÓGICA MOTOR (Sheets, Filtros, Renderizado, Likes, PDF) -->
 <script>
   const SHEET_ID = '192oLS5Pqh5IBrMYlp2RbE6ASol8BrHh9Naacegjzva8';
   const SHEETS_MAPPING = { 'Venta': 'Venta', 'Renta': 'Renta', 'Lotes': 'Lotes', 'Networking': 'red inmobiliaria de networking estrategico' };
@@ -336,17 +399,14 @@
   let carrousellOriginal = [];
 
   let fotoActualIndex = {};
+  let favoritosIds = JSON.parse(localStorage.getItem('rine_favoritos') || '[]');
   let ultimoFoco = null;
   let toastTimer = null;
 
-  // Interfaz de scroll header
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
-      if (window.scrollY > 10) {
-          navbar.classList.add('shadow-sm');
-      } else {
-          navbar.classList.remove('shadow-sm');
-      }
+      if (window.scrollY > 10) navbar.classList.add('shadow-sm');
+      else navbar.classList.remove('shadow-sm');
   });
 
   function mostrarToast(msg) {
@@ -376,6 +436,81 @@
     }
   }
 
+  function openModalCatalogosEdgardo() { openModal('modalCatalogosEdgardo'); }
+
+  function toggleFavorito(idPropiedad) {
+    const index = favoritosIds.indexOf(idPropiedad);
+    if (index > -1) {
+      favoritosIds.splice(index, 1);
+      mostrarToast('Propiedad eliminada de favoritos');
+    } else {
+      favoritosIds.push(idPropiedad);
+      mostrarToast('Propiedad guardada en favoritos');
+    }
+    localStorage.setItem('rine_favoritos', JSON.stringify(favoritosIds));
+    actualizarContadorLikes();
+    
+    // Actualizar grids abiertos si aplica
+    Object.keys(SHEETS_MAPPING).forEach(k => { if(document.getElementById(`modal${k}`) && !document.getElementById(`modal${k}`).classList.contains('hidden')) aplicarFiltros(k); });
+    if(!document.getElementById('modalFavoritos').classList.contains('hidden')) renderizarFavoritos();
+  }
+
+  function actualizarContadorLikes() {
+    const span = document.getElementById('contador-likes');
+    if(span) span.innerText = favoritosIds.length;
+  }
+
+  function openModalFavoritos() {
+    renderizarFavoritos();
+    openModal('modalFavoritos');
+  }
+
+  function renderizarFavoritos() {
+    const container = document.getElementById('grid-favoritos');
+    if(!container) return;
+
+    let todas = [];
+    Object.keys(catalogoOriginal).forEach(k => {
+      catalogoOriginal[k].forEach(item => {
+        const idUnico = item.id || item.titulo;
+        if(favoritosIds.includes(idUnico) && !todas.some(x => (x.id || x.titulo) === idUnico)) {
+          todas.push(item);
+        }
+      });
+    });
+
+    if(todas.length === 0) {
+      container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 bg-white rounded-2xl border border-slate-200"><i class="ph-bold ph-heart text-4xl text-rose-300 mb-3 block"></i><h3 class="text-lg font-bold text-slate-800">No tienes favoritos aún</h3><p>Da clic en el icono de corazón en cualquier propiedad para guardarla aquí.</p></div>`;
+      return;
+    }
+
+    container.innerHTML = todas.map((item, idx) => {
+      const fotos = extraerTodasLasFotos(item);
+      const precioVal = obtenerPrecioItem(item);
+      const ubic = item.ubicación || item.ubicacion || 'Cancún';
+      const idUnico = item.id || item.titulo;
+
+      return `
+      <article class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col">
+        <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden">
+          ${fotos[0] ? `<img src="${fotos[0]}" class="w-full h-full object-cover" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-4xl"></i></div>'}
+          <button type="button" onclick="toggleFavorito('${idUnico}')" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 text-rose-500 shadow flex items-center justify-center"><i class="ph-fill ph-heart text-xl"></i></button>
+        </div>
+        <div class="p-4 flex flex-col flex-grow">
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">${ubic}</p>
+          <h3 class="text-base font-bold text-slate-900 mb-1 line-clamp-1">${item.titulo}</h3>
+          <p class="text-lg font-extrabold text-brand-600 mb-3">${precioVal}</p>
+          <button type="button" onclick="closeModal('modalFavoritos'); abrirFichaDetallePorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="mt-auto py-2 px-4 rounded-lg bg-slate-100 text-slate-700 font-semibold text-xs hover:bg-slate-200">Ver ficha completa</button>
+        </div>
+      </article>`;
+    }).join('');
+  }
+
+  function abrirFichaDetallePorObjeto(item) {
+    // Buscar en que categoría recae o abrir directo
+    abrirFichaDetalleConItem(item);
+  }
+
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     const abiertos = document.querySelectorAll('.modal-backdrop:not(.hidden)');
@@ -396,9 +531,7 @@
     url = url.trim();
     if (url.includes('drive.google.com')) {
       const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-      if (match && match[1]) {
-        return `https://lh3.googleusercontent.com/d/${match[1]}`;
-      }
+      if (match && match[1]) return `https://lh3.googleusercontent.com/d/${match[1]}`;
     }
     return url;
   }
@@ -409,20 +542,13 @@
     for (const key in item) {
       const k = key.toLowerCase().trim();
       if (k.includes('precio') || k.includes('renta') || k.includes('costo') || k.includes('valor') || k.includes('monto')) {
-        if (item[key] && item[key].trim().length > 0) {
-          raw = item[key].trim();
-          break;
-        }
+        if (item[key] && item[key].trim().length > 0) { raw = item[key].trim(); break; }
       }
     }
     if (!raw) return 'Consultar';
     const num = raw.replace(/[^0-9.]/g, '');
-    if (num && !isNaN(num) && parseFloat(num) > 0) {
-      return `$${parseFloat(num).toLocaleString('es-MX')} MXN`;
-    }
-    if (!raw.toUpperCase().includes('MXN') && !raw.toUpperCase().includes('USD')) {
-      return `${raw} MXN`;
-    }
+    if (num && !isNaN(num) && parseFloat(num) > 0) return `$${parseFloat(num).toLocaleString('es-MX')} MXN`;
+    if (!raw.toUpperCase().includes('MXN') && !raw.toUpperCase().includes('USD')) return `${raw} MXN`;
     return raw;
   }
 
@@ -439,6 +565,7 @@
   window.addEventListener('DOMContentLoaded', () => {
     Object.keys(SHEETS_MAPPING).forEach(categoria => cargarDatosPestana(categoria));
     cargarCarrusel();
+    actualizarContadorLikes();
   });
 
   async function cargarCarrusel() {
@@ -462,7 +589,7 @@
         renderizarCarrusel(carrousellOriginal);
       }
     } catch (e) {
-      document.getElementById('carrousell-container').innerHTML = '<div class="text-slate-500 py-4">Error al cargar propiedades destacadas.</div>';
+      document.getElementById('carrousell-container').innerHTML = '<div class="text-slate-500 py-4 px-4">Error al cargar carrusel.</div>';
     }
   }
 
@@ -470,11 +597,11 @@
     const container = document.getElementById('carrousell-container');
     if (!container || items.length === 0) return;
 
-    const armar = (copia) => items.map((item, idx) => {
+    const armarCards = () => items.map((item, idx) => {
       const fotos = extraerTodasLasFotos(item);
       const precio = obtenerPrecioItem(item);
       return `
-        <button type="button" ${copia ? 'aria-hidden="true" tabindex="-1"' : ''} onclick="abrirFichaDetalle('Carrousell', ${idx})" class="flex items-center gap-4 p-3 bg-white border border-slate-200 rounded-xl hover:border-brand-500 hover:shadow-lg hover:shadow-brand-100/50 transition-all text-left w-[340px] flex-shrink-0 group">
+        <button type="button" onclick="abrirFichaDetallePorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="flex items-center gap-4 p-3 bg-white border border-slate-200 rounded-xl hover:border-brand-500 hover:shadow-lg transition-all text-left w-[340px] flex-shrink-0 group">
           <div class="w-24 h-24 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
             ${fotos[0] ? `<img src="${fotos[0]}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-2xl"></i></div>'}
           </div>
@@ -486,8 +613,8 @@
         </button>`;
     }).join('');
 
-    container.innerHTML = armar(false) + armar(true);
-    container.style.animationDuration = Math.max(30, items.length * 8) + 's';
+    // Duplicación perfecta para bucle infinito suave sin saltos
+    container.innerHTML = armarCards() + armarCards();
   }
 
   async function cargarDatosPestana(pestanaKey) {
@@ -575,7 +702,6 @@
     paginaActual[pestana] = Math.max(1, Math.min(totalPaginas, paginaActual[pestana] + delta));
     renderizarPagina(pestana);
     
-    // Auto scroll top
     const gridContainer = document.getElementById(`grid-${pestana}`)?.parentElement;
     if (gridContainer) gridContainer.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -605,11 +731,8 @@
     }
     
     document.querySelectorAll(`.dot-${cardKey}`).forEach((dot, idx) => {
-      if(idx === nuevoIndex) {
-        dot.classList.add('is-active');
-      } else {
-        dot.classList.remove('is-active');
-      }
+      if(idx === nuevoIndex) dot.classList.add('is-active');
+      else dot.classList.remove('is-active');
     });
   }
 
@@ -633,13 +756,16 @@
       const ubic = item.ubicación || item.ubicacion || 'Cancún';
       const precioVal = obtenerPrecioItem(item);
       const construccion = item.construcción || item.construccion;
+      const fechaPublicacion = item.fecha || item.publicacion || item.date || 'Reciente';
+      const idUnico = item.id || item.titulo;
+      const esFavorito = favoritosIds.includes(idUnico);
       
       let numTelefono = "529981550066";
       if (pestana === 'Networking' && (item.telefono || item.celular || item.whatsapp)) {
         numTelefono = (item.telefono || item.celular || item.whatsapp).replace(/[^0-9]/g, '');
         if (numTelefono.length === 10) numTelefono = "52" + numTelefono;
       }
-      const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad:\n\n*${item.titulo || 'Propiedad'}*\n📍 Ubicación: ${ubic}\n💰 Precio: ${precioVal}`);
+      const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad:\n\n*${item.titulo || 'Propiedad'}*\n Ubicación: ${ubic}\n Precio: ${precioVal}`);
 
       return `
       <article class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 transition-all duration-300 overflow-hidden flex flex-col group">
@@ -647,6 +773,10 @@
           ${fotos[0] ? `<img id="img-${cardKey}" src="${fotos[0]}" ${datasetFotosAttr} loading="lazy" alt="${item.titulo}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-4xl"></i></div>'}
           <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-brand-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">${item.estado || 'Disponible'}</span>
           
+          <button type="button" onclick="toggleFavorito('${idUnico}')" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur shadow flex items-center justify-center text-rose-500 hover:scale-110 transition-transform">
+            <i class="${esFavorito ? 'ph-fill ph-heart text-xl' : 'ph ph-heart text-xl'}"></i>
+          </button>
+
           ${fotos.length > 1 ? `
             <button type="button" aria-label="Anterior" onclick="navegarFotoManual('${cardKey}', -1,${fotos.length})" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-900/40 text-white flex items-center justify-center hover:bg-slate-900/80 transition-colors"><i class="ph-bold ph-caret-left"></i></button>
             <button type="button" aria-label="Siguiente" onclick="navegarFotoManual('${cardKey}', 1,${fotos.length})" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-900/40 text-white flex items-center justify-center hover:bg-slate-900/80 transition-colors"><i class="ph-bold ph-caret-right"></i></button>
@@ -657,7 +787,10 @@
         </div>
 
         <div class="p-5 flex flex-col flex-grow">
-          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1 truncate"><i class="ph-bold ph-map-pin mr-1"></i>${ubic}</p>
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
+            <span class="truncate"><i class="ph-bold ph-map-pin mr-1"></i>${ubic}</span>
+            <span><i class="ph-bold ph-calendar mr-1"></i>${fechaPublicacion}</span>
+          </div>
           <h3 class="text-lg font-bold text-slate-900 leading-tight mb-2 line-clamp-1" title="${item.titulo}">${item.titulo || 'Propiedad Exclusiva'}</h3>
           <p class="text-xl font-extrabold text-brand-600 mb-4">${precioVal}</p>
 
@@ -672,20 +805,17 @@
           ${pestana === 'Networking' && item.asesor ? `<p class="text-xs font-semibold text-slate-600 mb-4 py-2 px-3 bg-slate-50 rounded-lg border border-slate-100"><i class="ph-bold ph-user-circle mr-1 text-brand-500"></i> Asesor: ${item.asesor}</p>` : ''}
 
           <div class="mt-auto grid grid-cols-2 gap-2">
-            <button type="button" onclick="abrirFichaDetalle('${pestana}', ${realIndex})" class="col-span-2 py-2.5 px-4 rounded-lg bg-slate-100 text-slate-700 font-semibold text-sm hover:bg-slate-200 transition-colors">Ver ficha completa</button>
+            <button type="button" onclick="abrirFichaDetallePorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="col-span-2 py-2.5 px-4 rounded-lg bg-slate-100 text-slate-700 font-semibold text-sm hover:bg-slate-200 transition-colors">Ver ficha completa</button>
             <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="py-2 px-4 rounded-lg bg-brand-600 text-white font-semibold text-sm text-center hover:bg-brand-700 transition-colors flex items-center justify-center"><i class="ph-bold ph-whatsapp-logo mr-1"></i> Chat</a>
-            <button type="button" onclick="generarFichaPDF('${pestana}', ${realIndex})" class="py-2 px-4 rounded-lg border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-colors flex items-center justify-center"><i class="ph-bold ph-file-pdf mr-1"></i> PDF</button>
+            <button type="button" onclick="generarFichaPDFPorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="py-2 px-4 rounded-lg border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-colors flex items-center justify-center"><i class="ph-bold ph-file-pdf mr-1"></i> PDF</button>
           </div>
         </div>
       </article>`;
     }).join('');
   }
 
-  function abrirFichaDetalle(pestana, realIndex) {
-    const item = pestana === 'Carrousell' ? carrousellOriginal[realIndex] : catalogoOriginal[pestana][realIndex];
-    if (!item) return;
-
-    const modalKey = `modal-detail-${pestana}-${realIndex}`;
+  function abrirFichaDetalleConItem(item) {
+    const modalKey = `modal-detail-custom`;
     fotoActualIndex[modalKey] = 0;
 
     const fotos = extraerTodasLasFotos(item);
@@ -693,13 +823,14 @@
     
     const ubic = item.ubicación || item.ubicacion || 'Cancún';
     const precioVal = obtenerPrecioItem(item);
+    const fechaPublicacion = item.fecha || item.publicacion || item.date || 'Reciente';
     
     let numTelefono = "529981550066";
-    if (pestana === 'Networking' && (item.telefono || item.celular || item.whatsapp)) {
+    if (item.telefono || item.celular || item.whatsapp) {
       numTelefono = (item.telefono || item.celular || item.whatsapp).replace(/[^0-9]/g, '');
       if (numTelefono.length === 10) numTelefono = "52" + numTelefono;
     }
-    const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad:\n\n*${item.titulo || 'Propiedad'}*\n📍 Ubicación: ${ubic}\n💰 Precio: ${precioVal}`);
+    const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad:\n\n*${item.titulo || 'Propiedad'}*\n Ubicación: ${ubic}\n Precio: ${precioVal}`);
 
     document.getElementById('contenidoDetalleUnico').innerHTML = `
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
@@ -719,7 +850,7 @@
           ${fotos.length > 1 ? `
             <div class="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
               ${fotos.map((f, fIdx) => `
-                <button type="button" onclick="navegarFotoManual('${modalKey}', ${fIdx} - (fotoActualIndex['${modalKey}'] || 0), ${fotos.length})" class="flex-shrink-0 w-24 h-20 rounded-xl overflow-hidden border-2 border-transparent focus:border-brand-500 hover:opacity-80 transition-all bg-slate-100">
+                <button type="button" onclick="navegarFotoManual('${modalKey}', ${fIdx} - (fotoActualIndex['${modalKey}'] || 0), ${fotos.length})" class="flex-shrink-0 w-24 h-20 rounded-xl overflow-hidden border-2 border-transparent focus:border-brand-500 hover:opacity-85 transition-all bg-slate-100">
                   <img src="${f}" class="w-full h-full object-cover" loading="lazy" />
                 </button>
               `).join('')}
@@ -734,7 +865,8 @@
           </div>
 
           <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2 leading-tight">${item.titulo || 'Propiedad Exclusiva'}</h2>
-          <p class="text-3xl md:text-4xl font-extrabold text-brand-600 mb-8">${precioVal}</p>
+          <p class="text-3xl md:text-4xl font-extrabold text-brand-600 mb-2">${precioVal}</p>
+          <p class="text-xs text-slate-400 font-semibold mb-8"><i class="ph-bold ph-calendar mr-1"></i> Publicado: ${fechaPublicacion}</p>
 
           <div class="grid grid-cols-2 gap-6 py-6 border-y border-slate-200 mb-8">
             <div class="flex flex-col">
@@ -758,10 +890,10 @@
           </div>
 
           <div class="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="flex items-center justify-center gap-2 py-4 px-4 rounded-xl bg-brand-600 text-white font-bold hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-500/30 transition-all active:scale-95 text-lg">
+            <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="flex items-center justify-center gap-2 py-4 px-4 rounded-xl bg-brand-600 text-white font-bold hover:bg-brand-700 transition-all text-lg">
               <i class="ph-bold ph-whatsapp-logo text-2xl"></i> Solicitar Info
             </a>
-            <button type="button" onclick="generarFichaPDF('${pestana}', ${realIndex})" class="flex items-center justify-center gap-2 py-4 px-4 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:border-slate-300 hover:bg-slate-50 transition-all active:scale-95 text-lg">
+            <button type="button" onclick="generarFichaPDFPorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="flex items-center justify-center gap-2 py-4 px-4 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition-all text-lg">
               <i class="ph-bold ph-file-pdf text-2xl"></i> Descargar PDF
             </button>
           </div>
@@ -771,25 +903,23 @@
     openModal('modalDetalleUnico');
   }
 
-  async function generarFichaPDF(pestana, index) {
-    const item = pestana === 'Carrousell' ? carrousellOriginal[index] : catalogoOriginal[pestana][index];
+  // Generación de PDF con diseño ejecutivo superior y fotos garantizadas
+  async function generarFichaPDFPorObjeto(item) {
     if (!item) return;
-
-    mostrarToast('Generando presentación PDF. Por favor espera...');
+    mostrarToast('Generando presentación PDF ejecutiva con fotos. Por favor espera...');
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'mm', 'a4');
 
-    // Paleta alineada a Conekta Broker Pro (Teal/Dark)
-    const brandDark = [4, 47, 46];    // bg-brand-950
-    const brandMain = [13, 148, 136]; // bg-brand-600
-    const brandLight = [20, 184, 166]; // bg-brand-500
+    const brandDark = [4, 47, 46];
+    const brandMain = [13, 148, 136];
+    const brandLight = [20, 184, 166];
 
     const precioVal = obtenerPrecioItem(item);
 
-    // Encabezado
+    // Encabezado Premium
     doc.setFillColor(...brandDark);
-    doc.rect(0, 0, 210, 38, 'F');
+    doc.rect(0, 0, 210, 42, 'F');
 
     doc.setTextColor(...brandLight);
     doc.setFont('helvetica', 'bold');
@@ -797,36 +927,36 @@
     doc.text('EDGARDO DE REAL', 15, 18);
 
     doc.setFontSize(8);
-    doc.setTextColor(240, 253, 250); // brand-50
+    doc.setTextColor(240, 253, 250);
     doc.text('RED INMOBILIARIA DE NETWORKING ESTRATEGICO', 15, 26);
     doc.text('FICHA TECNICA EJECUTIVA', 140, 26);
+    doc.text(`Publicación: ${item.fecha || item.publicacion || 'Reciente'}`, 140, 32);
 
     // Cuerpo Principal
     doc.setTextColor(...brandDark);
     doc.setFontSize(14);
-    doc.text(item.titulo || 'Propiedad Exclusiva', 15, 50);
+    doc.text(item.titulo || 'Propiedad Exclusiva', 15, 54);
 
     doc.setFontSize(10);
-    doc.setTextColor(71, 85, 105); // slate-600
-    doc.text(`Ubicación: ${item.ubicación || item.ubicacion || 'Cancún, Q. Roo'}`, 15, 59);
-    doc.setTextColor(...brandMain);
-    doc.text(`Precio: ${precioVal}`, 15, 66);
     doc.setTextColor(71, 85, 105);
-    doc.text(`Terreno: ${item.terreno || 'N/A'}  |  Construcción: ${item.construcción || item.construccion || 'N/A'}`, 15, 73);
+    doc.text(`Ubicación: ${item.ubicación || item.ubicacion || 'Cancún, Q. Roo'}`, 15, 63);
+    doc.setTextColor(...brandMain);
+    doc.text(`Precio: ${precioVal}`, 15, 70);
+    doc.setTextColor(71, 85, 105);
+    doc.text(`Terreno: ${item.terreno || 'N/A'}  |  Construcción: ${item.construcción || item.construccion || 'N/A'}`, 15, 77);
 
-    // Línea separadora
     doc.setDrawColor(...brandLight);
     doc.setLineWidth(0.5);
-    doc.line(15, 79, 195, 79);
+    doc.line(15, 83, 195, 83);
 
     // Descripción
     doc.setFontSize(9);
-    doc.setTextColor(51, 65, 85); // slate-700
+    doc.setTextColor(51, 65, 85);
     doc.setFont('helvetica', 'normal');
     const descLines = doc.splitTextToSize(item.descripción || item.descripcion || 'Propiedad verificada en RINE.', 180);
-    doc.text(descLines, 15, 87);
+    doc.text(descLines, 15, 91);
 
-    // Fotos
+    // Fotografías en PDF
     const fotos = extraerTodasLasFotos(item);
     if (fotos.length > 0) {
       doc.addPage();
@@ -863,12 +993,11 @@
             else { xPos = 15; yPos += imgHeight + 10; }
           }
         } catch (err) {
-          console.log(`Error procesando foto ${i + 1}`);
+          console.log(`Error procesando foto ${i + 1} para PDF`);
         }
       }
     }
 
-    // Pie de página en todas las hojas
     const totalPages = doc.internal.getNumberOfPages();
     for (let p = 1; p <= totalPages; p++) {
       doc.setPage(p);
@@ -888,7 +1017,7 @@
 
     const filename = `Ficha_${(item.titulo || 'Propiedad').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
     doc.save(filename);
-    mostrarToast('✅ ¡Descarga completada con éxito!');
+    mostrarToast('¡PDF ejecutivo descargado con éxito!');
   }
 
   function cargarImagenBase64(url) {
