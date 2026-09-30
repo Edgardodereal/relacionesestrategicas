@@ -1,325 +1,316 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Red Inmobiliaria de Networking Estratégico — By Edgardo de Real</title>
-<meta name="description" content="Portal interactivo para alianzas estratégicas y catálogo filtrable en Venta, Renta, Lotes y Red Inmobiliaria.">
-<meta name="theme-color" content="#FAF7F2">
-
-<!-- Google Fonts & Tailwind CSS -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-
-<!-- jsPDF para generación de Fichas Técnicas PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          paper: '#FAF7F2',
-          papercard: '#FFFFFF',
-          wine: '#4A121A',
-          winemuted: '#7A2E3B',
-          coppergold: '#C59B63',
-          copperlight: '#E8D5B7',
-          royalgreen: '#123829',
-          royalgreenlight: '#1B4D3E',
-          softgray: '#EFEBE4',
-        },
-        fontFamily: {
-          display: ['Fraunces', 'Georgia', 'serif'],
-          sans: ['Manrope', '-apple-system', 'sans-serif'],
-        },
-      },
-    },
-  };
-</script>
-
-<style>
-  :root {
-    --paper:#FAF7F2; --papercard:#FFFFFF; --wine:#4A121A; --winemuted:#7A2E3B;
-    --coppergold:#C59B63; --copperlight:#E8D5B7; --royalgreen:#123829; --softgray:#EFEBE4;
-  }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--paper);
-    color: var(--wine);
-    font-family: 'Manrope', -apple-system, sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-  h1,h2,h3,h4,.font-display { font-family: 'Fraunces', 'Georgia', serif; }
-  
-  .hairline { border-color: rgba(197, 155, 99, 0.25); }
-
-  .btn-green {
-    background: var(--royalgreen);
-    color: #FAF7F2;
-    font-weight: 700;
-    transition: all 0.3s ease;
-  }
-  .btn-green:hover {
-    background: #1B4D3E;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(18, 56, 41, 0.25);
-  }
-
-  .card-bright {
-    background: #FFFFFF;
-    border: 1px solid rgba(197, 155, 99, 0.25);
-    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .card-bright:hover {
-    transform: translateY(-5px);
-    border-color: #C59B63;
-    box-shadow: 0 18px 36px rgba(74, 18, 26, 0.18);
-  }
-
-  .modal-backdrop {
-    background: rgba(74, 18, 26, 0.65);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  .filter-input {
-    background: #FFFFFF;
-    border: 1px solid rgba(197, 155, 99, 0.3);
-    color: #4A121A;
-    font-size: 0.75rem;
-    padding: 0.45rem 0.65rem;
-    border-radius: 0.375rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .filter-input:focus {
-    border-color: #123829;
-  }
-
-  @keyframes marquee {
-    0% { transform: translateX(0%); }
-    100% { transform: translateX(-50%); }
-  }
-  .animate-marquee {
-    display: flex;
-    width: max-content;
-    animation: marquee 30s linear infinite;
-  }
-  .animate-marquee:hover {
-    animation-play-state: paused;
-  }
-
-  .rine-highlight {
-    animation: pulseGlow 1.5s ease-in-out 2;
-  }
-  @keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 0 rgba(197, 155, 99, 0); }
-    50% { box-shadow: 0 0 25px rgba(197, 155, 99, 0.6); border-color: #C59B63; }
-  }
-
-  .modal-scroll::-webkit-scrollbar { width: 6px; }
-  .modal-scroll::-webkit-scrollbar-track { background: #FAF7F2; }
-  .modal-scroll::-webkit-scrollbar-thumb { background: #C59B63; border-radius: 3px; }
-</style>
-</head>
-
-<body class="antialiased min-h-screen flex flex-col justify-between relative overflow-x-hidden">
-
-<!-- HEADER PRINCIPAL -->
-<header class="border-b hairline bg-paper/90 sticky top-0 z-40 backdrop-blur-md">
-  <div class="max-w-7xl mx-auto px-6 py-3 flex flex-wrap justify-between items-center gap-4">
-    <div class="flex flex-col">
-      <span class="font-display text-lg sm:text-xl text-wine font-bold tracking-wide">Red Inmobiliaria de Networking Estratégico</span>
-      <span class="text-[9px] tracking-[0.24em] text-coppergold uppercase font-extrabold">By Edgardo de Real</span>
-    </div>
-    <div class="flex items-center gap-3">
-      <button onclick="scrollToRINE()" class="text-[11px] leading-tight text-left text-wine bg-copperlight/40 border border-coppergold/50 px-3 py-1.5 rounded-lg hover:bg-copperlight/80 transition-all font-bold flex items-center gap-1.5">
-        <span>✨</span>
-        <span>
-          Catálogo Red Inmobiliaria<br>
-          <span class="text-[9px] text-coppergold font-black">de Networking Estratégico</span>
-        </span>
-      </button>
-
-      <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20formar%20una%20alianza%20estrat%C3%A9gica%20o%20consultar%20tu%20portafolio." target="_blank" class="hidden sm:inline-flex items-center gap-2 text-xs text-wine font-bold border border-coppergold/50 px-4 py-2 rounded-lg hover:bg-copperlight/30 transition-colors">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-royalgreen"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.1-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.3c-.22.62-1.28 1.2-1.77 1.24-.45.04-.94.23-3.17-.66-2.68-1.07-4.4-3.8-4.53-3.98-.13-.18-1.08-1.44-1.08-2.74 0-1.3.68-1.94.92-2.2.24-.26.53-.33.7-.33h.5c.16 0 .38-.06.6.46.22.53.75 1.83.82 1.96.06.13.1.29.02.47-.08.18-.13.29-.26.44-.13.16-.27.35-.39.47-.13.13-.27.27-.11.53.15.26.68 1.12 1.47 1.82 1.01.9 1.86 1.18 2.12 1.31.26.13.42.11.57-.06.15-.18.65-.76.83-1.02.18-.26.35-.21.6-.13.24.09 1.55.73 1.82.86.26.13.44.2.5.31.06.13.06.72-.16 1.35z"/></svg>
-        Contacto Directo
-      </a>
-    </div>
-  </div>
-</header>
-
-<!-- INTRODUCCIÓN Y CARRUSEL PRINCIPAL -->
-<main class="flex-1 max-w-7xl mx-auto px-6 py-10 sm:py-14 w-full relative z-10">
-  <div class="max-w-3xl mb-10">
-    <h1 class="font-display font-light text-3xl sm:text-5xl leading-tight text-wine font-semibold">
-      Ahora formas parte de la red de networking inmobiliario que va a revolucionar la Riviera Maya.
-    </h1>
-    <p class="mt-6 text-winemuted text-base leading-relaxed font-medium">
-      Esta plataforma simplifica la consulta de nuestro portafolio disponible en Cancún y la Riviera Maya.
-    </p>
-  </div>
-
-  <section class="mb-12">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="font-display text-xl sm:text-2xl text-wine font-bold flex items-center gap-2">
-        <span>⭐</span> Propiedades Destacadas (<span id="carrousell-count">0</span>)
-      </h2>
-      <span class="text-xs text-coppergold font-mono uppercase font-bold tracking-wider">Pausa al pasar mouse &bull; Clic para ver ficha</span>
-    </div>
-    <div class="overflow-hidden relative w-full bg-papercard border hairline rounded-2xl p-4 shadow-sm">
-      <div id="carrousell-container" class="animate-marquee gap-6">
-        <div class="text-xs text-winemuted py-6 text-center w-full">Cargando propiedades del carrusel...</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TARJETAS DE CATEGORÍA -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Conekta Broker Pro & RINE | Red Inmobiliaria</title>
+    <meta name="description" content="Red Inmobiliaria de Networking Estratégico. Catálogo filtrable en Venta, Renta, Lotes.">
+    <meta name="theme-color" content="#f8fafc">
     
-    <button onclick="openModal('modalVenta')" class="card-bright text-left p-6 rounded-2xl flex flex-col justify-between h-72 group relative overflow-hidden shadow-sm">
-      <img src="https://lh3.googleusercontent.com/d/1F9aLMGGRxu_SeVf8Brryxx0QczvDYP6j" alt="Venta" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-      <div class="absolute inset-0 bg-wine/85"></div>
-      
-      <div class="relative z-10">
-        <h2 class="font-display text-2xl text-white font-extrabold group-hover:text-copperlight transition-colors mt-2 tracking-wide">Propiedades en Venta</h2>
-        <p class="text-xs text-white/95 font-medium mt-3 line-clamp-3 leading-relaxed">Residencias, villas de lujo y departamentos en entrega inmediata con certeza jurídica.</p>
-      </div>
-      <div class="relative z-10 flex justify-between items-center mt-6 pt-4 border-t border-white/30 w-full">
-        <span class="text-[11px] text-copperlight font-extrabold uppercase tracking-widest">Explorar (<span id="count-Venta">0</span>)</span>
-        <span class="text-copperlight group-hover:translate-x-1 transition-transform font-bold text-lg">→</span>
-      </div>
-    </button>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 
+                            500: '#14b8a6', 600: '#0d9488', 700: '#0f766e', 
+                            900: '#134e4a', 950: '#042f2e'
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: 0, transform: 'translateY(20px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* UI Premium */
+        .glass-nav { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); 
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05); 
+        }
+        .hero-gradient { 
+            background: radial-gradient(circle at top right, rgba(20, 184, 166, 0.1), transparent 40%), 
+                        radial-gradient(circle at bottom left, rgba(20, 184, 166, 0.05), transparent 40%); 
+        }
+        .animate-on-load { opacity: 0; }
+        .delay-200 { animation-delay: 200ms; }
+        
+        /* Marquee */
+        .marquee { overflow: hidden; position: relative; -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); }
+        .animate-marquee { animation: marquee 40s linear infinite; }
+        .marquee:hover .animate-marquee { animation-play-state: paused; }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 0.5rem)); } }
+        
+        /* Scrolls & Utilities */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb { background: #94a3b8; }
+        
+        /* Carousel Dots */
+        .dot-indicator { height: 6px; width: 6px; border-radius: 999px; background: rgba(255,255,255,0.7); transition: all 0.3s ease; }
+        .dot-indicator.is-active { width: 18px; background: #14b8a6; }
+        
+        /* RINE Highlight */
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(20, 184, 166, 0); } 50% { box-shadow: 0 0 0 8px rgba(20, 184, 166, 0.3); border-color: #14b8a6; } }
+        .rine-highlight { animation: pulseGlow 1.5s ease-in-out 2; border-color: #14b8a6 !important; }
+        
+        /* Toast */
+        .toast-msg { position: fixed; left: 50%; bottom: 2rem; z-index: 100; transform: translate(-50%, 20px); max-width: calc(100% - 32px); padding: 12px 24px; border-radius: 8px; background: #042f2e; color: #fff; font-size: 14px; font-weight: 600; box-shadow: 0 10px 25px rgba(0,0,0,0.2); opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .toast-msg.show { opacity: 1; transform: translate(-50%, 0); }
+    </style>
+</head>
+<body class="font-sans text-slate-800 antialiased bg-slate-50 selection:bg-brand-500 selection:text-white">
 
-    <button onclick="openModal('modalRenta')" class="card-bright text-left p-6 rounded-2xl flex flex-col justify-between h-72 group relative overflow-hidden shadow-sm">
-      <img src="https://lh3.googleusercontent.com/d/1my0zIdo1prc-2joOwGBOK6EnSsQztlKc" alt="Renta" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-      <div class="absolute inset-0 bg-wine/85"></div>
+<!-- Navegación -->
+<nav class="fixed w-full top-0 z-50 glass-nav transition-all duration-300" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white">
+                    <i class="ph-bold ph-buildings text-xl"></i>
+                </div>
+                <span class="font-bold text-xl tracking-tight text-slate-900">RINE<span class="text-brand-600">Net</span></span>
+            </div>
 
-      <div class="relative z-10">
-        <h2 class="font-display text-2xl text-white font-extrabold group-hover:text-copperlight transition-colors mt-2 tracking-wide">Propiedades Residenciales en Renta</h2>
-        <p class="text-xs text-white/95 font-medium mt-3 line-clamp-3 leading-relaxed">Opciones seleccionadas para renta residencial a largo plazo en las ubicaciones más cotizadas.</p>
-      </div>
-      <div class="relative z-10 flex justify-between items-center mt-6 pt-4 border-t border-white/30 w-full">
-        <span class="text-[11px] text-copperlight font-extrabold uppercase tracking-widest">Explorar (<span id="count-Renta">0</span>)</span>
-        <span class="text-copperlight group-hover:translate-x-1 transition-transform font-bold text-lg">→</span>
-      </div>
-    </button>
-
-    <button onclick="openModal('modalLotes')" class="card-bright text-left p-6 rounded-2xl flex flex-col justify-between h-72 group relative overflow-hidden shadow-sm">
-      <img src="https://lh3.googleusercontent.com/d/1f0w5K-uq1GFY_jByHfHPREDK5trY63CJ" alt="Lotes" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-      <div class="absolute inset-0 bg-wine/85"></div>
-
-      <div class="relative z-10">
-        <h2 class="font-display text-2xl text-white font-extrabold group-hover:text-copperlight transition-colors mt-2 tracking-wide">Lotes &amp; Macrolotes</h2>
-        <p class="text-xs text-white/95 font-medium mt-3 line-clamp-3 leading-relaxed">Suelo estratégico escriturado desde 220 m² hasta macrolotes para desarrollo.</p>
-      </div>
-      <div class="relative z-10 flex justify-between items-center mt-6 pt-4 border-t border-white/30 w-full">
-        <span class="text-[11px] text-copperlight font-extrabold uppercase tracking-widest">Explorar (<span id="count-Lotes">0</span>)</span>
-        <span class="text-copperlight group-hover:translate-x-1 transition-transform font-bold text-lg">→</span>
-      </div>
-    </button>
-
-    <button id="card-rine" onclick="openModal('modalNetworking')" class="card-bright text-left p-6 rounded-2xl border-2 border-coppergold/40 flex flex-col justify-between h-72 group relative overflow-hidden shadow-sm">
-      <img src="https://lh3.googleusercontent.com/d/13nb5yNvuDbdDDoN8AsnCM4DXcF1xI35_" alt="RINE" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-      <div class="absolute inset-0 bg-royalgreen/90"></div>
-
-      <div class="relative z-10">
-        <h2 class="font-display text-2xl text-white font-extrabold group-hover:text-copperlight transition-colors mt-2 tracking-wide">Red Inmobiliaria de Networking Estratégico</h2>
-        <p class="text-xs text-white/95 font-medium mt-3 line-clamp-3 leading-relaxed">Encuentra la conexión perfecta que te ayude a concretar la operación que tienes en las manos.</p>
-      </div>
-      <div class="relative z-10 flex justify-between items-center mt-6 pt-4 border-t border-white/30 w-full">
-        <span class="text-[11px] text-copperlight font-extrabold uppercase tracking-widest">Catálogo RINE (<span id="count-Networking">0</span>)</span>
-        <span class="text-copperlight group-hover:translate-x-1 transition-transform font-bold text-lg">→</span>
-      </div>
-    </button>
-
-  </div>
-</main>
-
-<!-- MODAL INDIVIDUAL DESPLEGADO -->
-<div id="modalDetalleUnico" class="fixed inset-0 z-[60] modal-backdrop hidden flex items-center justify-center p-3 md:p-6">
-  <div class="bg-papercard border hairline w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl shadow-2xl relative overflow-hidden">
-    <div class="p-4 border-b hairline flex justify-between items-center bg-paper">
-      <span class="text-xs font-mono text-coppergold font-bold uppercase">Ficha Técnica Detallada</span>
-      <button onclick="closeModal('modalDetalleUnico')" class="text-wine border border-coppergold/40 text-xs px-2.5 py-1 rounded-lg font-extrabold hover:bg-copperlight/30">✕ Cerrar</button>
+            <!-- Links Desktop -->
+            <div class="hidden md:flex space-x-6 items-center">
+                <button type="button" onclick="scrollToRINE()" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Catálogo Inmobiliario</button>
+                <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20formar%20una%20alianza%20estrat%C3%A9gica%20o%20consultar%20tu%20portafolio." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-brand-600 hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-500/30 transition-all active:scale-95 gap-2">
+                    <i class="ph-bold ph-whatsapp-logo text-lg"></i> Contacto Directo
+                </a>
+            </div>
+        </div>
     </div>
-    <div id="contenidoDetalleUnico" class="p-6 overflow-y-auto modal-scroll"></div>
+</nav>
+
+<!-- Hero Section -->
+<section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden hero-gradient">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center max-w-4xl mx-auto animate-on-load animate-fade-in-up">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 border border-brand-100 text-brand-600 text-sm font-semibold mb-6">
+                <span class="flex h-2 w-2 rounded-full bg-brand-500"></span>
+                By Edgardo de Real
+            </div>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
+                El networking inmobiliario que <br />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-teal-400">revoluciona la Riviera Maya.</span>
+            </h1>
+            <p class="mt-4 text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Plataforma interactiva para formar alianzas estratégicas y consultar nuestro portafolio disponible en Cancún y la Riviera Maya.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button type="button" onclick="scrollToRINE()" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-full text-white bg-slate-900 hover:bg-slate-800 hover:shadow-xl hover:shadow-slate-900/20 transition-all active:scale-95 gap-2">
+                    Ver catálogo de la red <i class="ph-bold ph-arrow-right"></i>
+                </button>
+                <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20formar%20una%20alianza%20estrat%C3%A9gica%20o%20consultar%20tu%20portafolio." target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-slate-700 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all gap-2">
+                    <i class="ph-fill ph-whatsapp-logo text-brand-600 text-xl"></i> Hablar por WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categorías (Tiles) -->
+<section class="py-24 bg-white relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Venta -->
+            <button type="button" onclick="openModal('modalVenta')" class="text-left bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <div class="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-600 transition-colors duration-300">
+                    <i class="ph ph-house text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-xl font-bold text-slate-900 mb-3">Venta</h4>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Residencias, villas de lujo y departamentos en entrega inmediata con certeza jurídica.</p>
+                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-200/60">
+                    <span>Explorar (<span id="count-Venta">0</span>)</span>
+                    <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </button>
+            
+            <!-- Renta -->
+            <button type="button" onclick="openModal('modalRenta')" class="text-left bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <div class="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-600 transition-colors duration-300">
+                    <i class="ph ph-key text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-xl font-bold text-slate-900 mb-3">Renta Residencial</h4>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Opciones seleccionadas para renta a largo plazo en las ubicaciones más cotizadas.</p>
+                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-200/60">
+                    <span>Explorar (<span id="count-Renta">0</span>)</span>
+                    <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </button>
+
+            <!-- Lotes -->
+            <button type="button" onclick="openModal('modalLotes')" class="text-left bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <div class="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-600 transition-colors duration-300">
+                    <i class="ph ph-map-trifold text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-xl font-bold text-slate-900 mb-3">Lotes & Macrolotes</h4>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Suelo estratégico escriturado desde 220 m² hasta macrolotes para desarrollo.</p>
+                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-200/60">
+                    <span>Explorar (<span id="count-Lotes">0</span>)</span>
+                    <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </button>
+
+            <!-- Networking (RINE) -->
+            <button type="button" id="card-rine" onclick="openModal('modalNetworking')" class="text-left bg-slate-50 rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full relative focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <div class="absolute -top-3 -right-3 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md"><i class="ph-fill ph-star mr-1"></i>Top</div>
+                <div class="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-600 transition-colors duration-300">
+                    <i class="ph ph-users-three text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-xl font-bold text-slate-900 mb-3">Red Networking</h4>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Encuentra la conexión perfecta que te ayude a concretar la operación que tienes en las manos.</p>
+                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-200/60">
+                    <span>Catálogo RINE (<span id="count-Networking">0</span>)</span>
+                    <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Carrusel Destacadas -->
+<section class="py-16 border-t border-slate-100 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center md:text-left">
+        <h2 class="text-2xl font-bold text-slate-900 mb-2">Propiedades destacadas (<span id="carrousell-count">0</span>)</h2>
+        <p class="text-slate-500 text-sm">Se pausa al pasar el cursor. Toca una propiedad para ver su ficha.</p>
+    </div>
+    <div class="marquee w-full">
+        <div id="carrousell-container" class="animate-marquee flex gap-4 w-max px-4">
+            <div class="text-slate-500 text-sm py-4">Cargando propiedades destacadas...</div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal Detalle Único Ficha -->
+<div id="modalDetalleUnico" class="modal-backdrop fixed inset-0 z-[70] flex items-center justify-center p-4 md:p-6 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalDetalleUnico')">
+  <div class="flex flex-col w-full max-w-5xl h-full max-h-[92vh] bg-white rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white flex-shrink-0">
+      <h2 class="text-brand-600 text-xs font-bold uppercase tracking-wider">Ficha técnica detallada</h2>
+      <button type="button" class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors close" onclick="closeModal('modalDetalleUnico')">
+        <i class="ph-bold ph-x text-xl"></i>
+      </button>
+    </div>
+    <div id="contenidoDetalleUnico" class="flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50/50 custom-scrollbar"></div>
   </div>
 </div>
 
-<!-- FOOTER -->
-<footer class="border-t hairline py-8 bg-papercard mt-12">
-  <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center text-xs text-winemuted gap-4">
-    <div>
-      <span class="font-display text-wine font-bold">Edgardo de Real</span> — Cancún, Quintana Roo.
+<!-- Footer -->
+<footer class="bg-slate-900 pt-16 pb-8 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
+            <div class="col-span-1">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-white">
+                        <i class="ph-bold ph-buildings text-xl"></i>
+                    </div>
+                    <span class="font-bold text-xl text-white">RINE<span class="text-brand-500">Net</span></span>
+                </div>
+                <p class="text-slate-400 text-sm max-w-xs">El software inmobiliario que trabaja para ti. Diseñado para simplificar, optimizar y vender.</p>
+            </div>
+            
+            <div class="text-left md:text-right">
+                <h4 class="text-white font-bold text-lg mb-2">Edgardo de Real</h4>
+                <p class="text-slate-400 text-sm mb-4">Cancún, Quintana Roo.</p>
+                <div class="flex gap-4 md:justify-end">
+                    <a href="https://www.instagram.com/edgardodereal_/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition-colors" aria-label="Instagram"><i class="ph-fill ph-instagram-logo text-2xl"></i></a>
+                    <a href="https://gruposalo.com" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition-colors" aria-label="Grupo Salo"><i class="ph-fill ph-globe text-2xl"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-slate-800 pt-8 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-slate-500 text-sm">© 2026 Red Inmobiliaria de Networking Estratégico. Todos los derechos reservados.</p>
+        </div>
     </div>
-    <div class="flex gap-6 font-bold">
-      <a href="https://www.instagram.com/edgardodereal_/" target="_blank" class="hover:text-coppergold transition-colors">@edgardodereal_</a>
-      <a href="https://gruposalo.com" target="_blank" class="hover:text-coppergold transition-colors">Grupo Salo Inmobiliario</a>
-    </div>
-  </div>
 </footer>
 
-<!-- MODALES DE CATEGORÍA -->
+<div id="toast" class="toast-msg" role="status" aria-live="polite"></div>
+
+<!-- Generación Dinámica de Modales de Categoría -->
 <script>
   function crearModalHTML(idModal, tituloModal, subtituloModal, esNetworking = false) {
     const pestana = idModal.replace('modal', '');
     return `
-      <div id="${idModal}" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-3 md:p-6">
-        <div class="bg-papercard border hairline w-full max-w-6xl max-h-[92vh] flex flex-col rounded-2xl shadow-2xl relative overflow-hidden">
+      <div id="${idModal}" class="modal-backdrop fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-6 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('${idModal}')">
+        <div class="flex flex-col w-full max-w-7xl h-full max-h-[92vh] bg-white rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
           
-          <div class="p-5 border-b hairline flex justify-between items-center bg-paper">
+          <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white flex-shrink-0">
             <div>
-              <span class="text-[10px] text-coppergold font-mono tracking-widest uppercase font-bold">${subtituloModal}</span>
-              <h2 class="font-display text-xl sm:text-2xl text-wine font-bold">${tituloModal}</h2>
+              <span class="text-brand-600 text-xs font-bold uppercase tracking-wider">${subtituloModal}</span>
+              <h2 class="text-2xl font-bold text-slate-900">${tituloModal}</h2>
             </div>
+            <button type="button" onclick="closeModal('${idModal}')" class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors close">
+              <i class="ph-bold ph-x text-xl"></i>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 p-4 bg-slate-50 border-b border-slate-100 flex-shrink-0">
+            <div class="lg:col-span-2 relative">
+              <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              <input type="search" id="search-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Buscar por nombre o zona" class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 outline-none text-sm transition-all" autocomplete="off" />
+            </div>
+            <select id="tipo-${pestana}" onchange="aplicarFiltros('${pestana}')" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 text-sm outline-none bg-white cursor-pointer transition-all">
+                <option value="">Todos los tipos</option>
+                <option value="Casa">Casas / Villas</option>
+                <option value="Departamento">Departamentos</option>
+                <option value="Terreno">Lotes / Terrenos</option>
+                <option value="Bodega">Bodegas</option>
+            </select>
+            <input type="number" id="precioMin-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Precio mín. ($)" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 text-sm outline-none transition-all" />
+            <input type="number" id="precioMax-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Precio máx. ($)" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 text-sm outline-none transition-all" />
+            <select id="orden-${pestana}" onchange="aplicarFiltros('${pestana}')" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 text-sm outline-none bg-white cursor-pointer transition-all">
+                <option value="recientes">Predeterminado</option>
+                <option value="precio-desc">Mayor precio</option>
+                <option value="precio-asc">Menor precio</option>
+                <option value="m2-desc">Mayor M²</option>
+            </select>
+          </div>
+
+          <div class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50/50 custom-scrollbar">
+            <div id="grid-${pestana}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="col-span-full text-center py-10 text-slate-500">
+                    <i class="ph-bold ph-spinner animate-spin text-4xl mb-3 text-brand-500 inline-block"></i><br>Cargando propiedades...
+                </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center justify-between px-6 py-4 border-t border-slate-100 bg-white gap-4 flex-shrink-0">
+            <span id="info-paginacion-${pestana}" class="text-sm text-slate-500 font-medium">Mostrando 0 propiedades</span>
             <div class="flex items-center gap-2">
-              <button onclick="closeModal('${idModal}')" class="text-wine hover:text-royalgreen text-xs flex items-center gap-1.5 border border-coppergold/40 px-3 py-1.5 rounded-lg transition-colors bg-papercard font-bold">
-                ✕ Volver al menú
-              </button>
-            </div>
-          </div>
-
-          <div class="p-4 bg-paper border-b hairline grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-            <input type="text" id="search-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="🔍 Buscar nombre/zona..." class="filter-input col-span-2 sm:col-span-1" />
-
-            <select id="tipo-${pestana}" onchange="aplicarFiltros('${pestana}')" class="filter-input">
-              <option value="">Todos los tipos</option>
-              <option value="Casa">Casas / Villas</option>
-              <option value="Departamento">Departamentos</option>
-              <option value="Terreno">Lotes / Terrenos</option>
-              <option value="Bodega">Bodegas</option>
-            </select>
-
-            <input type="number" id="precioMin-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Precio Mín ($)" class="filter-input" />
-            <input type="number" id="precioMax-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Precio Máx ($)" class="filter-input" />
-            <input type="number" id="m2Min-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="M² Terreno Mín" class="filter-input" />
-
-            <select id="orden-${pestana}" onchange="aplicarFiltros('${pestana}')" class="filter-input border-coppergold text-wine font-bold">
-              <option value="recientes">Ordenar: Predeterminado</option>
-              <option value="precio-desc">Precio: Mayor a Menor</option>
-              <option value="precio-asc">Precio: Menor a Mayor</option>
-              <option value="m2-desc">M²: Mayor a Menor</option>
-            </select>
-          </div>
-
-          <div class="p-5 overflow-y-auto modal-scroll flex-1 bg-paper/50 flex flex-col justify-between">
-            <div id="grid-${pestana}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-            <div class="mt-6 pt-4 border-t hairline flex justify-between items-center text-xs">
-              <span id="info-paginacion-${pestana}" class="text-winemuted font-semibold">Mostrando 0 propiedades</span>
-              <div class="flex items-center gap-2">
-                <button id="btn-prev-${pestana}" onclick="cambiarPagina('${pestana}', -1)" class="px-3 py-1.5 border border-coppergold/40 rounded-lg bg-papercard text-wine font-extrabold disabled:opacity-30">
-                  ← Anterior
-                </button>
-                <span id="num-pagina-${pestana}" class="font-extrabold text-wine px-2">1</span>
-                <button id="btn-next-${pestana}" onclick="cambiarPagina('${pestana}', 1)" class="px-3 py-1.5 border border-coppergold/40 rounded-lg bg-papercard text-wine font-extrabold disabled:opacity-30">
-                  Siguiente →
-                </button>
-              </div>
+              <button type="button" id="btn-prev-${pestana}" onclick="cambiarPagina('${pestana}', -1)" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-brand-600 hover:border-brand-200 disabled:opacity-50 transition-colors text-sm font-semibold">Anterior</button>
+              <span id="num-pagina-${pestana}" class="font-bold text-brand-600 min-w-[32px] text-center text-lg">1</span>
+              <button type="button" id="btn-next-${pestana}" onclick="cambiarPagina('${pestana}', 1)" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-brand-600 hover:border-brand-200 disabled:opacity-50 transition-colors text-sm font-semibold">Siguiente</button>
             </div>
           </div>
         </div>
@@ -328,42 +319,68 @@
   }
 
   document.write(crearModalHTML('modalVenta', 'Propiedades en Venta', 'Catálogo Venta'));
-  document.write(crearModalHTML('modalRenta', 'Propiedades Residenciales en Renta', 'Catálogo Renta'));
+  document.write(crearModalHTML('modalRenta', 'Renta Residencial', 'Catálogo Renta'));
   document.write(crearModalHTML('modalLotes', 'Lotes & Macrolotes', 'Suelo Estratégico'));
-  document.write(crearModalHTML('modalNetworking', 'Red Inmobiliaria de Networking Estratégico', 'Catálogo RINE', true));
+  document.write(crearModalHTML('modalNetworking', 'Red Inmobiliaria RINE', 'Catálogo Networking', true));
 </script>
 
-<!-- MOTOR SCRIPT -->
+<!-- LÓGICA MOTOR (Sheets, Filtros, Renderizado, PDF) -->
 <script>
   const SHEET_ID = '192oLS5Pqh5IBrMYlp2RbE6ASol8BrHh9Naacegjzva8';
-  
-  const SHEETS_MAPPING = {
-    'Venta': 'Venta',
-    'Renta': 'Renta',
-    'Lotes': 'Lotes',
-    'Networking': 'red inmobiliaria de networking estrategico'
-  };
-
-  const ITEMS_POR_PAGINA = 20;
+  const SHEETS_MAPPING = { 'Venta': 'Venta', 'Renta': 'Renta', 'Lotes': 'Lotes', 'Networking': 'red inmobiliaria de networking estrategico' };
+  const ITEMS_POR_PAGINA = 18;
 
   let catalogoOriginal = { Venta: [], Renta: [], Lotes: [], Networking: [] };
   let catalogoFiltrado = { Venta: [], Renta: [], Lotes: [], Networking: [] };
   let paginaActual = { Venta: 1, Renta: 1, Lotes: 1, Networking: 1 };
   let carrousellOriginal = [];
-  
+
   let fotoActualIndex = {};
+  let ultimoFoco = null;
+  let toastTimer = null;
+
+  // Interfaz de scroll header
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+      if (window.scrollY > 10) {
+          navbar.classList.add('shadow-sm');
+      } else {
+          navbar.classList.remove('shadow-sm');
+      }
+  });
+
+  function mostrarToast(msg) {
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.innerHTML = `<div class="flex items-center gap-2"><i class="ph-bold ph-info text-xl text-brand-400"></i> ${msg}</div>`;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+  }
 
   function openModal(id) {
-    document.getElementById(id).classList.remove('hidden');
+    const el = document.getElementById(id);
+    if (!el) return;
+    ultimoFoco = document.activeElement;
+    el.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
   }
+  
   function closeModal(id) {
-    document.getElementById(id).classList.add('hidden');
+    const el = document.getElementById(id);
+    if(el) el.classList.add('hidden');
     const hayModalesAbiertos = document.querySelectorAll('.modal-backdrop:not(.hidden)').length > 0;
     if (!hayModalesAbiertos) {
       document.body.style.overflow = '';
+      if (ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
     }
   }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const abiertos = document.querySelectorAll('.modal-backdrop:not(.hidden)');
+    if (abiertos.length) closeModal(abiertos[abiertos.length - 1].id);
+  });
 
   function scrollToRINE() {
     const card = document.getElementById('card-rine');
@@ -386,42 +403,26 @@
     return url;
   }
 
-  // OBTENER PRECIO CON FORMATO MONETARIO COMPLETO + "MXN"
   function obtenerPrecioItem(item) {
     if (!item) return 'Consultar';
-    
     let raw = '';
-
     for (const key in item) {
       const k = key.toLowerCase().trim();
-      if (
-        k.includes('precio') || 
-        k.includes('renta') || 
-        k.includes('costo') || 
-        k.includes('valor') || 
-        k.includes('monto')
-      ) {
+      if (k.includes('precio') || k.includes('renta') || k.includes('costo') || k.includes('valor') || k.includes('monto')) {
         if (item[key] && item[key].trim().length > 0) {
           raw = item[key].trim();
           break;
         }
       }
     }
-
     if (!raw) return 'Consultar';
-
-    // Limpieza de números
     const num = raw.replace(/[^0-9.]/g, '');
     if (num && !isNaN(num) && parseFloat(num) > 0) {
-      const numFormatted = parseFloat(num).toLocaleString('es-MX');
-      return `$${numFormatted} MXN`;
+      return `$${parseFloat(num).toLocaleString('es-MX')} MXN`;
     }
-
-    // Si ya contiene letras o texto descriptivo, asegurar que lleve la coletilla MXN
     if (!raw.toUpperCase().includes('MXN') && !raw.toUpperCase().includes('USD')) {
       return `${raw} MXN`;
     }
-
     return raw;
   }
 
@@ -430,17 +431,13 @@
     for (let i = 1; i <= 10; i++) {
       const url = item[`foto${i}`] || item[`foto_${i}`];
       const formateada = formatearUrlImagen(url);
-      if (formateada && formateada.length > 5) {
-        fotos.push(formateada);
-      }
+      if (formateada && formateada.length > 5) fotos.push(formateada);
     }
     return fotos;
   }
 
   window.addEventListener('DOMContentLoaded', () => {
-    Object.keys(SHEETS_MAPPING).forEach(categoria => {
-      cargarDatosPestana(categoria);
-    });
+    Object.keys(SHEETS_MAPPING).forEach(categoria => cargarDatosPestana(categoria));
     cargarCarrusel();
   });
 
@@ -450,14 +447,12 @@
       const response = await fetch(url);
       const csvText = await response.text();
       const rows = parseCSV(csvText);
-      
+
       if (rows.length > 1) {
         const headers = rows[0].map(h => h.trim().toLowerCase());
         carrousellOriginal = rows.slice(1).map(row => {
           let item = {};
-          headers.forEach((header, index) => {
-            item[header] = row[index] ? row[index].trim() : '';
-          });
+          headers.forEach((header, index) => { item[header] = row[index] ? row[index].trim() : ''; });
           return item;
         }).filter(item => item.titulo || item.id);
 
@@ -467,7 +462,7 @@
         renderizarCarrusel(carrousellOriginal);
       }
     } catch (e) {
-      console.error("Error al cargar carrusel", e);
+      document.getElementById('carrousell-container').innerHTML = '<div class="text-slate-500 py-4">Error al cargar propiedades destacadas.</div>';
     }
   }
 
@@ -475,80 +470,69 @@
     const container = document.getElementById('carrousell-container');
     if (!container || items.length === 0) return;
 
-    container.innerHTML = '';
-
-    items.forEach((item, idx) => {
+    const armar = (copia) => items.map((item, idx) => {
       const fotos = extraerTodasLasFotos(item);
-      const foto = fotos[0] || '';
       const precio = obtenerPrecioItem(item);
-      
-      const card = `
-        <div onclick="abrirFichaDetalle('Carrousell', ${idx})" class="w-72 sm:w-80 flex-shrink-0 bg-paper border hairline rounded-xl overflow-hidden shadow-xs flex items-center gap-3 p-2.5 cursor-pointer hover:border-coppergold transition-all">
-          ${foto ? `<img src="${foto}" class="w-20 h-20 object-cover rounded-lg flex-shrink-0" alt="${item.titulo}" />` : '<div class="w-20 h-20 bg-softgray rounded-lg flex-shrink-0"></div>'}
-          <div class="overflow-hidden">
-            <span class="text-[9px] text-coppergold uppercase font-bold tracking-wider block">📍 ${item.ubicación || item.ubicacion || 'Cancún'}</span>
-            <h4 class="font-display text-xs text-wine font-bold truncate">${item.titulo || 'Destacado'}</h4>
-            <span class="text-xs font-bold text-royalgreen block mt-1">${precio}</span>
-            <span class="text-[9px] text-winemuted font-bold underline">Ver Ficha Completa →</span>
+      return `
+        <button type="button" ${copia ? 'aria-hidden="true" tabindex="-1"' : ''} onclick="abrirFichaDetalle('Carrousell', ${idx})" class="flex items-center gap-4 p-3 bg-white border border-slate-200 rounded-xl hover:border-brand-500 hover:shadow-lg hover:shadow-brand-100/50 transition-all text-left w-[340px] flex-shrink-0 group">
+          <div class="w-24 h-24 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
+            ${fotos[0] ? `<img src="${fotos[0]}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-2xl"></i></div>'}
           </div>
-        </div>
-      `;
-      container.innerHTML += card;
-    });
+          <div class="flex-col overflow-hidden w-full">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wide truncate block mb-1"><i class="ph-bold ph-map-pin mr-1"></i>${item.ubicación || item.ubicacion || 'Cancún'}</span>
+            <span class="text-sm font-bold text-slate-900 truncate block mb-1">${item.titulo || 'Destacado'}</span>
+            <span class="text-brand-600 font-extrabold text-sm block">${precio}</span>
+          </div>
+        </button>`;
+    }).join('');
+
+    container.innerHTML = armar(false) + armar(true);
+    container.style.animationDuration = Math.max(30, items.length * 8) + 's';
   }
 
   async function cargarDatosPestana(pestanaKey) {
     const sheetName = SHEETS_MAPPING[pestanaKey];
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
-    
     try {
       const response = await fetch(url);
       const csvText = await response.text();
       const rows = parseCSV(csvText);
-      
+
       if (rows.length > 1) {
         const headers = rows[0].map(h => h.trim().toLowerCase());
         const data = rows.slice(1).map(row => {
           let item = {};
-          headers.forEach((header, index) => {
-            item[header] = row[index] ? row[index].trim() : '';
-          });
+          headers.forEach((header, index) => { item[header] = row[index] ? row[index].trim() : ''; });
           return item;
         }).filter(item => item.titulo || item.id);
-        
-        catalogoOriginal[pestanaKey] = data;
 
+        catalogoOriginal[pestanaKey] = data;
         const countElem = document.getElementById(`count-${pestanaKey}`);
         if (countElem) countElem.innerText = data.length;
 
         aplicarFiltros(pestanaKey);
+      } else {
+        aplicarFiltros(pestanaKey);
       }
     } catch (e) {
-      console.error(`Error al cargar la pestaña: ${sheetName}`, e);
+      const grid = document.getElementById(`grid-${pestanaKey}`);
+      if (grid) grid.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500">Error al cargar datos.</div>';
     }
   }
 
   function parseCSV(text) {
-    let p = '', c = '', r = [];
-    let q = false;
-    let row = [''];
+    let p = '', c = '', r = [], q = false, row = [''];
     for (let i = 0; i < text.length; i++) {
-      c = text[i];
-      let next = text[i+1];
+      c = text[i]; let next = text[i+1];
       if (c === '"') {
-        if (q && next === '"') { row[row.length - 1] += '"'; i++; }
-        else { q = !q; }
-      } else if (c === ',' && !q) {
-        row.push('');
+        if (q && next === '"') { row[row.length - 1] += '"'; i++; } else { q = !q; }
+      } else if (c === ',' && !q) { row.push('');
       } else if ((c === '\r' || c === '\n') && !q) {
-        if (c === '\r' && next === '\n') { i++; }
-        r.push(row);
-        row = [''];
-      } else {
-        row[row.length - 1] += c;
-      }
+        if (c === '\r' && next === '\n') i++;
+        r.push(row); row = [''];
+      } else { row[row.length - 1] += c; }
     }
-    if (row.length > 1 || row[0] !== '') { r.push(row); }
+    if (row.length > 1 || row[0] !== '') r.push(row);
     return r;
   }
 
@@ -560,12 +544,10 @@
 
   function aplicarFiltros(pestana) {
     let lista = [...catalogoOriginal[pestana]];
-
     const busqueda = (document.getElementById(`search-${pestana}`)?.value || '').toLowerCase();
     const tipo = (document.getElementById(`tipo-${pestana}`)?.value || '').toLowerCase();
     const precioMin = parseFloat(document.getElementById(`precioMin-${pestana}`)?.value) || 0;
     const precioMax = parseFloat(document.getElementById(`precioMax-${pestana}`)?.value) || Infinity;
-    const m2Min = parseFloat(document.getElementById(`m2Min-${pestana}`)?.value) || 0;
     const orden = document.getElementById(`orden-${pestana}`)?.value || 'recientes';
 
     lista = lista.filter(item => {
@@ -573,23 +555,15 @@
       const ubi = (item.ubicación || item.ubicacion || '').toLowerCase();
       const tip = (item.tipo || '').toLowerCase();
       const pNum = extraerNumero(obtenerPrecioItem(item));
-      const m2Terreno = extraerNumero(item.terreno);
 
-      const coincideTexto = !busqueda || tit.includes(busqueda) || ubi.includes(busqueda);
-      const coincideTipo = !tipo || tip.includes(tipo);
-      const coincidePrecio = pNum === 0 || (pNum >= precioMin && pNum <= precioMax);
-      const coincideM2 = m2Terreno >= m2Min;
-
-      return coincideTexto && coincideTipo && coincidePrecio && coincideM2;
+      return (!busqueda || tit.includes(busqueda) || ubi.includes(busqueda)) &&
+             (!tipo || tip.includes(tipo)) &&
+             (pNum === 0 || (pNum >= precioMin && pNum <= precioMax));
     });
 
-    if (orden === 'precio-desc') {
-      lista.sort((a, b) => extraerNumero(obtenerPrecioItem(b)) - extraerNumero(obtenerPrecioItem(a)));
-    } else if (orden === 'precio-asc') {
-      lista.sort((a, b) => extraerNumero(obtenerPrecioItem(a)) - extraerNumero(obtenerPrecioItem(b)));
-    } else if (orden === 'm2-desc') {
-      lista.sort((a, b) => extraerNumero(b.terreno) - extraerNumero(a.terreno));
-    }
+    if (orden === 'precio-desc') lista.sort((a, b) => extraerNumero(obtenerPrecioItem(b)) - extraerNumero(obtenerPrecioItem(a)));
+    else if (orden === 'precio-asc') lista.sort((a, b) => extraerNumero(obtenerPrecioItem(a)) - extraerNumero(obtenerPrecioItem(b)));
+    else if (orden === 'm2-desc') lista.sort((a, b) => extraerNumero(b.terreno) - extraerNumero(a.terreno));
 
     catalogoFiltrado[pestana] = lista;
     paginaActual[pestana] = 1;
@@ -598,56 +572,43 @@
 
   function cambiarPagina(pestana, delta) {
     const totalPaginas = Math.ceil(catalogoFiltrado[pestana].length / ITEMS_POR_PAGINA) || 1;
-    paginaActual[pestana] += delta;
-
-    if (paginaActual[pestana] < 1) paginaActual[pestana] = 1;
-    if (paginaActual[pestana] > totalPaginas) paginaActual[pestana] = totalPaginas;
-
+    paginaActual[pestana] = Math.max(1, Math.min(totalPaginas, paginaActual[pestana] + delta));
     renderizarPagina(pestana);
+    
+    // Auto scroll top
+    const gridContainer = document.getElementById(`grid-${pestana}`)?.parentElement;
+    if (gridContainer) gridContainer.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function renderizarPagina(pestana) {
     const items = catalogoFiltrado[pestana];
-    const totalItems = items.length;
     const pag = paginaActual[pestana];
     const inicio = (pag - 1) * ITEMS_POR_PAGINA;
-    const fin = Math.min(inicio + ITEMS_POR_PAGINA, totalItems);
-    const itemsPagina = items.slice(inicio, fin);
+    const fin = Math.min(inicio + ITEMS_POR_PAGINA, items.length);
 
-    const infoText = document.getElementById(`info-paginacion-${pestana}`);
-    const numText = document.getElementById(`num-pagina-${pestana}`);
-    const btnPrev = document.getElementById(`btn-prev-${pestana}`);
-    const btnNext = document.getElementById(`btn-next-${pestana}`);
+    document.getElementById(`info-paginacion-${pestana}`).innerText = `Mostrando ${items.length > 0 ? inicio + 1 : 0} a ${fin} de ${items.length} propiedades`;
+    document.getElementById(`num-pagina-${pestana}`).innerText = pag;
+    document.getElementById(`btn-prev-${pestana}`).disabled = (pag === 1);
+    document.getElementById(`btn-next-${pestana}`).disabled = (fin >= items.length);
 
-    if (infoText) infoText.innerText = `Mostrando ${totalItems > 0 ? inicio + 1 : 0} a ${fin} de ${totalItems} propiedades`;
-    if (numText) numText.innerText = pag;
-    if (btnPrev) btnPrev.disabled = (pag === 1);
-    if (btnNext) btnNext.disabled = (fin >= totalItems);
-
-    renderizarGrid(pestana, itemsPagina, inicio);
+    renderizarGrid(pestana, items.slice(inicio, fin), inicio);
   }
 
   function navegarFotoManual(cardKey, delta, totalFotos) {
     if (!totalFotos || totalFotos <= 1) return;
-    if (fotoActualIndex[cardKey] === undefined) fotoActualIndex[cardKey] = 0;
-    
-    fotoActualIndex[cardKey] = (fotoActualIndex[cardKey] + delta + totalFotos) % totalFotos;
+    fotoActualIndex[cardKey] = ((fotoActualIndex[cardKey] || 0) + delta + totalFotos) % totalFotos;
     const nuevoIndex = fotoActualIndex[cardKey];
-
+    
     const imgElem = document.getElementById(`img-${cardKey}`);
-    const dots = document.querySelectorAll(`.dot-${cardKey}`);
-
     if (imgElem && imgElem.dataset[`foto${nuevoIndex}`]) {
       imgElem.src = imgElem.dataset[`foto${nuevoIndex}`];
     }
-
-    dots.forEach((dot, idx) => {
-      if (idx === nuevoIndex) {
-        dot.classList.add('bg-coppergold', 'w-3');
-        dot.classList.remove('bg-white/70', 'w-1.5');
+    
+    document.querySelectorAll(`.dot-${cardKey}`).forEach((dot, idx) => {
+      if(idx === nuevoIndex) {
+        dot.classList.add('is-active');
       } else {
-        dot.classList.remove('bg-coppergold', 'w-3');
-        dot.classList.add('bg-white/70', 'w-1.5');
+        dot.classList.remove('is-active');
       }
     });
   }
@@ -655,106 +616,71 @@
   function renderizarGrid(pestana, items, offsetIndex = 0) {
     const grid = document.getElementById(`grid-${pestana}`);
     if (!grid) return;
-    
-    grid.innerHTML = '';
 
     if (items.length === 0) {
-      grid.innerHTML = `
-        <div class="col-span-full py-12 text-center text-winemuted">
-          <p class="text-sm">No se encontraron propiedades disponibles en esta sección.</p>
-        </div>
-      `;
+      grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 bg-white rounded-2xl border border-slate-200"><i class="ph-bold ph-magnifying-glass text-4xl text-slate-300 mb-3 block"></i><h3 class="text-lg font-bold text-slate-800">Sin resultados</h3><p>Ajusta los filtros para ver más opciones disponibles.</p></div>`;
       return;
     }
 
-    items.forEach((item, index) => {
+    grid.innerHTML = items.map((item, index) => {
       const realIndex = offsetIndex + index;
       const cardKey = `${pestana}-${realIndex}`;
       fotoActualIndex[cardKey] = 0;
 
       const fotos = extraerTodasLasFotos(item);
-      const fotoPortada = fotos[0] || '';
+      const datasetFotosAttr = fotos.map((f, i) => `data-foto${i}="${f}"`).join(' ');
+      
+      const ubic = item.ubicación || item.ubicacion || 'Cancún';
       const precioVal = obtenerPrecioItem(item);
-
+      const construccion = item.construcción || item.construccion;
+      
       let numTelefono = "529981550066";
       if (pestana === 'Networking' && (item.telefono || item.celular || item.whatsapp)) {
         numTelefono = (item.telefono || item.celular || item.whatsapp).replace(/[^0-9]/g, '');
         if (numTelefono.length === 10) numTelefono = "52" + numTelefono;
       }
+      const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad:\n\n*${item.titulo || 'Propiedad'}*\n📍 Ubicación: ${ubic}\n💰 Precio: ${precioVal}`);
 
-      const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad:\n\n*${item.titulo || 'Propiedad'}*\n📍 Ubicación: ${item.ubicación || item.ubicacion || 'Cancún'}\n💰 Precio: ${precioVal}`);
-
-      const datasetFotosAttr = fotos.map((f, i) => `data-foto${i}="${f}"`).join(' ');
-
-      const cardHTML = `
-        <div class="bg-papercard border hairline rounded-xl flex flex-col justify-between overflow-hidden relative group shadow-sm hover:shadow-md transition-all">
-          <div class="relative h-52 bg-paper overflow-hidden select-none">
-            ${fotoPortada ? `<img id="img-${cardKey}" src="${fotoPortada}" ${datasetFotosAttr} alt="${item.titulo}" class="w-full h-full object-cover transition-all duration-300" />` : '<div class="w-full h-full bg-softgray flex items-center justify-center text-xs text-winemuted">Sin Imagen</div>'}
-            
-            <div class="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
-              ${item.terreno ? `<span class="bg-papercard/90 backdrop-blur-md text-[10px] text-wine px-2 py-0.5 border hairline rounded-md font-extrabold">📐 ${item.terreno}</span>` : ''}
-              ${(item.construcción || item.construccion) ? `<span class="bg-papercard/90 backdrop-blur-md text-[10px] text-wine px-2 py-0.5 border hairline rounded-md font-extrabold">🏠 ${item.construcción || item.construccion}</span>` : ''}
+      return `
+      <article class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 transition-all duration-300 overflow-hidden flex flex-col group">
+        <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden">
+          ${fotos[0] ? `<img id="img-${cardKey}" src="${fotos[0]}" ${datasetFotosAttr} loading="lazy" alt="${item.titulo}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-4xl"></i></div>'}
+          <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-brand-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">${item.estado || 'Disponible'}</span>
+          
+          ${fotos.length > 1 ? `
+            <button type="button" aria-label="Anterior" onclick="navegarFotoManual('${cardKey}', -1,${fotos.length})" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-900/40 text-white flex items-center justify-center hover:bg-slate-900/80 transition-colors"><i class="ph-bold ph-caret-left"></i></button>
+            <button type="button" aria-label="Siguiente" onclick="navegarFotoManual('${cardKey}', 1,${fotos.length})" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-900/40 text-white flex items-center justify-center hover:bg-slate-900/80 transition-colors"><i class="ph-bold ph-caret-right"></i></button>
+            <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+              ${fotos.map((f, fIdx) => `<span class="dot-indicator dot-${cardKey} ${fIdx === 0 ? 'is-active' : ''}"></span>`).join('')}
             </div>
+          ` : ''}
+        </div>
 
-            <!-- ETIQUETA DE PRECIO SOBRE FOTO CON MONEDA MXN -->
-            <div class="absolute top-3 right-3 z-10">
-              <span class="bg-royalgreen text-paper font-extrabold text-[11px] px-2.5 py-1 rounded-md shadow-md">
-                ${precioVal}
-              </span>
-            </div>
+        <div class="p-5 flex flex-col flex-grow">
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1 truncate"><i class="ph-bold ph-map-pin mr-1"></i>${ubic}</p>
+          <h3 class="text-lg font-bold text-slate-900 leading-tight mb-2 line-clamp-1" title="${item.titulo}">${item.titulo || 'Propiedad Exclusiva'}</h3>
+          <p class="text-xl font-extrabold text-brand-600 mb-4">${precioVal}</p>
 
-            ${fotos.length > 1 ? `
-              <button onclick="navegarFotoManual('${cardKey}', -1,${fotos.length})" class="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-black/40 hover:bg-black/70 text-white rounded-full flex items-center justify-center text-xs font-extrabold transition-all">‹</button>
-              <button onclick="navegarFotoManual('${cardKey}', 1,${fotos.length})" class="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 bg-black/40 hover:bg-black/70 text-white rounded-full flex items-center justify-center text-xs font-extrabold transition-all">›</button>
+          ${(item.terreno || construccion) ? `
+          <div class="flex flex-wrap gap-4 mb-4 text-xs font-medium text-slate-700">
+            ${item.terreno ? `<div class="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded"><i class="ph-fill ph-squares-four text-brand-500 text-base"></i> ${item.terreno}</div>` : ''}
+            ${construccion ? `<div class="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded"><i class="ph-fill ph-house-line text-brand-500 text-base"></i> ${construccion}</div>` : ''}
+          </div>` : ''}
 
-              <div class="absolute bottom-2 left-0 right-0 flex justify-center gap-1 z-10">
-                ${fotos.map((f, fIdx) => `
-                  <span class="dot-${cardKey} h-1.5 rounded-full transition-all duration-300 ${fIdx === 0 ? 'bg-coppergold w-3' : 'bg-white/70 w-1.5'}"></span>
-                `).join('')}
-              </div>
-            ` : ''}
-          </div>
+          <p class="text-sm text-slate-500 line-clamp-2 mb-4 leading-relaxed">${item.descripción || item.descripcion || 'Sin descripción detallada.'}</p>
+          
+          ${pestana === 'Networking' && item.asesor ? `<p class="text-xs font-semibold text-slate-600 mb-4 py-2 px-3 bg-slate-50 rounded-lg border border-slate-100"><i class="ph-bold ph-user-circle mr-1 text-brand-500"></i> Asesor: ${item.asesor}</p>` : ''}
 
-          <div class="p-5 flex-1 flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between gap-2 mb-1">
-                <span class="text-[10px] text-coppergold uppercase tracking-wider font-mono font-bold">📍 ${item.ubicación || item.ubicacion || 'Cancún'}</span>
-                <span class="text-[9px] text-winemuted bg-paper px-2 py-0.5 rounded-md border border-coppergold/30 font-bold">${item.estado || 'Disponible'}</span>
-              </div>
-
-              <h3 class="font-display text-lg text-wine leading-snug font-bold">${item.titulo || 'Propiedad Exclusiva'}</h3>
-              
-              <!-- DESPLIEGUE CLARO DEL PRECIO CON "MXN" -->
-              <p class="text-sm font-extrabold text-royalgreen mt-1">${precioVal}</p>
-
-              <p class="text-xs text-winemuted mt-2 line-clamp-2 font-medium whitespace-pre-line">${item.descripción || item.descripcion || ''}</p>
-              
-              ${pestana === 'Networking' && item.asesor ? `<p class="text-[10px] text-coppergold font-bold mt-2">👤 Asesor: ${item.asesor}</p>` : ''}
-            </div>
-
-            <div class="mt-4 pt-3 border-t hairline flex flex-col gap-2">
-              <button onclick="abrirFichaDetalle('${pestana}', ${realIndex})" class="w-full text-center py-2 bg-copperlight/30 hover:bg-copperlight/60 border border-coppergold/40 rounded-lg text-xs font-bold text-wine transition-all">
-                🔍 Ver Ficha Completa (${fotos.length} fotos)
-              </button>
-
-              <div class="grid grid-cols-2 gap-2">
-                <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="btn-green text-center py-2 rounded-lg text-[11px] flex items-center justify-center gap-1">
-                  WhatsApp
-                </a>
-
-                <button onclick="generarFichaPDF('${pestana}', ${realIndex})" class="text-[10px] text-winemuted border border-coppergold/30 hover:text-coppergold rounded-lg py-2 text-center transition-colors font-bold">
-                  📄 PDF
-                </button>
-              </div>
-            </div>
+          <div class="mt-auto grid grid-cols-2 gap-2">
+            <button type="button" onclick="abrirFichaDetalle('${pestana}', ${realIndex})" class="col-span-2 py-2.5 px-4 rounded-lg bg-slate-100 text-slate-700 font-semibold text-sm hover:bg-slate-200 transition-colors">Ver ficha completa</button>
+            <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="py-2 px-4 rounded-lg bg-brand-600 text-white font-semibold text-sm text-center hover:bg-brand-700 transition-colors flex items-center justify-center"><i class="ph-bold ph-whatsapp-logo mr-1"></i> Chat</a>
+            <button type="button" onclick="generarFichaPDF('${pestana}', ${realIndex})" class="py-2 px-4 rounded-lg border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-colors flex items-center justify-center"><i class="ph-bold ph-file-pdf mr-1"></i> PDF</button>
           </div>
         </div>
-      `;
-      grid.innerHTML += cardHTML;
-    });
+      </article>`;
+    }).join('');
   }
 
-  // ABRIR FICHA DETALLADA CON PRECIO EN MXN
   function abrirFichaDetalle(pestana, realIndex) {
     const item = pestana === 'Carrousell' ? carrousellOriginal[realIndex] : catalogoOriginal[pestana][realIndex];
     if (!item) return;
@@ -763,148 +689,157 @@
     fotoActualIndex[modalKey] = 0;
 
     const fotos = extraerTodasLasFotos(item);
+    const datasetFotosAttr = fotos.map((f, i) => `data-foto${i}="${f}"`).join(' ');
+    
+    const ubic = item.ubicación || item.ubicacion || 'Cancún';
     const precioVal = obtenerPrecioItem(item);
-
+    
     let numTelefono = "529981550066";
     if (pestana === 'Networking' && (item.telefono || item.celular || item.whatsapp)) {
       numTelefono = (item.telefono || item.celular || item.whatsapp).replace(/[^0-9]/g, '');
       if (numTelefono.length === 10) numTelefono = "52" + numTelefono;
     }
+    const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad:\n\n*${item.titulo || 'Propiedad'}*\n📍 Ubicación: ${ubic}\n💰 Precio: ${precioVal}`);
 
-    const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad:\n\n*${item.titulo || 'Propiedad'}*\n📍 Ubicación: ${item.ubicación || item.ubicacion || 'Cancún'}\n💰 Precio: ${precioVal}`);
-
-    const datasetFotosAttr = fotos.map((f, i) => `data-foto${i}="${f}"`).join(' ');
-
-    const html = `
-      <div class="flex flex-col lg:flex-row gap-8">
-        <!-- CARRUSEL DE FOTOS -->
-        <div class="w-full lg:w-1/2 flex flex-col gap-3">
-          <div class="relative h-72 sm:h-80 bg-paper border hairline rounded-xl overflow-hidden select-none">
-            ${fotos[0] ? `<img id="img-${modalKey}" src="${fotos[0]}" ${datasetFotosAttr} alt="${item.titulo}" class="w-full h-full object-cover transition-all duration-300" />` : '<div class="w-full h-full bg-softgray flex items-center justify-center text-xs text-winemuted">Sin Imagen Disponibles</div>'}
-
+    document.getElementById('contenidoDetalleUnico').innerHTML = `
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        <div class="flex flex-col gap-4">
+          <div class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm">
+            ${fotos[0] ? `<img id="img-${modalKey}" src="${fotos[0]}" ${datasetFotosAttr} class="w-full h-full object-cover" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-5xl"></i></div>'}
+            
             ${fotos.length > 1 ? `
-              <button onclick="navegarFotoManual('${modalKey}', -1,${fotos.length})" class="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 bg-black/50 hover:bg-black/80 text-white rounded-full flex items-center justify-center text-sm font-extrabold transition-all">‹</button>
-              <button onclick="navegarFotoManual('${modalKey}', 1,${fotos.length})" class="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 bg-black/50 hover:bg-black/80 text-white rounded-full flex items-center justify-center text-sm font-extrabold transition-all">›</button>
-
-              <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
-                ${fotos.map((f, fIdx) => `
-                  <span class="dot-${modalKey} h-2 rounded-full transition-all duration-300 ${fIdx === 0 ? 'bg-coppergold w-4' : 'bg-white/70 w-2'}"></span>
-                `).join('')}
+              <button type="button" onclick="navegarFotoManual('${modalKey}', -1,${fotos.length})" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 shadow-md text-slate-800 flex items-center justify-center hover:bg-white transition-colors"><i class="ph-bold ph-caret-left text-xl"></i></button>
+              <button type="button" onclick="navegarFotoManual('${modalKey}', 1,${fotos.length})" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 shadow-md text-slate-800 flex items-center justify-center hover:bg-white transition-colors"><i class="ph-bold ph-caret-right text-xl"></i></button>
+              <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                ${fotos.map((f, fIdx) => `<span class="dot-indicator dot-${modalKey} ${fIdx === 0 ? 'is-active' : ''}"></span>`).join('')}
               </div>
             ` : ''}
           </div>
 
           ${fotos.length > 1 ? `
-            <div class="flex items-center gap-2 overflow-x-auto py-1 modal-scroll">
+            <div class="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
               ${fotos.map((f, fIdx) => `
-                <img src="${f}" onclick="navegarFotoManual('${modalKey}', ${fIdx - (fotoActualIndex[modalKey] || 0)}, ${fotos.length})" class="w-16 h-12 object-cover rounded-md border hairline cursor-pointer hover:border-coppergold transition-all flex-shrink-0" />
+                <button type="button" onclick="navegarFotoManual('${modalKey}', ${fIdx} - (fotoActualIndex['${modalKey}'] || 0), ${fotos.length})" class="flex-shrink-0 w-24 h-20 rounded-xl overflow-hidden border-2 border-transparent focus:border-brand-500 hover:opacity-80 transition-all bg-slate-100">
+                  <img src="${f}" class="w-full h-full object-cover" loading="lazy" />
+                </button>
               `).join('')}
             </div>
           ` : ''}
         </div>
 
-        <!-- INFORMACIÓN DETALLADA -->
-        <div class="w-full lg:w-1/2 flex flex-col justify-between">
-          <div>
-            <div class="flex justify-between items-center gap-2 mb-2">
-              <span class="text-xs text-coppergold font-extrabold uppercase">📍 ${item.ubicación || item.ubicacion || 'Cancún'}</span>
-              <span class="text-xs bg-royalgreen/10 text-royalgreen font-extrabold px-2.5 py-0.5 rounded-md">${item.estado || 'Disponible'}</span>
-            </div>
-
-            <h2 class="font-display text-2xl text-wine font-extrabold leading-snug">${item.titulo || 'Propiedad Exclusiva'}</h2>
-            
-            <p class="text-2xl text-royalgreen font-extrabold mt-3">${precioVal}</p>
-
-            <div class="grid grid-cols-2 gap-3 mt-4 py-3 border-y hairline text-xs">
-              <div><span class="font-bold text-winemuted">📐 Terreno:</span> <span class="font-extrabold text-wine">${item.terreno || 'N/A'}</span></div>
-              <div><span class="font-bold text-winemuted">🏠 Construcción:</span> <span class="font-extrabold text-wine">${item.construcción || item.construccion || 'N/A'}</span></div>
-              ${item.asesor ? `<div class="col-span-2"><span class="font-bold text-winemuted">👤 Asesor Encargado:</span> <span class="font-extrabold text-coppergold">${item.asesor}</span></div>` : ''}
-            </div>
-
-            <div class="mt-4">
-              <h4 class="text-xs font-extrabold text-wine uppercase mb-1">Descripción Completa:</h4>
-              <div class="text-xs text-winemuted leading-relaxed font-medium max-h-56 overflow-y-auto modal-scroll whitespace-pre-line p-1">${item.descripción || item.descripcion || 'Sin descripción detallada.'}</div>
-            </div>
+        <div class="flex flex-col">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-sm font-semibold text-slate-500 uppercase tracking-widest"><i class="ph-bold ph-map-pin mr-1"></i>${ubic}</span>
+            <span class="bg-brand-50 text-brand-700 border border-brand-200 text-xs font-bold px-3 py-1 rounded-full shadow-sm">${item.estado || 'Disponible'}</span>
           </div>
 
-          <div class="mt-6 pt-4 border-t hairline flex flex-col sm:flex-row gap-3">
-            <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="btn-green flex-1 text-center py-3 rounded-lg text-xs font-extrabold">
-              Solicitar por WhatsApp
+          <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2 leading-tight">${item.titulo || 'Propiedad Exclusiva'}</h2>
+          <p class="text-3xl md:text-4xl font-extrabold text-brand-600 mb-8">${precioVal}</p>
+
+          <div class="grid grid-cols-2 gap-6 py-6 border-y border-slate-200 mb-8">
+            <div class="flex flex-col">
+              <span class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1"><i class="ph-fill ph-squares-four mr-1"></i>Terreno</span>
+              <span class="font-semibold text-slate-900 text-lg">${item.terreno || 'N/A'}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1"><i class="ph-fill ph-house-line mr-1"></i>Construcción</span>
+              <span class="font-semibold text-slate-900 text-lg">${item.construcción || item.construccion || 'N/A'}</span>
+            </div>
+            ${item.asesor ? `
+            <div class="col-span-2 flex flex-col pt-4 border-t border-slate-100">
+              <span class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Asesor Encargado</span>
+              <span class="font-bold text-slate-800 flex items-center gap-2"><i class="ph-fill ph-user-circle text-brand-500 text-2xl"></i> ${item.asesor}</span>
+            </div>` : ''}
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-900 mb-3">Descripción completa</h3>
+          <div class="text-slate-600 text-sm md:text-base leading-relaxed whitespace-pre-line max-h-64 overflow-y-auto custom-scrollbar pr-4 mb-8 bg-slate-50 p-5 rounded-xl border border-slate-100">
+            ${item.descripción || item.descripcion || 'Sin descripción detallada.'}
+          </div>
+
+          <div class="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="flex items-center justify-center gap-2 py-4 px-4 rounded-xl bg-brand-600 text-white font-bold hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-500/30 transition-all active:scale-95 text-lg">
+              <i class="ph-bold ph-whatsapp-logo text-2xl"></i> Solicitar Info
             </a>
-            <button onclick="generarFichaPDF('${pestana}', ${realIndex})" class="border border-coppergold/50 text-wine hover:bg-copperlight/30 px-4 py-3 rounded-lg text-xs font-extrabold">
-              📄 Descargar PDF
+            <button type="button" onclick="generarFichaPDF('${pestana}', ${realIndex})" class="flex items-center justify-center gap-2 py-4 px-4 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:border-slate-300 hover:bg-slate-50 transition-all active:scale-95 text-lg">
+              <i class="ph-bold ph-file-pdf text-2xl"></i> Descargar PDF
             </button>
           </div>
         </div>
       </div>
     `;
-
-    document.getElementById('contenidoDetalleUnico').innerHTML = html;
     openModal('modalDetalleUnico');
   }
 
-  // GENERAR PDF
   async function generarFichaPDF(pestana, index) {
     const item = pestana === 'Carrousell' ? carrousellOriginal[index] : catalogoOriginal[pestana][index];
     if (!item) return;
 
+    mostrarToast('Generando presentación PDF. Por favor espera...');
+
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'mm', 'a4');
 
-    const vinoHex = [74, 18, 26];
-    const oroHex = [197, 155, 99];
-    const verdeHex = [18, 56, 41];
+    // Paleta alineada a Conekta Broker Pro (Teal/Dark)
+    const brandDark = [4, 47, 46];    // bg-brand-950
+    const brandMain = [13, 148, 136]; // bg-brand-600
+    const brandLight = [20, 184, 166]; // bg-brand-500
 
     const precioVal = obtenerPrecioItem(item);
 
-    doc.setFillColor(...vinoHex);
+    // Encabezado
+    doc.setFillColor(...brandDark);
     doc.rect(0, 0, 210, 38, 'F');
 
-    doc.setTextColor(...oroHex);
+    doc.setTextColor(...brandLight);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(16);
     doc.text('EDGARDO DE REAL', 15, 18);
 
     doc.setFontSize(8);
-    doc.setTextColor(250, 247, 242);
+    doc.setTextColor(240, 253, 250); // brand-50
     doc.text('RED INMOBILIARIA DE NETWORKING ESTRATEGICO', 15, 26);
     doc.text('FICHA TECNICA EJECUTIVA', 140, 26);
 
-    doc.setTextColor(...vinoHex);
+    // Cuerpo Principal
+    doc.setTextColor(...brandDark);
     doc.setFontSize(14);
     doc.text(item.titulo || 'Propiedad Exclusiva', 15, 50);
 
     doc.setFontSize(10);
-    doc.setTextColor(80, 80, 80);
-    doc.text(`Ubicacion: ${item.ubicación || item.ubicacion || 'Cancún, Q. Roo'}`, 15, 59);
+    doc.setTextColor(71, 85, 105); // slate-600
+    doc.text(`Ubicación: ${item.ubicación || item.ubicacion || 'Cancún, Q. Roo'}`, 15, 59);
+    doc.setTextColor(...brandMain);
     doc.text(`Precio: ${precioVal}`, 15, 66);
-    doc.text(`Terreno: ${item.terreno || 'N/A'}  |  Construccion: ${item.construcción || item.construccion || 'N/A'}`, 15, 73);
+    doc.setTextColor(71, 85, 105);
+    doc.text(`Terreno: ${item.terreno || 'N/A'}  |  Construcción: ${item.construcción || item.construccion || 'N/A'}`, 15, 73);
 
-    doc.setDrawColor(...oroHex);
+    // Línea separadora
+    doc.setDrawColor(...brandLight);
     doc.setLineWidth(0.5);
     doc.line(15, 79, 195, 79);
 
+    // Descripción
     doc.setFontSize(9);
-    doc.setTextColor(40, 40, 40);
+    doc.setTextColor(51, 65, 85); // slate-700
     doc.setFont('helvetica', 'normal');
-    const descLines = doc.splitTextToSize(item.descripción || item.descripcion || 'Propiedad verificada y disponible dentro de la Red Inmobiliaria de Networking Estratégico.', 180);
+    const descLines = doc.splitTextToSize(item.descripción || item.descripcion || 'Propiedad verificada en RINE.', 180);
     doc.text(descLines, 15, 87);
 
+    // Fotos
     const fotos = extraerTodasLasFotos(item);
-
     if (fotos.length > 0) {
       doc.addPage();
-      
       let yPos = 30;
       let xPos = 15;
 
       function renderHeaderGaleria() {
-        doc.setFillColor(...vinoHex);
+        doc.setFillColor(...brandDark);
         doc.rect(0, 0, 210, 20, 'F');
-        doc.setTextColor(...oroHex);
+        doc.setTextColor(...brandLight);
         doc.setFontSize(10);
         doc.setFont('helvetica', 'bold');
-        doc.text(`GALERIA FOTOGRAFICA COMPLETA — ${item.titulo || 'Propiedad'}`, 15, 13);
+        doc.text(`GALERÍA FOTOGRÁFICA — ${item.titulo || 'Propiedad'}`, 15, 13);
       }
 
       renderHeaderGaleria();
@@ -924,32 +859,28 @@
           const imgBase64 = await cargarImagenBase64(fotos[i]);
           if (imgBase64) {
             doc.addImage(imgBase64, 'JPEG', xPos, yPos, imgWidth, imgHeight);
-            
-            if (xPos === 15) {
-              xPos = 110;
-            } else {
-              xPos = 15;
-              yPos += imgHeight + 10;
-            }
+            if (xPos === 15) { xPos = 110; } 
+            else { xPos = 15; yPos += imgHeight + 10; }
           }
         } catch (err) {
-          console.log(`Error procesando foto ${i + 1} para PDF`);
+          console.log(`Error procesando foto ${i + 1}`);
         }
       }
     }
 
+    // Pie de página en todas las hojas
     const totalPages = doc.internal.getNumberOfPages();
     for (let p = 1; p <= totalPages; p++) {
       doc.setPage(p);
-      doc.setFillColor(...verdeHex);
+      doc.setFillColor(...brandMain);
       doc.rect(0, 267, 210, 30, 'F');
 
-      doc.setTextColor(...oroHex);
+      doc.setTextColor(...brandDark);
       doc.setFontSize(9);
       doc.setFont('helvetica', 'bold');
       doc.text('CONTACTO DIRECTO & RED DE ALIADOS:', 15, 277);
 
-      doc.setTextColor(250, 247, 242);
+      doc.setTextColor(255, 255, 255);
       doc.setFontSize(9);
       doc.setFont('helvetica', 'normal');
       doc.text(`WhatsApp: +${item.telefono || '52 998 155 0066'}  |  Instagram: @edgardodereal_`, 15, 285);
@@ -957,6 +888,7 @@
 
     const filename = `Ficha_${(item.titulo || 'Propiedad').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
     doc.save(filename);
+    mostrarToast('✅ ¡Descarga completada con éxito!');
   }
 
   function cargarImagenBase64(url) {
@@ -971,9 +903,7 @@
         ctx.drawImage(this, 0, 0);
         resolve(canvas.toDataURL('image/jpeg'));
       };
-      img.onerror = function () {
-        resolve(null);
-      };
+      img.onerror = () => resolve(null);
       img.src = url;
     });
   }
