@@ -49,9 +49,8 @@
     </script>
     
     <style>
-        /* UI Premium */
         .glass-nav { 
-            background: rgba(255, 255, 255, 0.85); 
+            background: rgba(255, 255, 255, 0.9); 
             backdrop-filter: blur(12px); 
             -webkit-backdrop-filter: blur(12px); 
             border-bottom: 1px solid rgba(0, 0, 0, 0.05); 
@@ -61,54 +60,59 @@
                         radial-gradient(circle at bottom left, rgba(20, 184, 166, 0.05), transparent 40%); 
         }
         .animate-on-load { opacity: 0; }
-        .delay-200 { animation-delay: 200ms; }
         
-        /* Marquee Infinito Real */
         .marquee { overflow: hidden; position: relative; -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); }
         .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
         .marquee:hover .animate-marquee { animation-play-state: paused; }
         @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         
-        /* Scrolls & Utilities */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         .custom-scrollbar:hover::-webkit-scrollbar-thumb { background: #94a3b8; }
         
-        /* Carousel Dots */
         .dot-indicator { height: 6px; width: 6px; border-radius: 999px; background: rgba(255,255,255,0.7); transition: all 0.3s ease; }
         .dot-indicator.is-active { width: 18px; background: #14b8a6; }
         
-        /* RINE Highlight */
         @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(20, 184, 166, 0); } 50% { box-shadow: 0 0 0 8px rgba(20, 184, 166, 0.3); border-color: #14b8a6; } }
         .rine-highlight { animation: pulseGlow 1.5s ease-in-out 2; border-color: #14b8a6 !important; }
         
-        /* Toast */
         .toast-msg { position: fixed; left: 50%; bottom: 2rem; z-index: 100; transform: translate(-50%, 20px); max-width: calc(100% - 32px); padding: 12px 24px; border-radius: 8px; background: #042f2e; color: #fff; font-size: 14px; font-weight: 600; box-shadow: 0 10px 25px rgba(0,0,0,0.2); opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .toast-msg.show { opacity: 1; transform: translate(-50%, 0); }
+
+        @media (max-width: 640px) {
+            .ml-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+            .ml-card-pad { padding: 0.75rem; }
+            .ml-card-title { font-size: 0.875rem; line-height: 1.25rem; }
+            .ml-card-price { font-size: 1rem; }
+        }
     </style>
 </head>
 <body class="font-sans text-slate-800 antialiased bg-slate-50 selection:bg-brand-500 selection:text-white">
+
+<!-- Botón Flotante Permanente de WhatsApp -->
+<a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20formar%20una%20alianza%20estrat%C3%A9gica%20o%20consultar%20tu%20portafolio." target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 focus:outline-none" aria-label="Contacto por WhatsApp">
+    <i class="ph-fill ph-whatsapp-logo text-3xl"></i>
+</a>
 
 <!-- Navegación -->
 <nav class="fixed w-full top-0 z-50 glass-nav transition-all duration-300" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-20">
-            <!-- Logo -->
-            <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
-                <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white">
-                    <i class="ph-bold ph-buildings text-xl"></i>
+            <!-- Logo sin la casita -->
+            <div class="flex-shrink-0 flex items-center gap-2.5 cursor-pointer py-2" onclick="window.scrollTo(0,0)">
+                <div class="flex flex-col">
+                    <span class="font-bold text-base sm:text-lg tracking-tight text-slate-900 leading-tight">Edgardo de Real</span>
+                    <span class="text-[11px] sm:text-xs font-medium text-slate-500 tracking-wide leading-none mt-0.5">Red Inmobiliaria de Networking Estratégico</span>
                 </div>
-                <span class="font-bold text-xl tracking-tight text-slate-900">Edgardo de Real 
-                    | Red Inmobiliaria de Networking Estratégico </span>
             </div>
 
-            <!-- Links Desktop -->
-            <div class="hidden md:flex space-x-6 items-center">
+            <!-- Links -->
+            <div class="flex space-x-3 sm:space-x-4 items-center">
                 <div class="relative group">
-                    <button type="button" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors flex items-center gap-1 py-2">
+                    <button type="button" class="text-xs sm:text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors flex items-center gap-1 py-2">
                         Catálogo Inmobiliario <i class="ph-bold ph-caret-down text-xs"></i>
                     </button>
-                    <div class="absolute left-0 mt-0 w-64 bg-white border border-slate-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 z-50">
+                    <div class="absolute right-0 sm:left-0 mt-0 w-64 bg-white border border-slate-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 z-50">
                         <button type="button" onclick="openModalCatalogosEdgardo()" class="w-full text-left px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-600 flex items-center gap-2">
                             <i class="ph-bold ph-house text-brand-500 text-base"></i> Catálogo Edgardo de Real
                         </button>
@@ -118,18 +122,9 @@
                     </div>
                 </div>
 
-                <button type="button" onclick="openModalFavoritos()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold text-sm transition-colors">
+                <button type="button" onclick="openModalFavoritos()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold text-xs sm:text-sm transition-colors">
                     <i class="ph-fill ph-heart text-rose-500 text-base"></i> Favoritos (<span id="contador-likes">0</span>)
                 </button>
-
-                <div class="flex items-center gap-3">
-                    <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20formar%20una%20alianza%20estrat%C3%A9gica%20o%20consultar%20tu%20portafolio." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-brand-600 hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-500/30 transition-all active:scale-95 gap-2">
-                        <i class="ph-bold ph-whatsapp-logo text-lg"></i> Contacto Directo
-                    </a>
-                    <button type="button" onclick="openModal('modalNetworking')" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-full text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-all">
-                        Ver únicamente catalogo de la red
-                    </button>
-                </div>
             </div>
         </div>
     </div>
@@ -143,15 +138,13 @@
                 Vende simple, seguro, y efectivo. <br />
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-teal-400"> La red que acelera tus operaciones. </span>
             </h1>
-            <p class="mt-4 text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+            <p class="mt-4 text-xl text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed">
                 Crea alianzas estratégicas y consulta nuestro portafolio disponible en Cancún y la Riviera Maya.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20formar%20una%20alianza%20estrat%C3%A9gica%20o%20consultar%20tu%20portafolio." target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-slate-700 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all gap-2">
-                    <i class="ph-fill ph-whatsapp-logo text-brand-600 text-xl"></i> Hablar por WhatsApp
-                </a>
-                <button type="button" onclick="openModal('modalNetworking')" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-full text-white bg-slate-900 hover:bg-slate-800 hover:shadow-xl hover:shadow-slate-900/20 transition-all active:scale-95 gap-2">
-                    Ver únicamente catalogo de la red <i class="ph-bold ph-arrow-right"></i>
+            <div class="flex flex-col items-center justify-center gap-2">
+                <button type="button" onclick="openModalCatalogosEdgardo()" class="w-full sm:w-auto inline-flex flex-col items-center justify-center px-8 py-4 rounded-2xl text-white bg-slate-900 hover:bg-slate-800 hover:shadow-xl hover:shadow-slate-900/20 transition-all active:scale-95 group">
+                    <span class="text-lg font-bold">Propiedades disponibles Edgardo de Real</span>
+                    <span class="text-xs text-brand-400 font-medium mt-0.5">Edgardo de Real</span>
                 </button>
             </div>
             <p class="text-xs text-slate-500 mt-4">¿Te interesa sumarte a la red inmobiliaria, o una de nuestras propiedades?</p>
@@ -159,11 +152,11 @@
     </div>
 </section>
 
-<!-- Carrusel Destacadas (Ubicado entre el header y las tarjetas) -->
-<section class="py-16 border-t border-slate-100 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center md:text-left">
-        <h2 class="text-2xl font-bold text-slate-900 mb-2">Propiedades destacadas (<span id="carrousell-count">0</span>)</h2>
-        <p class="text-slate-500 text-sm">Se pausa al pasar el cursor. Toca una propiedad para ver su ficha.</p>
+<!-- Carrusel Destacadas -->
+<section class="py-12 border-t border-slate-100 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 text-center md:text-left">
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-1">Propiedades destacadas (<span id="carrousell-count">0</span>)</h2>
+        <p class="text-slate-500 text-xs sm:text-sm">Se pausa al pasar el cursor. Toca una propiedad para ver su ficha.</p>
     </div>
     <div class="marquee w-full">
         <div id="carrousell-container" class="animate-marquee gap-4 px-4">
@@ -173,58 +166,58 @@
 </section>
 
 <!-- Categorías (Tiles) -->
-<section class="py-24 bg-white relative">
+<section class="py-20 bg-white relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             
             <!-- Venta -->
-            <button type="button" onclick="openModal('modalVenta')" class="text-left bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
-                <div class="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-600 transition-colors duration-300">
-                    <i class="ph ph-house text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
+            <button type="button" onclick="openModal('modalVenta')" class="text-left bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-5 group-hover:bg-brand-600 transition-colors duration-300">
+                    <i class="ph ph-house text-2xl sm:text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
                 </div>
-                <h4 class="text-xl font-bold text-slate-900 mb-3">Venta</h4>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Residencias, villas de lujo y departamentos en entrega inmediata con certeza jurídica.</p>
-                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-200/60">
+                <h4 class="text-lg sm:text-xl font-bold text-slate-900 mb-2">Venta</h4>
+                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6 flex-grow">Residencias, villas de lujo y departamentos en entrega inmediata con certeza jurídica.</p>
+                <div class="flex items-center justify-between text-brand-600 font-semibold text-xs sm:text-sm w-full pt-4 border-t border-slate-200/60">
                     <span>Explorar (<span id="count-Venta">0</span>)</span>
                     <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </button>
             
             <!-- Renta -->
-            <button type="button" onclick="openModal('modalRenta')" class="text-left bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
-                <div class="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-600 transition-colors duration-300">
-                    <i class="ph ph-key text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
+            <button type="button" onclick="openModal('modalRenta')" class="text-left bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-5 group-hover:bg-brand-600 transition-colors duration-300">
+                    <i class="ph ph-key text-2xl sm:text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
                 </div>
-                <h4 class="text-xl font-bold text-slate-900 mb-3">Renta Residencial</h4>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Opciones seleccionadas para renta a largo plazo en las ubicaciones más cotizadas.</p>
-                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-200/60">
+                <h4 class="text-lg sm:text-xl font-bold text-slate-900 mb-2">Renta Residencial</h4>
+                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6 flex-grow">Opciones seleccionadas para renta a largo plazo en las ubicaciones más cotizadas.</p>
+                <div class="flex items-center justify-between text-brand-600 font-semibold text-xs sm:text-sm w-full pt-4 border-t border-slate-200/60">
                     <span>Explorar (<span id="count-Renta">0</span>)</span>
                     <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </button>
 
             <!-- Lotes -->
-            <button type="button" onclick="openModal('modalLotes')" class="text-left bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
-                <div class="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-600 transition-colors duration-300">
-                    <i class="ph ph-map-trifold text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
+            <button type="button" onclick="openModal('modalLotes')" class="text-left bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-5 group-hover:bg-brand-600 transition-colors duration-300">
+                    <i class="ph ph-map-trifold text-2xl sm:text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
                 </div>
-                <h4 class="text-xl font-bold text-slate-900 mb-3">Lotes & Macrolotes</h4>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Suelo estratégico escriturado desde 220 m² hasta macrolotes para desarrollo.</p>
-                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-200/60">
+                <h4 class="text-lg sm:text-xl font-bold text-slate-900 mb-2">Lotes & Macrolotes</h4>
+                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6 flex-grow">Suelo estratégico escriturado desde 220 m² hasta macrolotes para desarrollo.</p>
+                <div class="flex items-center justify-between text-brand-600 font-semibold text-xs sm:text-sm w-full pt-4 border-t border-slate-200/60">
                     <span>Explorar (<span id="count-Lotes">0</span>)</span>
                     <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </button>
 
             <!-- Networking (RINE) -->
-            <button type="button" id="card-rine" onclick="openModal('modalNetworking')" class="text-left bg-slate-50 rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full relative focus:outline-none focus:ring-2 focus:ring-brand-500">
+            <button type="button" id="card-rine" onclick="openModal('modalNetworking')" class="text-left bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full relative focus:outline-none focus:ring-2 focus:ring-brand-500">
                 <div class="absolute -top-3 -right-3 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md"><i class="ph-fill ph-star mr-1"></i>Top</div>
-                <div class="w-14 h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-600 transition-colors duration-300">
-                    <i class="ph ph-users-three text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
+                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-5 group-hover:bg-brand-600 transition-colors duration-300">
+                    <i class="ph ph-users-three text-2xl sm:text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
                 </div>
-                <h4 class="text-xl font-bold text-slate-900 mb-3">Propiedades de la red de networking</h4>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Encuentra la propiedad perfecta de nuestra red de agentes que te ayudará a concretar la operación que tienes entre las manos.</p>
-                <div class="flex items-center justify-between text-brand-600 font-semibold text-sm w-full pt-4 border-t border-slate-200/60">
+                <h4 class="text-lg sm:text-xl font-bold text-slate-900 mb-2">Propiedades de la red de networking</h4>
+                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6 flex-grow">Encuentra la propiedad perfecta de nuestra red de agentes que te ayudará a concretar la operación que tienes entre las manos.</p>
+                <div class="flex items-center justify-between text-brand-600 font-semibold text-xs sm:text-sm w-full pt-4 border-t border-slate-200/60">
                     <span>Catalogo de la Red (<span id="count-Networking">0</span>)</span>
                     <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </div>
@@ -266,17 +259,19 @@
   </div>
 </div>
 
-<!-- Modal: Favoritos (Likes) -->
+<!-- Modal: Favoritos -->
 <div id="modalFavoritos" class="modal-backdrop fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalFavoritos')">
   <div class="flex flex-col w-full max-w-4xl h-[85vh] bg-white rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
-    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white flex-shrink-0">
       <div class="flex items-center gap-2">
         <i class="ph-fill ph-heart text-rose-500 text-2xl"></i>
         <h3 class="text-xl font-bold text-slate-900">Mis Propiedades Favoritas</h3>
       </div>
       <button type="button" onclick="closeModal('modalFavoritos')" class="p-2 text-slate-400 hover:text-slate-700 rounded-lg"><i class="ph-bold ph-x text-xl"></i></button>
     </div>
-    <div id="grid-favoritos" class="flex-1 overflow-y-auto p-6 bg-slate-50 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 custom-scrollbar"></div>
+    <div class="flex-1 overflow-y-auto p-4 sm:p-6 bg-slate-50 custom-scrollbar">
+      <div id="grid-favoritos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
+    </div>
   </div>
 </div>
 
@@ -303,8 +298,8 @@
     </div>
 
     <div class="flex-1 overflow-y-auto p-6 bg-slate-50/50 custom-scrollbar">
-      <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-        <table class="w-full text-left border-collapse">
+      <div class="bg-white rounded-xl border border-slate-200 overflow-x-auto shadow-sm">
+        <table class="w-full text-left border-collapse min-w-[600px]">
           <thead>
             <tr class="bg-slate-100/70 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase tracking-wider">
               <th class="py-3.5 px-6">Nombre del Agente</th>
@@ -323,9 +318,9 @@
 </div>
 
 <!-- Modal Detalle Único Ficha -->
-<div id="modalDetalleUnico" class="modal-backdrop fixed inset-0 z-[70] flex items-center justify-center p-4 md:p-6 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalDetalleUnico')">
+<div id="modalDetalleUnico" class="modal-backdrop fixed inset-0 z-[70] flex items-center justify-center p-2 sm:p-6 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalDetalleUnico')">
   <div class="flex flex-col w-full max-w-5xl h-full max-h-[92vh] bg-white rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
-    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white flex-shrink-0">
+    <div class="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-100 bg-white flex-shrink-0">
       <div class="flex items-center gap-3">
         <h2 class="text-brand-600 text-xs font-bold uppercase tracking-wider">Ficha técnica detallada</h2>
         <button type="button" id="btn-like-detalle" onclick="toggleFavoritoDesdeDetalle()" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 font-bold text-xs transition-colors">
@@ -346,9 +341,6 @@
         <div class="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
             <div class="col-span-1">
                 <div class="flex items-center gap-2 mb-4">
-                    <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-white">
-                        <i class="ph-bold ph-buildings text-xl"></i>
-                    </div>
                     <span class="font-bold text-xl text-white">RINE<span class="text-brand-500">Net</span></span>
                 </div>
                 <p class="text-slate-400 text-sm max-w-xs">El software inmobiliario que trabaja para ti. Diseñado para simplificar, optimizar y vender.</p>
@@ -371,20 +363,19 @@
 
 <div id="toast" class="toast-msg" role="status" aria-live="polite"></div>
 
-<!-- Generación Dinámica de Modales de Categoría -->
 <script>
-  function crearModalHTML(idModal, tituloModal, subtituloModal, esNetworking = false) {
+  function crearModalHTML(idModal, tituloModal, subtituloModal, esNetworking = false, tipoOpcionesHTML = '') {
     const pestana = idModal.replace('modal', '');
     return `
-      <div id="${idModal}" class="modal-backdrop fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-6 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('${idModal}')">
+      <div id="${idModal}" class="modal-backdrop fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-6 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('${idModal}')">
         <div class="flex flex-col w-full max-w-7xl h-full max-h-[92vh] bg-white rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
           
-          <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white flex-shrink-0">
+          <div class="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-100 bg-white flex-shrink-0">
             <div>
               <span class="text-brand-600 text-xs font-bold uppercase tracking-wider">${subtituloModal}</span>
-              <div class="flex items-center gap-4 flex-wrap mt-1">
-                <h2 class="text-2xl font-bold text-slate-900">${tituloModal}</h2>
-                ${esNetworking ? `<button type="button" onclick="openModal('modalAgentes')" class="px-4 py-1.5 rounded-full bg-brand-50 text-brand-700 border border-brand-200 text-xs font-bold hover:bg-brand-100 transition-colors flex items-center gap-1.5"><i class="ph-bold ph-users text-sm"></i> Ver listado de agentes</button>` : ''}
+              <div class="flex items-center gap-3 flex-wrap mt-1">
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900">${tituloModal}</h2>
+                ${esNetworking ? `<button type="button" onclick="openModal('modalAgentes')" class="px-3 py-1.5 rounded-full bg-brand-50 text-brand-700 border border-brand-200 text-xs font-bold hover:bg-brand-100 transition-colors flex items-center gap-1.5"><i class="ph-bold ph-users text-sm"></i> Ver agentes</button>` : ''}
               </div>
             </div>
             <button type="button" onclick="closeModal('${idModal}')" class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors close">
@@ -392,17 +383,13 @@
             </button>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 p-4 bg-slate-50 border-b border-slate-100 flex-shrink-0">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 p-3 sm:p-4 bg-slate-50 border-b border-slate-100 flex-shrink-0">
             <div class="lg:col-span-2 relative">
               <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
               <input type="search" id="search-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Buscar por nombre o zona" class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 outline-none text-sm transition-all bg-white" autocomplete="off" />
             </div>
             <select id="tipo-${pestana}" onchange="aplicarFiltros('${pestana}')" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 text-sm outline-none bg-white cursor-pointer transition-all">
-                <option value="">Todos los tipos</option>
-                <option value="Casa">Casas / Villas</option>
-                <option value="Departamento">Departamentos</option>
-                <option value="Terreno">Lotes / Terrenos</option>
-                <option value="Bodega">Bodegas</option>
+                ${tipoOpcionesHTML}
             </select>
             <input type="number" id="precioMin-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Precio mín. ($)" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 text-sm outline-none transition-all bg-white" />
             <input type="number" id="precioMax-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Precio máx. ($)" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 text-sm outline-none transition-all bg-white" />
@@ -414,20 +401,20 @@
             </select>
           </div>
 
-          <div class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50/50 custom-scrollbar">
-            <div id="grid-${pestana}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="flex-1 overflow-y-auto p-3 sm:p-6 bg-slate-50/50 custom-scrollbar">
+            <div id="grid-${pestana}" class="grid ml-card-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div class="col-span-full text-center py-10 text-slate-500">
                     <i class="ph-bold ph-spinner animate-spin text-4xl mb-3 text-brand-500 inline-block"></i><br>Cargando propiedades...
                 </div>
             </div>
           </div>
 
-          <div class="flex flex-col sm:flex-row items-center justify-between px-6 py-4 border-t border-slate-100 bg-white gap-4 flex-shrink-0">
-            <span id="info-paginacion-${pestana}" class="text-sm text-slate-500 font-medium">Mostrando 0 propiedades</span>
+          <div class="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-4 border-t border-slate-100 bg-white gap-3 flex-shrink-0">
+            <span id="info-paginacion-${pestana}" class="text-xs sm:text-sm text-slate-500 font-medium">Mostrando 0 propiedades</span>
             <div class="flex items-center gap-2">
-              <button type="button" id="btn-prev-${pestana}" onclick="cambiarPagina('${pestana}', -1)" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-brand-600 hover:border-brand-200 disabled:opacity-50 transition-colors text-sm font-semibold">Anterior</button>
-              <span id="num-pagina-${pestana}" class="font-bold text-brand-600 min-w-[32px] text-center text-lg">1</span>
-              <button type="button" id="btn-next-${pestana}" onclick="cambiarPagina('${pestana}', 1)" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-brand-600 hover:border-brand-200 disabled:opacity-50 transition-colors text-sm font-semibold">Siguiente</button>
+              <button type="button" id="btn-prev-${pestana}" onclick="cambiarPagina('${pestana}', -1)" class="px-3 sm:px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-brand-600 hover:border-brand-200 disabled:opacity-50 transition-colors text-xs sm:text-sm font-semibold">Anterior</button>
+              <span id="num-pagina-${pestana}" class="font-bold text-brand-600 min-w-[28px] text-center text-base sm:text-lg">1</span>
+              <button type="button" id="btn-next-${pestana}" onclick="cambiarPagina('${pestana}', 1)" class="px-3 sm:px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-brand-600 hover:border-brand-200 disabled:opacity-50 transition-colors text-xs sm:text-sm font-semibold">Siguiente</button>
             </div>
           </div>
         </div>
@@ -435,13 +422,31 @@
     `;
   }
 
-  document.write(crearModalHTML('modalVenta', 'Propiedades en Venta', 'Catálogo Venta'));
-  document.write(crearModalHTML('modalRenta', 'Renta Residencial', 'Catálogo Renta'));
-  document.write(crearModalHTML('modalLotes', 'Lotes & Macrolotes', 'Suelo Estratégico'));
-  document.write(crearModalHTML('modalNetworking', 'Propiedades de la red de networking', 'Catalogo de la Red', true));
+  const opcionesCasasVillasDepas = `
+    <option value="">Todos los tipos</option>
+    <option value="Casa">Casas / Villas</option>
+    <option value="Departamento">Departamentos</option>
+  `;
+
+  const opcionesSoloLotes = `
+    <option value="">Todos los tipos</option>
+    <option value="Terreno">Lotes / Terrenos</option>
+  `;
+
+  const opcionesTodasRed = `
+    <option value="">Todos los tipos</option>
+    <option value="Casa">Casas / Villas</option>
+    <option value="Departamento">Departamentos</option>
+    <option value="Terreno">Lotes / Terrenos</option>
+    <option value="Bodega">Bodegas</option>
+  `;
+
+  document.write(crearModalHTML('modalVenta', 'Propiedades en Venta', 'Catálogo Venta', false, opcionesCasasVillasDepas));
+  document.write(crearModalHTML('modalRenta', 'Renta Residencial', 'Catálogo Renta', false, opcionesCasasVillasDepas));
+  document.write(crearModalHTML('modalLotes', 'Lotes & Macrolotes', 'Suelo Estratégico', false, opcionesSoloLotes));
+  document.write(crearModalHTML('modalNetworking', 'Propiedades de la red de networking', 'Catalogo de la Red', true, opcionesTodasRed));
 </script>
 
-<!-- LÓGICA MOTOR -->
 <script>
   const SHEET_ID = '192oLS5Pqh5IBrMYlp2RbE6ASol8BrHh9Naacegjzva8';
   const SHEETS_MAPPING = { 'Venta': 'Venta', 'Renta': 'Renta', 'Lotes': 'Lotes', 'Networking': 'red inmobiliaria de networking estrategico' };
@@ -559,7 +564,7 @@
     });
 
     if(todas.length === 0) {
-      container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 bg-white rounded-2xl border border-slate-200"><i class="ph-bold ph-heart text-4xl text-rose-300 mb-3 block"></i><h3 class="text-lg font-bold text-slate-800">No tienes favoritos aún</h3><p>Da clic en el icono de corazón en cualquier propiedad para guardarla aquí.</p></div>`;
+      container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 bg-white rounded-2xl border border-slate-200"><i class="ph-bold ph-heart text-4xl text-rose-300 mb-3 block"></i><h3 class="text-lg font-bold text-slate-800">No tienes favoritos aún</h3><p class="text-xs sm:text-sm">Da clic en el icono de corazón en cualquier propiedad para guardarla aquí.</p></div>`;
       return;
     }
 
@@ -573,12 +578,12 @@
       <article onclick="closeModal('modalFavoritos'); abrirFichaDetallePorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col cursor-pointer hover:shadow-md transition-shadow">
         <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden">
           ${fotos[0] ? `<img src="${fotos[0]}" class="w-full h-full object-cover" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-4xl"></i></div>'}
-          <button type="button" onclick="toggleFavorito('${idUnico}', event)" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 text-rose-500 shadow flex items-center justify-center"><i class="ph-fill ph-heart text-xl"></i></button>
+          <button type="button" onclick="toggleFavorito('${idUnico}', event)" class="absolute top-2 right-2 sm:top-3 sm:right-3 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 text-rose-500 shadow flex items-center justify-center"><i class="ph-fill ph-heart text-lg"></i></button>
         </div>
-        <div class="p-4 flex flex-col flex-grow">
-          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">${ubic}</p>
-          <h3 class="text-base font-bold text-slate-900 mb-1 line-clamp-1">${item.titulo}</h3>
-          <p class="text-lg font-extrabold text-brand-600">${precioVal}</p>
+        <div class="p-3 sm:p-4 flex flex-col flex-grow">
+          <p class="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">${ubic}</p>
+          <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-1 line-clamp-1">${item.titulo}</h3>
+          <p class="text-base sm:text-lg font-extrabold text-brand-600">${precioVal}</p>
         </div>
       </article>`;
     }).join('');
@@ -593,15 +598,6 @@
     const abiertos = document.querySelectorAll('.modal-backdrop:not(.hidden)');
     if (abiertos.length) closeModal(abiertos[abiertos.length - 1].id);
   });
-
-  function scrollToRINE() {
-    const card = document.getElementById('card-rine');
-    if (card) {
-      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      card.classList.add('rine-highlight');
-      setTimeout(() => card.classList.remove('rine-highlight'), 3000);
-    }
-  }
 
   function formatearUrlImagen(url) {
     if (!url) return '';
@@ -678,14 +674,14 @@
       const fotos = extraerTodasLasFotos(item);
       const precio = obtenerPrecioItem(item);
       return `
-        <div onclick="abrirFichaDetallePorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="flex items-center gap-4 p-3 bg-white border border-slate-200 rounded-xl hover:border-brand-500 hover:shadow-lg transition-all text-left w-[340px] flex-shrink-0 group cursor-pointer">
-          <div class="w-24 h-24 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
+        <div onclick="abrirFichaDetallePorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="flex items-center gap-3.5 p-3 bg-white border border-slate-200 rounded-xl hover:border-brand-500 hover:shadow-lg transition-all text-left w-[300px] sm:w-[340px] flex-shrink-0 group cursor-pointer">
+          <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
             ${fotos[0] ? `<img src="${fotos[0]}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-2xl"></i></div>'}
           </div>
           <div class="flex-col overflow-hidden w-full">
-            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wide truncate block mb-1"><i class="ph-bold ph-map-pin mr-1"></i>${item.ubicación || item.ubicacion || 'Cancún'}</span>
-            <span class="text-sm font-bold text-slate-900 truncate block mb-1">${item.titulo || 'Destacado'}</span>
-            <span class="text-brand-600 font-extrabold text-sm block">${precio}</span>
+            <span class="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wide truncate block mb-1"><i class="ph-bold ph-map-pin mr-1"></i>${item.ubicación || item.ubicacion || 'Cancún'}</span>
+            <span class="text-xs sm:text-sm font-bold text-slate-900 truncate block mb-1">${item.titulo || 'Destacado'}</span>
+            <span class="text-brand-600 font-extrabold text-xs sm:text-sm block">${precio}</span>
           </div>
         </div>`;
     }).join('');
@@ -895,7 +891,7 @@
     if (!grid) return;
 
     if (items.length === 0) {
-      grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 bg-white rounded-2xl border border-slate-200"><i class="ph-bold ph-magnifying-glass text-4xl text-slate-300 mb-3 block"></i><h3 class="text-lg font-bold text-slate-800">Sin resultados</h3><p>Ajusta los filtros para ver más opciones disponibles.</p></div>`;
+      grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 bg-white rounded-2xl border border-slate-200"><i class="ph-bold ph-magnifying-glass text-4xl text-slate-300 mb-3 block"></i><h3 class="text-lg font-bold text-slate-800">Sin resultados</h3><p class="text-xs sm:text-sm">Ajusta los filtros para ver más opciones disponibles.</p></div>`;
       return;
     }
 
@@ -929,44 +925,44 @@
       <article onclick="abrirFichaDetallePorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 transition-all duration-300 overflow-hidden flex flex-col group cursor-pointer">
         <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden">
           ${fotos[0] ? `<img id="img-${cardKey}" src="${fotos[0]}" ${datasetFotosAttr} loading="lazy" alt="${item.titulo}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-4xl"></i></div>'}
-          <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-brand-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">${item.estado || 'Disponible'}</span>
+          <span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur text-brand-700 text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm">${item.estado || 'Disponible'}</span>
           
-          <button type="button" onclick="toggleFavorito('${idUnico}', event)" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur shadow flex items-center justify-center text-rose-500 hover:scale-110 transition-transform">
-            <i class="${esFavorito ? 'ph-fill ph-heart text-xl' : 'ph ph-heart text-xl'}"></i>
+          <button type="button" onclick="toggleFavorito('${idUnico}', event)" class="absolute top-2.5 right-2.5 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 backdrop-blur shadow flex items-center justify-center text-rose-500 hover:scale-110 transition-transform">
+            <i class="${esFavorito ? 'ph-fill ph-heart text-lg' : 'ph ph-heart text-lg'}"></i>
           </button>
 
           ${fotos.length > 1 ? `
-            <button type="button" aria-label="Anterior" onclick="navegarFotoManual('${cardKey}', -1,${fotos.length}, event)" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-900/40 text-white flex items-center justify-center hover:bg-slate-900/80 transition-colors"><i class="ph-bold ph-caret-left"></i></button>
-            <button type="button" aria-label="Siguiente" onclick="navegarFotoManual('${cardKey}', 1,${fotos.length}, event)" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-900/40 text-white flex items-center justify-center hover:bg-slate-900/80 transition-colors"><i class="ph-bold ph-caret-right"></i></button>
-            <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+            <button type="button" aria-label="Anterior" onclick="navegarFotoManual('${cardKey}', -1,${fotos.length}, event)" class="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-900/40 text-white flex items-center justify-center hover:bg-slate-900/80 transition-colors"><i class="ph-bold ph-caret-left"></i></button>
+            <button type="button" aria-label="Siguiente" onclick="navegarFotoManual('${cardKey}', 1,${fotos.length}, event)" class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-900/40 text-white flex items-center justify-center hover:bg-slate-900/80 transition-colors"><i class="ph-bold ph-caret-right"></i></button>
+            <div class="absolute bottom-2.5 left-0 right-0 flex justify-center gap-1.5">
               ${fotos.map((f, fIdx) => `<span class="dot-indicator dot-${cardKey} ${fIdx === 0 ? 'is-active' : ''}"></span>`).join('')}
             </div>
           ` : ''}
         </div>
 
-        <div class="p-5 flex flex-col flex-grow">
-          <div class="flex items-center justify-between text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
+        <div class="p-3.5 sm:p-5 flex flex-col flex-grow">
+          <div class="flex items-center justify-between text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
             <span class="truncate"><i class="ph-bold ph-map-pin mr-1"></i>${ubic}</span>
-            <span><i class="ph-bold ph-calendar mr-1"></i>${fechaPublicacion}</span>
+            <span class="hidden sm:inline"><i class="ph-bold ph-calendar mr-1"></i>${fechaPublicacion}</span>
           </div>
-          <h3 class="text-lg font-bold text-slate-900 leading-tight mb-2 line-clamp-1" title="${item.titulo}">${item.titulo || 'Propiedad Exclusiva'}</h3>
-          <p class="text-xl font-extrabold text-brand-600 mb-4">${precioVal}</p>
+          <h3 class="text-sm sm:text-lg font-bold text-slate-900 leading-tight mb-1 sm:mb-2 line-clamp-1 ml-card-title" title="${item.titulo}">${item.titulo || 'Propiedad Exclusiva'}</h3>
+          <p class="text-base sm:text-xl font-extrabold text-brand-600 mb-3 sm:mb-4 ml-card-price">${precioVal}</p>
 
-          <div class="grid grid-cols-3 gap-2 mb-4 text-xs font-medium text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-            <div class="flex flex-col"><span class="text-[10px] text-slate-400 uppercase font-bold">Habitaciones</span><span class="font-bold"><i class="ph-fill ph-bed text-brand-500 mr-1"></i>${habitaciones}</span></div>
-            <div class="flex flex-col"><span class="text-[10px] text-slate-400 uppercase font-bold">Baños</span><span class="font-bold"><i class="ph-fill ph-bathtub text-brand-500 mr-1"></i>${banos}</span></div>
-            <div class="flex flex-col"><span class="text-[10px] text-slate-400 uppercase font-bold">Estacionam.</span><span class="font-bold"><i class="ph-fill ph-car text-brand-500 mr-1"></i>${estacionamientos}</span></div>
-            <div class="flex flex-col col-span-1.5 mt-1 pt-1 border-t border-slate-200/60"><span class="text-[10px] text-slate-400 uppercase font-bold">Terreno</span><span>${terreno}</span></div>
-            <div class="flex flex-col col-span-1.5 mt-1 pt-1 border-t border-slate-200/60"><span class="text-[10px] text-slate-400 uppercase font-bold">Construcción</span><span>${construccion}</span></div>
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-2 mb-3 sm:mb-4 text-[11px] sm:text-xs font-medium text-slate-700 bg-slate-50 p-2 sm:p-2.5 rounded-xl border border-slate-100">
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Habitac.</span><span class="font-bold truncate"><i class="ph-fill ph-bed text-brand-500 mr-0.5"></i>${habitaciones}</span></div>
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Baños</span><span class="font-bold truncate"><i class="ph-fill ph-bathtub text-brand-500 mr-0.5"></i>${banos}</span></div>
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Estacionam.</span><span class="font-bold truncate"><i class="ph-fill ph-car text-brand-500 mr-0.5"></i>${estacionamientos}</span></div>
+            <div class="flex flex-col col-span-1.5 mt-1 pt-1 border-t border-slate-200/60"><span class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Terreno</span><span class="truncate">${terreno}</span></div>
+            <div class="flex flex-col col-span-1.5 mt-1 pt-1 border-t border-slate-200/60"><span class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Construcc.</span><span class="truncate">${construccion}</span></div>
           </div>
 
-          <p class="text-sm text-slate-500 line-clamp-2 mb-4 leading-relaxed">${item.descripción || item.descripcion || 'Sin descripción detallada.'}</p>
+          <p class="text-xs sm:text-sm text-slate-500 line-clamp-2 mb-3 sm:mb-4 leading-relaxed">${item.descripción || item.descripcion || 'Sin descripción detallada.'}</p>
           
-          ${pestana === 'Networking' && item.asesor ? `<p class="text-xs font-semibold text-slate-600 mb-4 py-2 px-3 bg-slate-50 rounded-lg border border-slate-100"><i class="ph-bold ph-user-circle mr-1 text-brand-500"></i> Asesor: ${item.asesor}</p>` : ''}
+          ${pestana === 'Networking' && item.asesor ? `<p class="text-[11px] sm:text-xs font-semibold text-slate-600 mb-3 sm:mb-4 py-1.5 px-2.5 bg-slate-50 rounded-lg border border-slate-100 truncate"><i class="ph-bold ph-user-circle mr-1 text-brand-500"></i> Asesor: ${item.asesor}</p>` : ''}
 
           <div class="mt-auto grid grid-cols-2 gap-2" onclick="event.stopPropagation()">
-            <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="py-2.5 px-4 rounded-lg bg-brand-600 text-white font-semibold text-sm text-center hover:bg-brand-700 transition-colors flex items-center justify-center"><i class="ph-bold ph-whatsapp-logo mr-1"></i> Chat</a>
-            <button type="button" onclick="generarFichaPDFPorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="py-2.5 px-4 rounded-lg border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-colors flex items-center justify-center"><i class="ph-bold ph-file-pdf mr-1"></i> PDF</button>
+            <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg bg-brand-600 text-white font-semibold text-xs sm:text-sm text-center hover:bg-brand-700 transition-colors flex items-center justify-center"><i class="ph-bold ph-whatsapp-logo mr-1"></i> Chat</a>
+            <button type="button" onclick="generarFichaPDFPorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg border border-slate-200 text-slate-700 font-semibold text-xs sm:text-sm hover:bg-slate-50 transition-colors flex items-center justify-center"><i class="ph-bold ph-file-pdf mr-1"></i> PDF</button>
           </div>
         </div>
       </article>`;
@@ -1000,14 +996,14 @@
     const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad:\n\n*${item.titulo || 'Propiedad'}*\n Ubicación: ${ubic}\n Precio: ${precioVal}`);
 
     document.getElementById('contenidoDetalleUnico').innerHTML = `
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
         <div class="flex flex-col gap-4">
           <div class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm">
             ${fotos[0] ? `<img id="img-${modalKey}" src="${fotos[0]}" ${datasetFotosAttr} class="w-full h-full object-cover" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-5xl"></i></div>'}
             
             ${fotos.length > 1 ? `
-              <button type="button" onclick="navegarFotoManual('${modalKey}', -1,${fotos.length})" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 shadow-md text-slate-800 flex items-center justify-center hover:bg-white transition-colors"><i class="ph-bold ph-caret-left text-xl"></i></button>
-              <button type="button" onclick="navegarFotoManual('${modalKey}', 1,${fotos.length})" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 shadow-md text-slate-800 flex items-center justify-center hover:bg-white transition-colors"><i class="ph-bold ph-caret-right text-xl"></i></button>
+              <button type="button" onclick="navegarFotoManual('${modalKey}', -1,${fotos.length})" class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/80 shadow-md text-slate-800 flex items-center justify-center hover:bg-white transition-colors"><i class="ph-bold ph-caret-left text-xl"></i></button>
+              <button type="button" onclick="navegarFotoManual('${modalKey}', 1,${fotos.length})" class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/80 shadow-md text-slate-800 flex items-center justify-center hover:bg-white transition-colors"><i class="ph-bold ph-caret-right text-xl"></i></button>
               <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
                 ${fotos.map((f, fIdx) => `<span class="dot-indicator dot-${modalKey} ${fIdx === 0 ? 'is-active' : ''}"></span>`).join('')}
               </div>
@@ -1017,7 +1013,7 @@
           ${fotos.length > 1 ? `
             <div class="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
               ${fotos.map((f, fIdx) => `
-                <button type="button" onclick="navegarFotoManual('${modalKey}', ${fIdx} - (fotoActualIndex['${modalKey}'] || 0), ${fotos.length})" class="flex-shrink-0 w-24 h-20 rounded-xl overflow-hidden border-2 border-transparent focus:border-brand-500 hover:opacity-85 transition-all bg-slate-100">
+                <button type="button" onclick="navegarFotoManual('${modalKey}', ${fIdx} - (fotoActualIndex['${modalKey}'] || 0), ${fotos.length})" class="flex-shrink-0 w-20 h-16 sm:w-24 sm:h-20 rounded-xl overflow-hidden border-2 border-transparent focus:border-brand-500 hover:opacity-85 transition-all bg-slate-100">
                   <img src="${f}" class="w-full h-full object-cover" loading="lazy" />
                 </button>
               `).join('')}
@@ -1026,34 +1022,34 @@
         </div>
 
         <div class="flex flex-col">
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-sm font-semibold text-slate-500 uppercase tracking-widest"><i class="ph-bold ph-map-pin mr-1"></i>${ubic}</span>
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-widest"><i class="ph-bold ph-map-pin mr-1"></i>${ubic}</span>
             <span class="bg-brand-50 text-brand-700 border border-brand-200 text-xs font-bold px-3 py-1 rounded-full shadow-sm">${item.estado || 'Disponible'}</span>
           </div>
 
-          <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2 leading-tight">${item.titulo || 'Propiedad Exclusiva'}</h2>
-          <p class="text-3xl md:text-4xl font-extrabold text-brand-600 mb-2">${precioVal}</p>
-          <p class="text-xs text-slate-400 font-semibold mb-6"><i class="ph-bold ph-calendar mr-1"></i> Publicado: ${fechaPublicacion}</p>
+          <h2 class="text-xl sm:text-3xl font-bold text-slate-900 mb-2 leading-tight">${item.titulo || 'Propiedad Exclusiva'}</h2>
+          <p class="text-2xl sm:text-4xl font-extrabold text-brand-600 mb-2">${precioVal}</p>
+          <p class="text-xs text-slate-400 font-semibold mb-4 sm:mb-6"><i class="ph-bold ph-calendar mr-1"></i> Publicado: ${fechaPublicacion}</p>
 
-          <div class="grid grid-cols-3 sm:grid-cols-5 gap-3 py-4 border-y border-slate-200 mb-6 bg-slate-50/70 p-3 rounded-xl">
-            <div class="flex flex-col"><span class="text-[10px] text-slate-400 font-bold uppercase">Terreno</span><span class="font-bold text-slate-800 text-sm">${terreno}</span></div>
-            <div class="flex flex-col"><span class="text-[10px] text-slate-400 font-bold uppercase">Construcc.</span><span class="font-bold text-slate-800 text-sm">${construccion}</span></div>
-            <div class="flex flex-col"><span class="text-[10px] text-slate-400 font-bold uppercase">Habitac.</span><span class="font-bold text-slate-800 text-sm">${habitaciones}</span></div>
-            <div class="flex flex-col"><span class="text-[10px] text-slate-400 font-bold uppercase">Baños</span><span class="font-bold text-slate-800 text-sm">${banos}</span></div>
-            <div class="flex flex-col"><span class="text-[10px] text-slate-400 font-bold uppercase">Estacionam.</span><span class="font-bold text-slate-800 text-sm">${estacionamientos}</span></div>
+          <div class="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-3 py-3 sm:py-4 border-y border-slate-200 mb-4 sm:mb-6 bg-slate-50/70 p-3 rounded-xl">
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase">Terreno</span><span class="font-bold text-slate-800 text-xs sm:text-sm truncate">${terreno}</span></div>
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase">Construcc.</span><span class="font-bold text-slate-800 text-xs sm:text-sm truncate">${construccion}</span></div>
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase">Habitac.</span><span class="font-bold text-slate-800 text-xs sm:text-sm truncate">${habitaciones}</span></div>
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase">Baños</span><span class="font-bold text-slate-800 text-xs sm:text-sm truncate">${banos}</span></div>
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase">Estacionam.</span><span class="font-bold text-slate-800 text-xs sm:text-sm truncate">${estacionamientos}</span></div>
             ${item.asesor ? `<div class="col-span-full pt-2 border-t border-slate-200 text-xs font-semibold text-slate-600"><i class="ph-bold ph-user-circle text-brand-500 mr-1"></i> Asesor: ${item.asesor}</div>` : ''}
           </div>
 
-          <h3 class="text-lg font-bold text-slate-900 mb-3">Descripción completa</h3>
-          <div class="text-slate-600 text-sm md:text-base leading-relaxed whitespace-pre-line max-h-48 overflow-y-auto custom-scrollbar pr-4 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 sm:mb-3">Descripción completa</h3>
+          <div class="text-slate-600 text-xs sm:text-base leading-relaxed whitespace-pre-line max-h-40 sm:max-h-48 overflow-y-auto custom-scrollbar pr-2 sm:pr-4 mb-4 sm:mb-6 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-100">
             ${item.descripción || item.descripcion || 'Sin descripción detallada.'}
           </div>
 
           <div class="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-brand-600 text-white font-bold hover:bg-brand-700 transition-all text-base">
+            <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="flex items-center justify-center gap-2 py-3 sm:py-3.5 px-4 rounded-xl bg-brand-600 text-white font-bold hover:bg-brand-700 transition-all text-sm sm:text-base">
               <i class="ph-bold ph-whatsapp-logo text-xl"></i> Solicitar Info
             </a>
-            <button type="button" onclick="generarFichaPDFPorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition-all text-base">
+            <button type="button" onclick="generarFichaPDFPorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="flex items-center justify-center gap-2 py-3 sm:py-3.5 px-4 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition-all text-sm sm:text-base">
               <i class="ph-bold ph-file-pdf text-xl"></i> Descargar PDF
             </button>
           </div>
