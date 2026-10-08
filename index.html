@@ -1,279 +1,1679 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solicitud de Propiedad - Red Inmobiliaria</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Edgardo de Real | Red Inmobiliaria</title>
+    <meta name="description" content="Red Inmobiliaria de Networking Estratégico. Catálogo filtrable en Venta, Renta, Lotes y Solicitudes.">
+    <meta name="theme-color" content="#f8fafc">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 
+                            500: '#14b8a6', 600: '#0d9488', 700: '#0f766e', 
+                            900: '#134e4a', 950: '#042f2e'
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: 0, transform: 'translateY(20px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        .glass-nav { 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); 
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05); 
         }
-
-        body {
-            background-color: #f4f6f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+        .hero-gradient { 
+            background: radial-gradient(circle at top right, rgba(20, 184, 166, 0.1), transparent 40%), 
+                        radial-gradient(circle at bottom left, rgba(20, 184, 166, 0.05), transparent 40%); 
         }
+        .animate-on-load { opacity: 0; }
+        
+        .marquee { overflow: hidden; position: relative; -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); }
+        .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+        .marquee:hover .animate-marquee { animation-play-state: paused; }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb { background: #94a3b8; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .dot-indicator { height: 6px; width: 6px; border-radius: 999px; background: rgba(255,255,255,0.7); transition: all 0.3s ease; }
+        .dot-indicator.is-active { width: 18px; background: #14b8a6; }
+        
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(20, 184, 166, 0); } 50% { box-shadow: 0 0 0 8px rgba(20, 184, 166, 0.3); border-color: #14b8a6; } }
+        .rine-highlight { animation: pulseGlow 1.5s ease-in-out 2; border-color: #14b8a6 !important; }
+        
+        .toast-msg { position: fixed; left: 50%; bottom: 2rem; z-index: 100; transform: translate(-50%, 20px); max-width: calc(100% - 32px); padding: 12px 24px; border-radius: 8px; background: #042f2e; color: #fff; font-size: 14px; font-weight: 600; box-shadow: 0 10px 25px rgba(0,0,0,0.2); opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .toast-msg.show { opacity: 1; transform: translate(-50%, 0); }
 
-        .container {
-            background: #ffffff;
-            width: 100%;
-            max-width: 650px;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        .form-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .form-header h2 {
-            color: #1e293b;
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        .form-header p {
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 12px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 6px;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #1e293b;
-            background-color: #f8fafc;
-            outline: none;
-            transition: all 0.2s ease;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: #2563eb;
-            background-color: #ffffff;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-        }
-
-        textarea {
-            resize: vertical;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 14px;
-            background-color: #2563eb;
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            margin-top: 10px;
-        }
-
-        .btn-submit:hover {
-            background-color: #1d4ed8;
-        }
-
-        .btn-submit:disabled {
-            background-color: #94a3b8;
-            cursor: not-allowed;
-        }
-
-        .mensaje-estado {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            text-align: center;
-            display: none;
-        }
-
-        .mensaje-exito {
-            background-color: #dcfce7;
-            color: #166534;
-            border: 1px solid #bbf7d0;
-        }
-
-        .mensaje-error {
-            background-color: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #fecaca;
+        @media (max-width: 640px) {
+            .ml-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+            .ml-card-pad { padding: 0.75rem; }
+            .ml-card-title { font-size: 0.875rem; line-height: 1.25rem; }
+            .ml-card-price { font-size: 1rem; }
         }
     </style>
 </head>
-<body>
+<body class="font-sans text-slate-800 antialiased bg-slate-50 selection:bg-brand-500 selection:text-white">
 
-<div class="container">
-    <div class="form-header">
-        <h2>Registro de Solicitud Requerida</h2>
-        <p>Completa los campos para ingresar el requerimiento a la base de datos.</p>
+<!-- Botón Flotante Permanente de WhatsApp (Abre Menú de 3 Opciones) -->
+<button type="button" onclick="openModal('modalWhatsappOpciones')" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 focus:outline-none" aria-label="Contacto por WhatsApp">
+    <i class="ph-fill ph-whatsapp-logo text-3xl"></i>
+</button>
+
+<!-- Modal: Opciones de WhatsApp -->
+<div id="modalWhatsappOpciones" class="modal-backdrop fixed inset-0 z-[80] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalWhatsappOpciones')">
+  <div class="flex flex-col w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up p-6">
+    <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+      <div class="flex items-center gap-2">
+        <i class="ph-fill ph-whatsapp-logo text-emerald-600 text-2xl"></i>
+        <h3 class="text-lg font-bold text-slate-900">¿En qué podemos ayudarte?</h3>
+      </div>
+      <button type="button" onclick="closeModal('modalWhatsappOpciones')" class="p-2 text-slate-400 hover:text-slate-700 rounded-lg"><i class="ph-bold ph-x text-xl"></i></button>
     </div>
-
-    <form id="form-solicitud" onsubmit="enviarSolicitud(event)">
-        
-        <!-- Nombre del Agente -->
-        <div class="form-group">
-            <label for="nombre">Nombre del Agente *</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Ej. Edgardo Romero" required>
-        </div>
-
-        <!-- Teléfono y Correo -->
-        <div class="form-row">
-            <div class="form-group">
-                <label for="telefono">Teléfono (WhatsApp) *</label>
-                <input type="tel" id="telefono" name="telefono" placeholder="Ej. 9981234567" required>
-            </div>
-            <div class="form-group">
-                <label for="correo">Correo Electrónico *</label>
-                <input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com" required>
-            </div>
-        </div>
-
-        <!-- Agencia y Presupuesto -->
-        <div class="form-row">
-            <div class="form-group">
-                <label for="agencia">Agencia Inmobiliaria</label>
-                <input type="text" id="agencia" name="agencia" placeholder="Nombre de la agencia">
-            </div>
-            <div class="form-group">
-                <label for="presupuesto">Presupuesto *</label>
-                <input type="text" id="presupuesto" name="presupuesto" placeholder="Ej. $3,500,000 MXN" required>
-            </div>
-        </div>
-
-        <!-- Tipo de Propiedad y Ubicación -->
-        <div class="form-row">
-            <div class="form-group">
-                <label for="tipo_propiedad">Tipo de Propiedad *</label>
-                <select id="tipo_propiedad" name="tipo_propiedad" required>
-                    <option value="">Selecciona una opción...</option>
-                    <option value="Departamento">Departamento</option>
-                    <option value="Casa">Casa</option>
-                    <option value="Terreno">Terreno / Macrolote</option>
-                    <option value="Villa">Villa</option>
-                    <option value="Local Comercial">Local Comercial</option>
-                    <option value="Oficina">Oficina</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="ubicacion">Ubicación Requerida *</label>
-                <input type="text" id="ubicacion" name="ubicacion" placeholder="Ej. Cancún Centro, Tulum, etc." required>
-            </div>
-        </div>
-
-        <!-- Habitaciones y Baños -->
-        <div class="form-row">
-            <div class="form-group">
-                <label for="habitaciones">Habitaciones</label>
-                <input type="number" id="habitaciones" name="habitaciones" min="0" placeholder="Ej. 3">
-            </div>
-            <div class="form-group">
-                <label for="banos">Baños</label>
-                <input type="number" id="banos" name="banos" min="0" step="0.5" placeholder="Ej. 2.5">
-            </div>
-        </div>
-
-        <!-- Metros Terreno y Metros Construcción -->
-        <div class="form-row">
-            <div class="form-group">
-                <label for="m2_terreno">Metros de Terreno (m²)</label>
-                <input type="number" id="m2_terreno" name="m2_terreno" min="0" placeholder="Ej. 200">
-            </div>
-            <div class="form-group">
-                <label for="m2_construccion">Metros de Construcción (m²)</label>
-                <input type="number" id="m2_construccion" name="m2_construccion" min="0" placeholder="Ej. 180">
-            </div>
-        </div>
-
-        <!-- Detalles Adicionales -->
-        <div class="form-group">
-            <label for="detalles">Comentarios / Detalles</label>
-            <textarea id="detalles" name="detalles" rows="3" placeholder="Amenidades específicas, forma de pago, fecha estimada de compra, etc."></textarea>
-        </div>
-
-        <button type="submit" id="btn-enviar" class="btn-submit">Enviar Solicitud</button>
-    </form>
-
-    <div id="mensaje" class="mensaje-estado"></div>
+    <div class="flex flex-col gap-3">
+      <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20una%20propiedad%20para%20un%20cliente." target="_blank" onclick="closeModal('modalWhatsappOpciones')" class="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all text-left font-semibold text-slate-800 text-sm group">
+        <span>1. Me interesa una propiedad para un cliente</span>
+        <i class="ph-bold ph-arrow-right text-emerald-600 group-hover:translate-x-1 transition-transform"></i>
+      </a>
+      <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20sumar%20una%20propiedad%20a%20la%20red%20estrategica." target="_blank" onclick="closeModal('modalWhatsappOpciones')" class="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all text-left font-semibold text-slate-800 text-sm group">
+        <span>2. Me interesa sumar una propiedad a la red estratégica</span>
+        <i class="ph-bold ph-arrow-right text-emerald-600 group-hover:translate-x-1 transition-transform"></i>
+      </a>
+      <a href="https://wa.me/529981550066?text=Hola%20Edgardo%2C%20me%20interesa%20esta%20propiedad%20para%20mi." target="_blank" onclick="closeModal('modalWhatsappOpciones')" class="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 transition-all text-left font-semibold text-slate-800 text-sm group">
+        <span>3. Me interesa esta propiedad para mí</span>
+        <i class="ph-bold ph-arrow-right text-emerald-600 group-hover:translate-x-1 transition-transform"></i>
+      </a>
+    </div>
+  </div>
 </div>
 
+<!-- Navegación Superior Principal -->
+<nav class="fixed w-full top-0 z-50 glass-nav transition-all duration-300" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex-shrink-0 flex items-center gap-2.5 cursor-pointer py-2" onclick="cambiarSeccionPrincipal('inicio'); window.scrollTo(0,0);">
+                <div class="flex flex-col">
+                    <span class="font-bold text-base sm:text-lg tracking-tight text-slate-900 leading-tight">Edgardo de Real</span>
+                    <span class="text-[11px] sm:text-xs font-medium text-slate-500 tracking-wide leading-none mt-0.5">Red Inmobiliaria de Networking Estratégico</span>
+                </div>
+            </div>
+
+            <!-- Links -->
+            <div class="flex space-x-3 sm:space-x-4 items-center">
+                <div class="relative group">
+                    <button type="button" class="text-xs sm:text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors flex items-center gap-1 py-2">
+                        Catálogo Inmobiliario <i class="ph-bold ph-caret-down text-xs"></i>
+                    </button>
+                    <div class="absolute right-0 sm:left-0 mt-0 w-64 bg-white border border-slate-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 z-50">
+                        <button type="button" onclick="openModalCatalogosEdgardo()" class="w-full text-left px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-600 flex items-center gap-2">
+                            <i class="ph-bold ph-house text-brand-500 text-base"></i> Catálogo Edgardo de Real
+                        </button>
+                        <button type="button" onclick="openModal('modalNetworking')" class="w-full text-left px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-600 flex items-center gap-2">
+                            <i class="ph-bold ph-users-three text-brand-500 text-base"></i> Catálogo de la red estratégica
+                        </button>
+                    </div>
+                </div>
+
+                <button type="button" onclick="openModalFavoritos()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold text-xs sm:text-sm transition-colors">
+                    <i class="ph-fill ph-heart text-rose-500 text-base"></i> Favoritos (<span id="contador-likes">0</span>)
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Sub-Barra Deslizable de Navegación (Inicio vs Solicitudes) -->
+<div class="fixed top-20 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm py-2 px-4">
+  <div class="max-w-7xl mx-auto flex items-center justify-center gap-3 overflow-x-auto custom-scrollbar no-scrollbar">
+    <button type="button" id="tab-btn-inicio" onclick="cambiarSeccionPrincipal('inicio')" class="px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-brand-600 text-white shadow-sm">
+      <i class="ph-bold ph-house text-base"></i> Inicio
+    </button>
+    <button type="button" id="tab-btn-solicitudes" onclick="cambiarSeccionPrincipal('solicitudes')" class="px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-slate-100 text-slate-700 hover:bg-slate-200">
+      <i class="ph-bold ph-clipboard-text text-base"></i> Solicitudes de Propiedades
+    </button>
+  </div>
+</div>
+
+<!-- CONTENEDOR PRINCIPAL: INICIO -->
+<div id="seccion-inicio" class="block">
+    <!-- Hero Section -->
+    <section class="relative pt-36 pb-20 lg:pt-44 lg:pb-28 overflow-hidden hero-gradient">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-5xl mx-auto animate-on-load animate-fade-in-up">
+                <!-- Título en 2 líneas exactamente -->
+                <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-snug mb-6 text-center">
+                    <span class="block whitespace-nowrap overflow-hidden text-ellipsis">Red Inmobiliaria de Networking Estratégico.</span>
+                    <span class="block whitespace-nowrap overflow-hidden text-ellipsis text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-teal-400 mt-1">Conexiones que aceleran tus operaciones.</span>
+                </h1>
+                
+                <p class="mt-4 text-base sm:text-xl text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+                    Crea alianzas estratégicas y consulta nuestro portafolio disponible en Cancún y la Riviera Maya.
+                </p>
+                
+                <!-- Dos botones lado a lado -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-2xl mx-auto">
+                    <button type="button" onclick="openModalCatalogosEdgardo()" class="w-full sm:w-1/2 inline-flex flex-col items-center justify-center px-6 py-4 rounded-2xl text-white bg-slate-900 hover:bg-slate-800 hover:shadow-xl hover:shadow-slate-900/20 transition-all active:scale-95 group">
+                        <span class="text-base sm:text-lg font-bold">Propiedades disponibles</span>
+                        <span class="text-xs text-brand-400 font-medium mt-0.5">Edgardo de Real</span>
+                    </button>
+                    <button type="button" onclick="openModal('modalNetworking')" class="w-full sm:w-1/2 inline-flex flex-col items-center justify-center px-6 py-4 rounded-2xl text-white bg-brand-600 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/20 transition-all active:scale-95 group">
+                        <span class="text-base sm:text-lg font-bold">Propiedades disponibles</span>
+                        <span class="text-xs text-brand-100 font-medium mt-0.5">red estratégica</span>
+                    </button>
+                </div>
+                <p class="text-xs text-slate-500 mt-4">¿Te interesa sumarte a la red inmobiliaria, o una de nuestras propiedades?</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Carrusel Destacadas -->
+    <section class="py-12 border-t border-slate-100 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 text-center md:text-left">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-1">Propiedades destacadas (<span id="carrousell-count">0</span>)</h2>
+            <p class="text-slate-500 text-xs sm:text-sm">Se pausa al pasar el cursor. Toca una propiedad para ver su ficha.</p>
+        </div>
+        <div class="marquee w-full">
+            <div id="carrousell-container" class="animate-marquee gap-4 px-4">
+                <div class="text-slate-500 text-sm py-4">Cargando propiedades destacadas...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categorías (Tiles) -->
+    <section class="py-20 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Venta -->
+                <button type="button" onclick="openModal('modalVenta')" class="text-left bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-5 group-hover:bg-brand-600 transition-colors duration-300">
+                        <i class="ph ph-house text-2xl sm:text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h4 class="text-lg sm:text-xl font-bold text-slate-900 mb-2">Venta</h4>
+                    <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6 flex-grow">Residencias, villas de lujo y departamentos en entrega inmediata con certeza jurídica.</p>
+                    <div class="flex items-center justify-between text-brand-600 font-semibold text-xs sm:text-sm w-full pt-4 border-t border-slate-200/60">
+                        <span>Explorar (<span id="count-Venta">0</span>)</span>
+                        <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </button>
+                
+                <!-- Renta -->
+                <button type="button" onclick="openModal('modalRenta')" class="text-left bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-5 group-hover:bg-brand-600 transition-colors duration-300">
+                        <i class="ph ph-key text-2xl sm:text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h4 class="text-lg sm:text-xl font-bold text-slate-900 mb-2">Renta Residencial</h4>
+                    <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6 flex-grow">Opciones seleccionadas para renta a largo plazo en las ubicaciones más cotizadas.</p>
+                    <div class="flex items-center justify-between text-brand-600 font-semibold text-xs sm:text-sm w-full pt-4 border-t border-slate-200/60">
+                        <span>Explorar (<span id="count-Renta">0</span>)</span>
+                        <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </button>
+
+                <!-- Lotes -->
+                <button type="button" onclick="openModal('modalLotes')" class="text-left bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-5 group-hover:bg-brand-600 transition-colors duration-300">
+                        <i class="ph ph-map-trifold text-2xl sm:text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h4 class="text-lg sm:text-xl font-bold text-slate-900 mb-2">Lotes & Macrolotes</h4>
+                    <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6 flex-grow">Suelo estratégico escriturado desde 220 m² hasta macrolotes para desarrollo.</p>
+                    <div class="flex items-center justify-between text-brand-600 font-semibold text-xs sm:text-sm w-full pt-4 border-t border-slate-200/60">
+                        <span>Explorar (<span id="count-Lotes">0</span>)</span>
+                        <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </button>
+
+                <!-- Networking (RINE) -->
+                <button type="button" id="card-rine" onclick="openModal('modalNetworking')" class="text-left bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full relative focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    <div class="absolute -top-3 -right-3 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md"><i class="ph-fill ph-star mr-1"></i>Top</div>
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-brand-50 flex items-center justify-center mb-5 group-hover:bg-brand-600 transition-colors duration-300">
+                        <i class="ph ph-users-three text-2xl sm:text-3xl text-brand-600 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h4 class="text-lg sm:text-xl font-bold text-slate-900 mb-2">Propiedades de la red de networking</h4>
+                    <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mb-6 flex-grow">Encuentra la propiedad perfecta de nuestra red de agentes que te ayudará a concretar la operación que tienes entre las manos.</p>
+                    <div class="flex items-center justify-between text-brand-600 font-semibold text-xs sm:text-sm w-full pt-4 border-t border-slate-200/60">
+                        <span>Catalogo de la Red (<span id="count-Networking">0</span>)</span>
+                        <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- CONTENEDOR PRINCIPAL: SOLICITUDES -->
+<section id="seccion-solicitudes" class="hidden pt-36 pb-20 min-h-screen bg-slate-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <div>
+        <span class="text-brand-600 text-xs font-bold uppercase tracking-wider">Red RINE</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Solicitudes de Propiedades</h2>
+        <p class="text-slate-500 text-xs sm:text-sm mt-1">Requerimientos activos de clientes buscando propiedad. Contacta directamente al agente solicitante.</p>
+      </div>
+      <button type="button" onclick="openModal('modalNuevaSolicitud')" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-600 text-white font-bold text-sm shadow-md hover:bg-brand-700 transition-all">
+        <i class="ph-bold ph-plus-circle text-lg"></i> Publicar Nueva Solicitud
+      </button>
+    </div>
+
+    <!-- Filtros de Solicitudes -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm mb-6">
+      <div>
+        <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Zona</label>
+        <select id="zona-Solicitudes" onchange="aplicarFiltrosSolicitudes()" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm outline-none bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-500">
+          <option value="">Todas las zonas</option>
+          <option value="Av. Huayacán">Av. Huayacán</option>
+          <option value="Puerto Cancún">Puerto Cancún</option>
+          <option value="Zona Hotelera">Zona Hotelera</option>
+          <option value="Centro / SM">Centro / SM</option>
+          <option value="Cumbres">Cumbres / Vía Cumbres</option>
+          <option value="Playa del Carmen">Playa del Carmen</option>
+          <option value="Tulum">Tulum</option>
+          <option value="Puerto Morelos">Puerto Morelos</option>
+          <option value="Riviera Maya">Riviera Maya</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Presupuesto Máx ($)</label>
+        <input type="number" id="precioMax-Solicitudes" oninput="aplicarFiltrosSolicitudes()" placeholder="Monto máximo..." class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm outline-none bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-500" />
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Fecha de publicación</label>
+        <select id="fecha-Solicitudes" onchange="aplicarFiltrosSolicitudes()" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm outline-none bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-500">
+          <option value="">Cualquier fecha</option>
+          <option value="7">Últimos 7 días</option>
+          <option value="30">Últimos 30 días</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">Búsqueda general</label>
+        <div class="relative">
+          <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input type="search" id="search-Solicitudes" oninput="aplicarFiltrosSolicitudes()" placeholder="Agencia, agente, requerimiento..." class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 text-sm outline-none bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-500" autocomplete="off" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid de Solicitudes -->
+    <div id="grid-solicitudes" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="col-span-full text-center py-12 text-slate-500">Cargando solicitudes...</div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal: Selector de Catálogos de Edgardo -->
+<div id="modalCatalogosEdgardo" class="modal-backdrop fixed inset-0 z-[70] flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalCatalogosEdgardo')">
+  <div class="flex flex-col w-full max-w-xl bg-white rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up p-6">
+    <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+      <h3 class="text-xl font-bold text-slate-900">Catálogos de Edgardo de Real</h3>
+      <button type="button" onclick="closeModal('modalCatalogosEdgardo')" class="p-2 text-slate-400 hover:text-slate-700 rounded-lg"><i class="ph-bold ph-x text-xl"></i></button>
+    </div>
+    <div class="grid grid-cols-1 gap-4">
+      <button type="button" onclick="closeModal('modalCatalogosEdgardo'); openModal('modalVenta');" class="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-brand-500 hover:bg-brand-50/50 transition-all text-left group">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center text-xl"><i class="ph-bold ph-house"></i></div>
+          <div><h4 class="font-bold text-slate-900 group-hover:text-brand-600">Propiedades en Venta</h4><p class="text-xs text-slate-500">Residencias y villas de lujo</p></div>
+        </div>
+        <i class="ph-bold ph-arrow-right text-slate-400 group-hover:text-brand-600"></i>
+      </button>
+      <button type="button" onclick="closeModal('modalCatalogosEdgardo'); openModal('modalRenta');" class="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-brand-500 hover:bg-brand-50/50 transition-all text-left group">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center text-xl"><i class="ph-bold ph-key"></i></div>
+          <div><h4 class="font-bold text-slate-900 group-hover:text-brand-600">Renta Residencial</h4><p class="text-xs text-slate-500">Opciones a largo plazo</p></div>
+        </div>
+        <i class="ph-bold ph-arrow-right text-slate-400 group-hover:text-brand-600"></i>
+      </button>
+      <button type="button" onclick="closeModal('modalCatalogosEdgardo'); openModal('modalLotes');" class="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-brand-500 hover:bg-brand-50/50 transition-all text-left group">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center text-xl"><i class="ph-bold ph-map-trifold"></i></div>
+          <div><h4 class="font-bold text-slate-900 group-hover:text-brand-600">Lotes & Macrolotes</h4><p class="text-xs text-slate-500">Suelo estratégico</p></div>
+        </div>
+        <i class="ph-bold ph-arrow-right text-slate-400 group-hover:text-brand-600"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Favoritos (Pantalla Completa) -->
+<div id="modalFavoritos" class="modal-backdrop fixed inset-0 z-[70] flex items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalFavoritos')">
+  <div class="flex flex-col w-full h-full sm:h-[95vh] bg-white rounded-none sm:rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white flex-shrink-0">
+      <div class="flex items-center gap-3">
+        <button type="button" onclick="closeModal('modalFavoritos')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs sm:text-sm transition-colors">
+          <i class="ph-bold ph-arrow-left"></i> Regresar
+        </button>
+        <div class="flex items-center gap-2">
+          <i class="ph-fill ph-heart text-rose-500 text-2xl"></i>
+          <h3 class="text-xl font-bold text-slate-900">Mis Propiedades Favoritas</h3>
+        </div>
+      </div>
+      <button type="button" onclick="closeModal('modalFavoritos')" class="p-2 text-slate-400 hover:text-slate-700 rounded-lg"><i class="ph-bold ph-x text-xl"></i></button>
+    </div>
+    <div class="flex-1 overflow-y-auto p-4 sm:p-6 bg-slate-50 custom-scrollbar">
+      <div id="grid-favoritos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Listado de Agentes de la Red (Pantalla Completa) -->
+<div id="modalAgentes" class="modal-backdrop fixed inset-0 z-[75] flex items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalAgentes')">
+  <div class="flex flex-col w-full h-full sm:h-[95vh] bg-white rounded-none sm:rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white flex-shrink-0">
+      <div class="flex items-center gap-3">
+        <button type="button" onclick="closeModal('modalAgentes')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs sm:text-sm transition-colors">
+          <i class="ph-bold ph-arrow-left"></i> Regresar
+        </button>
+        <div>
+          <span class="text-brand-600 text-xs font-bold uppercase tracking-wider">Directorio RINE</span>
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900">Agentes de la Red de Networking</h3>
+        </div>
+      </div>
+      <button type="button" onclick="closeModal('modalAgentes')" class="p-2 text-slate-400 hover:text-slate-700 rounded-lg"><i class="ph-bold ph-x text-xl"></i></button>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-slate-50 border-b border-slate-100 flex-shrink-0">
+      <div class="relative">
+        <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input type="search" id="search-agente" oninput="filtrarAgentes()" placeholder="Buscar por nombre o agencia" class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 outline-none text-sm bg-white" autocomplete="off" />
+      </div>
+      <select id="filtro-agencia" onchange="filtrarAgentes()" class="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 text-sm outline-none bg-white cursor-pointer">
+        <option value="">Todas las agencias</option>
+      </select>
+      <div class="flex items-center justify-end text-sm text-slate-500 font-medium px-2" id="info-agentes-count">Mostrando agentes</div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-6 bg-slate-50/50 custom-scrollbar">
+      <div class="bg-white rounded-xl border border-slate-200 overflow-x-auto shadow-sm">
+        <table class="w-full text-left border-collapse min-w-[600px]">
+          <thead>
+            <tr class="bg-slate-100/70 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase tracking-wider">
+              <th class="py-3.5 px-6">Nombre del Agente</th>
+              <th class="py-3.5 px-6">Agencia</th>
+              <th class="py-3.5 px-6">Número Telefónico</th>
+              <th class="py-3.5 px-6 text-right">Acción</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-agentes-body" class="divide-y divide-slate-100 text-sm text-slate-700">
+            <tr><td colspan="4" class="text-center py-8 text-slate-400">Cargando agentes...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Detalle Único Ficha (Pantalla Completa) -->
+<div id="modalDetalleUnico" class="modal-backdrop fixed inset-0 z-[70] flex items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalDetalleUnico')">
+  <div class="flex flex-col w-full h-full sm:h-[95vh] bg-white rounded-none sm:rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
+    <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-slate-100 bg-white flex-shrink-0">
+      <div class="flex items-center gap-3">
+        <button type="button" onclick="closeModal('modalDetalleUnico')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-colors">
+          <i class="ph-bold ph-arrow-left text-base"></i> Regresar
+        </button>
+        <span class="text-brand-600 text-xs font-bold uppercase tracking-wider hidden sm:inline">Ficha técnica detallada</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" id="btn-like-detalle" onclick="toggleFavoritoDesdeDetalle()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 font-bold text-xs transition-colors">
+          <i id="icon-like-detalle" class="ph ph-heart text-base"></i> <span id="text-like-detalle">Favorito</span>
+        </button>
+        <button type="button" class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors close" onclick="closeModal('modalDetalleUnico')">
+          <i class="ph-bold ph-x text-xl"></i>
+        </button>
+      </div>
+    </div>
+    <div id="contenidoDetalleUnico" class="flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50/50 custom-scrollbar"></div>
+  </div>
+</div>
+
+<!-- Modal Foto Pantalla Completa (Visor Uncropped Lightbox) -->
+<div id="modalFotoFullscreen" class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-6 bg-black/95 backdrop-blur-md hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalFotoFullscreen')">
+  <div class="relative w-full h-full flex flex-col items-center justify-center">
+    <button type="button" onclick="closeModal('modalFotoFullscreen')" class="absolute top-4 right-4 z-50 p-3 bg-white/20 hover:bg-white/40 text-white rounded-full transition-colors">
+      <i class="ph-bold ph-x text-2xl"></i>
+    </button>
+    <div class="relative w-full h-full flex items-center justify-center p-2">
+      <img id="img-fullscreen" src="" class="max-w-full max-h-[88vh] object-contain mx-auto rounded-lg shadow-2xl transition-all duration-300" alt="Foto ampliada" />
+    </div>
+    <button type="button" aria-label="Anterior" onclick="navegarFotoFullscreen(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center text-2xl transition-colors"><i class="ph-bold ph-caret-left"></i></button>
+    <button type="button" aria-label="Siguiente" onclick="navegarFotoFullscreen(1)" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center text-2xl transition-colors"><i class="ph-bold ph-caret-right"></i></button>
+    <div id="contador-foto-fullscreen" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/90 text-sm font-semibold bg-slate-900/80 px-4 py-1.5 rounded-full border border-white/10">1 / 1</div>
+  </div>
+</div>
+
+<!-- Modal: Publicar Nueva Solicitud -->
+<div id="modalNuevaSolicitud" class="modal-backdrop fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('modalNuevaSolicitud')">
+  <div class="flex flex-col w-full max-w-xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white">
+      <h3 class="text-xl font-bold text-slate-900">Publicar Nueva Solicitud de Propiedad</h3>
+      <button type="button" onclick="closeModal('modalNuevaSolicitud')" class="p-2 text-slate-400 hover:text-slate-700 rounded-lg"><i class="ph-bold ph-x text-xl"></i></button>
+    </div>
+    <form id="formNuevaSolicitud" onsubmit="guardarNuevaSolicitud(event)" class="p-6 overflow-y-auto custom-scrollbar space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nombre del Solicitante *</label>
+          <input type="text" id="req-nombre" required class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Ej. Carlos Rodríguez" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Agencia / Inmobiliaria *</label>
+          <input type="text" id="req-agencia" required class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Ej. RINE Bienes Raíces" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Teléfono WhatsApp *</label>
+          <input type="tel" id="req-telefono" required class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="10 dígitos" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Correo Electrónico</label>
+          <input type="email" id="req-correo" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="correo@ejemplo.com" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-100">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tipo de Propiedad Requerida</label>
+          <select id="req-tipo" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+            <option value="Casa / Villa">Casa / Villa</option>
+            <option value="Departamento">Departamento</option>
+            <option value="Terreno / Lote">Terreno / Lote</option>
+            <option value="Bodega">Bodega</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Zona Deseada</label>
+          <select id="req-zona" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none bg-white">
+            <option value="Av. Huayacán">Av. Huayacán</option>
+            <option value="Puerto Cancún">Puerto Cancún</option>
+            <option value="Zona Hotelera">Zona Hotelera</option>
+            <option value="Centro / SM">Centro / SM</option>
+            <option value="Cumbres">Cumbres / Vía Cumbres</option>
+            <option value="Playa del Carmen">Playa del Carmen</option>
+            <option value="Tulum">Tulum</option>
+            <option value="Puerto Morelos">Puerto Morelos</option>
+            <option value="Riviera Maya">Riviera Maya</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Presupuesto Máximo ($ MXN)</label>
+          <input type="number" id="req-presupuesto" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Monto aproximado" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Recámaras Mínimas</label>
+          <input type="number" id="req-recamaras" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Número de recámaras" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Detalles / Requerimientos Específicos</label>
+        <textarea id="req-detalles" rows="3" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Describe amenidades, forma de pago, urgencia, etc..."></textarea>
+      </div>
+
+      <div class="pt-4 flex items-center justify-end gap-3">
+        <button type="button" onclick="closeModal('modalNuevaSolicitud')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg text-sm font-semibold">Cancelar</button>
+        <button type="submit" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg text-sm shadow">Publicar Solicitud</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-slate-900 pt-16 pb-8 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
+            <div class="col-span-1">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="font-bold text-xl text-white">Edgardo <span class="text-brand-500">De Real</span></span>
+                </div>
+                <p class="text-slate-400 text-sm max-w-xs">Creando alianzas estratégicas para concretar la venta que tienes en las manos.</p>
+            </div>
+            
+            <div class="text-left md:text-right">
+                <h4 class="text-white font-bold text-lg mb-2">Edgardo de Real</h4>
+                <p class="text-slate-400 text-sm mb-4">Cancún, Quintana Roo.</p>
+                <div class="flex gap-4 md:justify-end">
+                    <a href="https://www.instagram.com/edgardodereal_/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition-colors" aria-label="Instagram"><i class="ph-fill ph-instagram-logo text-2xl"></i></a>
+                    <a href="https://gruposalo.com" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition-colors" aria-label="Grupo Salo"><i class="ph-fill ph-globe text-2xl"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-slate-800 pt-8 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-slate-500 text-sm">© 2026 Red Inmobiliaria de Networking Estratégico, by Edgardo de Real</p>
+        </div>
+    </div>
+</footer>
+
+<div id="toast" class="toast-msg" role="status" aria-live="polite"></div>
+
 <script>
-    // URL de tu Apps Script Web App
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz6IRM7wp0AurAOsrMPPeCzPtnVBbOaK0p9gqPKUbLEe9MHao5lSTyqnlMi_IR9gawT4A/exec';
+  function crearModalHTML(idModal, tituloModal, subtituloModal, esNetworking = false, tipoOpcionesHTML = '') {
+    const pestana = idModal.replace('modal', '');
+    return `
+      <div id="${idModal}" class="modal-backdrop fixed inset-0 z-[60] flex items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm hidden" role="dialog" aria-modal="true" onclick="if(event.target===this)closeModal('${idModal}')">
+        <div class="flex flex-col w-full h-full sm:h-[95vh] bg-white rounded-none sm:rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up">
+          
+          <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-slate-100 bg-white flex-shrink-0">
+            <div class="flex items-center gap-3">
+              <button type="button" onclick="closeModal('${idModal}')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-colors">
+                <i class="ph-bold ph-arrow-left text-base"></i> Regresar
+              </button>
+              <div>
+                <span class="text-brand-600 text-xs font-bold uppercase tracking-wider">${subtituloModal}</span>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <h2 class="text-lg sm:text-2xl font-bold text-slate-900">${tituloModal}</h2>
+                  ${esNetworking ? `<button type="button" onclick="openModal('modalAgentes')" class="px-3 py-1 rounded-full bg-brand-50 text-brand-700 border border-brand-200 text-xs font-bold hover:bg-brand-100 transition-colors flex items-center gap-1.5"><i class="ph-bold ph-users text-sm"></i> Ver agentes</button>` : ''}
+                </div>
+              </div>
+            </div>
+            <button type="button" onclick="closeModal('${idModal}')" class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors close">
+              <i class="ph-bold ph-x text-xl"></i>
+            </button>
+          </div>
 
-    async function enviarSolicitud(event) {
-        event.preventDefault();
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 p-3 sm:p-4 bg-slate-50 border-b border-slate-100 flex-shrink-0">
+            <div class="lg:col-span-1 relative">
+              <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              <input type="search" id="search-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Buscar título..." class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 outline-none text-sm transition-all bg-white" autocomplete="off" />
+            </div>
+            <select id="zona-${pestana}" onchange="aplicarFiltros('${pestana}')" class="w-full px-3 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 text-sm outline-none bg-white cursor-pointer transition-all">
+                <option value="">Todas las zonas</option>
+                <option value="Av. Huayacán">Av. Huayacán</option>
+                <option value="Puerto Cancún">Puerto Cancún</option>
+                <option value="Zona Hotelera">Zona Hotelera</option>
+                <option value="Centro">Centro / SM</option>
+                <option value="Cumbres">Cumbres / Vía Cumbres</option>
+                <option value="Playa del Carmen">Playa del Carmen</option>
+                <option value="Tulum">Tulum</option>
+                <option value="Puerto Morelos">Puerto Morelos</option>
+                <option value="Riviera Maya">Riviera Maya</option>
+            </select>
+            <select id="tipo-${pestana}" onchange="aplicarFiltros('${pestana}')" class="w-full px-3 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 text-sm outline-none bg-white cursor-pointer transition-all">
+                ${tipoOpcionesHTML}
+            </select>
+            <input type="number" id="precioMin-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Precio mín. ($)" class="w-full px-3 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 text-sm outline-none transition-all bg-white" />
+            <input type="number" id="precioMax-${pestana}" oninput="aplicarFiltros('${pestana}')" placeholder="Precio máx. ($)" class="w-full px-3 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 text-sm outline-none transition-all bg-white" />
+            <select id="orden-${pestana}" onchange="aplicarFiltros('${pestana}')" class="w-full px-3 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-500 text-sm outline-none bg-white cursor-pointer transition-all">
+                <option value="recientes">Predeterminado</option>
+                <option value="precio-desc">Mayor precio</option>
+                <option value="precio-asc">Menor precio</option>
+                <option value="m2-desc">Mayor M²</option>
+            </select>
+          </div>
 
-        const form = document.getElementById('form-solicitud');
-        const btn = document.getElementById('btn-enviar');
-        const mensajeDiv = document.getElementById('mensaje');
+          <div class="flex-1 overflow-y-auto p-3 sm:p-6 bg-slate-50/50 custom-scrollbar">
+            <div id="grid-${pestana}" class="grid ml-card-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <div class="col-span-full text-center py-10 text-slate-500">
+                    <i class="ph-bold ph-spinner animate-spin text-4xl mb-3 text-brand-500 inline-block"></i><br>Cargando propiedades...
+                </div>
+            </div>
+          </div>
 
-        // Estado de carga
-        btn.disabled = true;
-        btn.innerText = 'Guardando en Sheets...';
-        mensajeDiv.style.display = 'none';
+          <div class="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-3 border-t border-slate-100 bg-white gap-3 flex-shrink-0">
+            <span id="info-paginacion-${pestana}" class="text-xs sm:text-sm text-slate-500 font-medium">Mostrando 0 propiedades</span>
+            <div class="flex items-center gap-2">
+              <button type="button" id="btn-prev-${pestana}" onclick="cambiarPagina('${pestana}', -1)" class="px-3 sm:px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-brand-600 hover:border-brand-200 disabled:opacity-50 transition-colors text-xs sm:text-sm font-semibold">Anterior</button>
+              <span id="num-pagina-${pestana}" class="font-bold text-brand-600 min-w-[28px] text-center text-base sm:text-lg">1</span>
+              <button type="button" id="btn-next-${pestana}" onclick="cambiarPagina('${pestana}', 1)" class="px-3 sm:px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-brand-600 hover:border-brand-200 disabled:opacity-50 transition-colors text-xs sm:text-sm font-semibold">Siguiente</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
 
-        const formData = new FormData(form);
-        formData.append('accion', 'nueva_solicitud');
+  const opcionesCasasVillasDepas = `
+    <option value="">Todos los tipos</option>
+    <option value="Casa">Casas / Villas</option>
+    <option value="Departamento">Departamentos</option>
+  `;
+
+  const opcionesSoloLotes = `
+    <option value="">Todos los tipos</option>
+    <option value="Terreno">Lotes / Terrenos</option>
+  `;
+
+  const opcionesTodasRed = `
+    <option value="">Todos los tipos</option>
+    <option value="Casa">Casas / Villas</option>
+    <option value="Departamento">Departamentos</option>
+    <option value="Terreno">Lotes / Terrenos</option>
+    <option value="Bodega">Bodegas</option>
+  `;
+
+  document.write(crearModalHTML('modalVenta', 'Propiedades en Venta', 'Catálogo Venta', false, opcionesCasasVillasDepas));
+  document.write(crearModalHTML('modalRenta', 'Renta Residencial', 'Catálogo Renta', false, opcionesCasasVillasDepas));
+  document.write(crearModalHTML('modalLotes', 'Lotes & Macrolotes', 'Suelo Estratégico', false, opcionesSoloLotes));
+  document.write(crearModalHTML('modalNetworking', 'Propiedades de la red de networking', 'Catalogo de la Red', true, opcionesTodasRed));
+</script>
+
+<script>
+  const SHEET_ID = '192oLS5Pqh5IBrMYlp2RbE6ASol8BrHh9Naacegjzva8';
+  const SHEETS_MAPPING = { 
+    'Venta': 'Venta', 
+    'Renta': 'Renta', 
+    'Lotes': 'Lotes', 
+    'Networking': 'red inmobiliaria de networking estrategico',
+    'Solicitudes': 'Solicitudes'
+  };
+  const ITEMS_POR_PAGINA = 18;
+
+  let catalogoOriginal = { Venta: [], Renta: [], Lotes: [], Networking: [], Solicitudes: [] };
+  let catalogoFiltrado = { Venta: [], Renta: [], Lotes: [], Networking: [], Solicitudes: [] };
+  let paginaActual = { Venta: 1, Renta: 1, Lotes: 1, Networking: 1, Solicitudes: 1 };
+  let carrousellOriginal = [];
+
+  let fotoActualIndex = {};
+  let favoritosIds = JSON.parse(localStorage.getItem('rine_favoritos') || '[]');
+  let solicitudesLocales = JSON.parse(localStorage.getItem('rine_solicitudes') || '[]');
+  let ultimoFoco = null;
+  let toastTimer = null;
+  let itemActualDetalle = null;
+
+  let fotosFullscreenLista = [];
+  let fotoFullscreenIdx = 0;
+
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+      if (window.scrollY > 10) navbar.classList.add('shadow-sm');
+      else navbar.classList.remove('shadow-sm');
+  });
+
+  function cambiarSeccionPrincipal(seccion) {
+    const secInicio = document.getElementById('seccion-inicio');
+    const secSolicitudes = document.getElementById('seccion-solicitudes');
+    const btnInicio = document.getElementById('tab-btn-inicio');
+    const btnSolicitudes = document.getElementById('tab-btn-solicitudes');
+
+    if (seccion === 'solicitudes') {
+      if (secInicio) secInicio.classList.add('hidden');
+      if (secSolicitudes) secSolicitudes.classList.remove('hidden');
+      if (btnInicio) btnInicio.className = "px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-slate-100 text-slate-700 hover:bg-slate-200";
+      if (btnSolicitudes) btnSolicitudes.className = "px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-brand-600 text-white shadow-sm";
+      cargarDatosPestana('Solicitudes');
+    } else {
+      if (secInicio) secInicio.classList.remove('hidden');
+      if (secSolicitudes) secSolicitudes.classList.add('hidden');
+      if (btnInicio) btnInicio.className = "px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-brand-600 text-white shadow-sm";
+      if (btnSolicitudes) btnSolicitudes.className = "px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-slate-100 text-slate-700 hover:bg-slate-200";
+    }
+  }
+
+  function mostrarToast(msg) {
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.innerHTML = `<div class="flex items-center gap-2"><i class="ph-bold ph-info text-xl text-brand-400"></i> ${msg}</div>`;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  function openModal(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    ultimoFoco = document.activeElement;
+    el.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    if(el) el.classList.add('hidden');
+    const hayModalesAbiertos = document.querySelectorAll('.modal-backdrop:not(.hidden)').length > 0;
+    if (!hayModalesAbiertos) {
+      document.body.style.overflow = '';
+      if (ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
+    }
+  }
+
+  function openModalCatalogosEdgardo() { openModal('modalCatalogosEdgardo'); }
+
+  function abrirFotoFullscreen(index, arrayFotos) {
+    if (!arrayFotos || arrayFotos.length === 0) return;
+    fotosFullscreenLista = arrayFotos;
+    fotoFullscreenIdx = index || 0;
+    actualizarFotoFullscreen();
+    openModal('modalFotoFullscreen');
+  }
+
+  function actualizarFotoFullscreen() {
+    const img = document.getElementById('img-fullscreen');
+    const counter = document.getElementById('contador-foto-fullscreen');
+    if (img && fotosFullscreenLista[fotoFullscreenIdx]) {
+      img.src = fotosFullscreenLista[fotoFullscreenIdx];
+    }
+    if (counter) {
+      counter.innerText = `${fotoFullscreenIdx + 1} / ${fotosFullscreenLista.length}`;
+    }
+  }
+
+  function navegarFotoFullscreen(delta) {
+    if (fotosFullscreenLista.length <= 1) return;
+    fotoFullscreenIdx = (fotoFullscreenIdx + delta + fotosFullscreenLista.length) % fotosFullscreenLista.length;
+    actualizarFotoFullscreen();
+  }
+
+  function toggleFavorito(idPropiedad, event) {
+    if(event) event.stopPropagation();
+    const index = favoritosIds.indexOf(idPropiedad);
+    if (index > -1) {
+      favoritosIds.splice(index, 1);
+      mostrarToast('Propiedad eliminada de favoritos');
+    } else {
+      favoritosIds.push(idPropiedad);
+      mostrarToast('Propiedad guardada en favoritos');
+    }
+    localStorage.setItem('rine_favoritos', JSON.stringify(favoritosIds));
+    actualizarContadorLikes();
+    
+    Object.keys(SHEETS_MAPPING).forEach(k => { 
+      if(document.getElementById(`modal${k}`) && !document.getElementById(`modal${k}`).classList.contains('hidden')) aplicarFiltros(k); 
+    });
+    if(!document.getElementById('modalFavoritos').classList.contains('hidden')) renderizarFavoritos();
+    if(itemActualDetalle && (itemActualDetalle.id || itemActualDetalle.titulo) === idPropiedad) actualizarEstadoLikeDetalle();
+  }
+
+  function toggleFavoritoDesdeDetalle() {
+    if(!itemActualDetalle) return;
+    const idUnico = itemActualDetalle.id || itemActualDetalle.titulo;
+    toggleFavorito(idUnico);
+  }
+
+  function actualizarEstadoLikeDetalle() {
+    if(!itemActualDetalle) return;
+    const idUnico = itemActualDetalle.id || itemActualDetalle.titulo;
+    const esFav = favoritosIds.includes(idUnico);
+    const icon = document.getElementById('icon-like-detalle');
+    const text = document.getElementById('text-like-detalle');
+    if(icon && text) {
+      if(esFav) {
+        icon.className = "ph-fill ph-heart text-base text-rose-500";
+        text.innerText = "En favoritos";
+      } else {
+        icon.className = "ph ph-heart text-base text-rose-500";
+        text.innerText = "Favorito";
+      }
+    }
+  }
+
+  function actualizarContadorLikes() {
+    const span = document.getElementById('contador-likes');
+    if(span) span.innerText = favoritosIds.length;
+  }
+
+  function openModalFavoritos() {
+    renderizarFavoritos();
+    openModal('modalFavoritos');
+  }
+
+  function renderizarFavoritos() {
+    const container = document.getElementById('grid-favoritos');
+    if(!container) return;
+
+    let todas = [];
+    Object.keys(catalogoOriginal).forEach(k => {
+      catalogoOriginal[k].forEach(item => {
+        const idUnico = item.id || item.titulo;
+        if(favoritosIds.includes(idUnico) && !todas.some(x => (x.id || x.titulo) === idUnico)) {
+          todas.push(item);
+        }
+      });
+    });
+
+    if(todas.length === 0) {
+      container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 bg-white rounded-2xl border border-slate-200"><i class="ph-bold ph-heart text-4xl text-rose-300 mb-3 block"></i><h3 class="text-lg font-bold text-slate-800">No tienes favoritos aún</h3><p class="text-xs sm:text-sm">Da clic en el icono de corazón en cualquier propiedad para guardarla aquí.</p></div>`;
+      return;
+    }
+
+    container.innerHTML = todas.map((item) => {
+      const fotos = extraerTodasLasFotos(item);
+      const precioVal = obtenerPrecioItem(item);
+      const ubic = item.ubicación || item.ubicacion || 'Cancún';
+      const idUnico = item.id || item.titulo;
+
+      return `
+      <article onclick="closeModal('modalFavoritos'); abrirFichaDetallePorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col cursor-pointer hover:shadow-md transition-shadow">
+        <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden">
+          ${fotos[0] ? `<img src="${fotos[0]}" class="w-full h-full object-cover" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-4xl"></i></div>'}
+          <button type="button" onclick="toggleFavorito('${idUnico}', event)" class="absolute top-2 right-2 sm:top-3 sm:right-3 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 text-rose-500 shadow flex items-center justify-center"><i class="ph-fill ph-heart text-lg"></i></button>
+        </div>
+        <div class="p-3 sm:p-4 flex flex-col flex-grow">
+          <p class="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">${ubic}</p>
+          <h3 class="text-xs sm:text-sm font-bold text-slate-900 mb-1 line-clamp-1">${item.titulo}</h3>
+          <p class="text-sm sm:text-base font-extrabold text-brand-600">${precioVal}</p>
+        </div>
+      </article>`;
+    }).join('');
+  }
+
+  function abrirFichaDetallePorObjeto(item) {
+    abrirFichaDetalleConItem(item);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const abiertos = document.querySelectorAll('.modal-backdrop:not(.hidden)');
+    if (abiertos.length) closeModal(abiertos[abiertos.length - 1].id);
+  });
+
+  function formatearUrlImagen(url) {
+    if (!url) return '';
+    url = url.trim();
+    if (url.includes('drive.google.com')) {
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) return `https://lh3.googleusercontent.com/d/${match[1]}`;
+    }
+    return url;
+  }
+
+  function obtenerPrecioItem(item) {
+    if (!item) return 'Consultar';
+    let raw = '';
+    for (const key in item) {
+      const k = key.toLowerCase().trim();
+      if (k.includes('precio') || k.includes('renta') || k.includes('costo') || k.includes('valor') || k.includes('monto') || k.includes('presupuesto')) {
+        if (item[key] && item[key].trim().length > 0) { raw = item[key].trim(); break; }
+      }
+    }
+    if (!raw) return 'Consultar';
+    const num = raw.replace(/[^0-9.]/g, '');
+    if (num && !isNaN(num) && parseFloat(num) > 0) return `$${parseFloat(num).toLocaleString('es-MX')} MXN`;
+    if (!raw.toUpperCase().includes('MXN') && !raw.toUpperCase().includes('USD')) return `${raw} MXN`;
+    return raw;
+  }
+
+  function extraerTodasLasFotos(item) {
+    const fotos = [];
+    for (let i = 1; i <= 10; i++) {
+      const url = item[`foto${i}`] || item[`foto_${i}`];
+      const formateada = formatearUrlImagen(url);
+      if (formateada && formateada.length > 5) fotos.push(formateada);
+    }
+    return fotos;
+  }
+
+  function calcularDiasPublicado(fechaRaw) {
+    if (!fechaRaw || fechaRaw.toString().trim() === '' || fechaRaw.toLowerCase() === 'reciente') {
+      return { fechaTexto: 'Reciente', diasTexto: 'Reciente' };
+    }
+    
+    let str = fechaRaw.toString().trim();
+    let fechaObj = null;
+
+    const meses = {
+      enero:0, febrero:1, marzo:2, abril:3, mayo:4, junio:5,
+      julio:6, agosto:7, septiembre:8, octubre:9, noviembre:10, diciembre:11
+    };
+
+    const partes = str.toLowerCase().split(/[\s\/-]+/);
+    if (partes.length >= 3) {
+      let dia = parseInt(partes[0]);
+      let mes = meses[partes[1]] !== undefined ? meses[partes[1]] : parseInt(partes[1]) - 1;
+      let anio = parseInt(partes[2]);
+      if (!isNaN(dia) && !isNaN(mes) && !isNaN(anio)) {
+        if (anio < 100) anio += 2000;
+        fechaObj = new Date(anio, mes, dia);
+      }
+    }
+
+    if (!fechaObj || isNaN(fechaObj.getTime())) {
+      fechaObj = new Date(str);
+    }
+
+    if (isNaN(fechaObj.getTime())) {
+      return { fechaTexto: str, diasTexto: 'Publicación reciente' };
+    }
+
+    const hoy = new Date();
+    const diffTime = hoy.getTime() - fechaObj.getTime();
+    const diffDays = Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)));
+
+    let diasTexto = '';
+    if (diffDays === 0) diasTexto = 'Publicado hoy';
+    else if (diffDays === 1) diasTexto = 'Hace 1 día';
+    else diasTexto = `Hace ${diffDays} días`;
+
+    return { fechaTexto: str, diasTexto: diasTexto };
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    Object.keys(SHEETS_MAPPING).forEach(categoria => cargarDatosPestana(categoria));
+    cargarCarrusel();
+    actualizarContadorLikes();
+  });
+
+  async function cargarCarrusel() {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Carrousell`;
+    try {
+      const response = await fetch(url);
+      const csvText = await response.text();
+      const rows = parseCSV(csvText);
+
+      if (rows.length > 1) {
+        const headers = rows[0].map(h => h.trim().toLowerCase());
+        carrousellOriginal = rows.slice(1).map(row => {
+          let item = {};
+          headers.forEach((header, index) => { item[header] = row[index] ? row[index].trim() : ''; });
+          return item;
+        }).filter(item => item.titulo || item.id);
+
+        const countElem = document.getElementById('carrousell-count');
+        if (countElem) countElem.innerText = carrousellOriginal.length;
+
+        renderizarCarrusel(carrousellOriginal);
+      }
+    } catch (e) {
+      document.getElementById('carrousell-container').innerHTML = '<div class="text-slate-500 py-4 px-4">Error al cargar carrusel.</div>';
+    }
+  }
+
+  function renderizarCarrusel(items) {
+    const container = document.getElementById('carrousell-container');
+    if (!container || items.length === 0) return;
+
+    const armarCards = () => items.map((item) => {
+      const fotos = extraerTodasLasFotos(item);
+      const precio = obtenerPrecioItem(item);
+      return `
+        <div onclick="abrirFichaDetallePorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="flex items-center gap-3.5 p-3 bg-white border border-slate-200 rounded-xl hover:border-brand-500 hover:shadow-lg transition-all text-left w-[300px] sm:w-[340px] flex-shrink-0 group cursor-pointer">
+          <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
+            ${fotos[0] ? `<img src="${fotos[0]}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-2xl"></i></div>'}
+          </div>
+          <div class="flex-col overflow-hidden w-full">
+            <span class="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wide truncate block mb-1"><i class="ph-bold ph-map-pin mr-1"></i>${item.ubicación || item.ubicacion || 'Cancún'}</span>
+            <span class="text-xs sm:text-sm font-bold text-slate-900 truncate block mb-1">${item.titulo || 'Destacado'}</span>
+            <span class="text-brand-600 font-extrabold text-xs sm:text-sm block">${precio}</span>
+          </div>
+        </div>`;
+    }).join('');
+
+    container.innerHTML = armarCards() + armarCards();
+  }
+
+  async function cargarDatosPestana(pestanaKey) {
+    const sheetName = SHEETS_MAPPING[pestanaKey];
+    if (!sheetName) return;
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+    try {
+      const response = await fetch(url);
+      const csvText = await response.text();
+      const rows = parseCSV(csvText);
+
+      if (rows.length > 1) {
+        const headers = rows[0].map(h => h.trim().toLowerCase());
+        const data = rows.slice(1).map(row => {
+          let item = {};
+          headers.forEach((header, index) => { item[header] = row[index] ? row[index].trim() : ''; });
+          return item;
+        }).filter(item => item.titulo || item.id || item.solicitante || item.agente);
+
+        catalogoOriginal[pestanaKey] = data;
+        
+        if (pestanaKey === 'Solicitudes') {
+          // Fusionar con solicitudes locales guardadas
+          catalogoOriginal['Solicitudes'] = [...solicitudesLocales, ...data];
+          aplicarFiltrosSolicitudes();
+        } else {
+          const countElem = document.getElementById(`count-${pestanaKey}`);
+          if (countElem) countElem.innerText = data.length;
+          aplicarFiltros(pestanaKey);
+          if (pestanaKey === 'Networking') poblarTablaAgentes();
+        }
+      } else {
+        if (pestanaKey === 'Solicitudes') {
+          catalogoOriginal['Solicitudes'] = [...solicitudesLocales];
+          aplicarFiltrosSolicitudes();
+        } else {
+          aplicarFiltros(pestanaKey);
+        }
+      }
+    } catch (e) {
+      if (pestanaKey === 'Solicitudes') {
+        catalogoOriginal['Solicitudes'] = [...solicitudesLocales];
+        aplicarFiltrosSolicitudes();
+      } else {
+        const grid = document.getElementById(`grid-${pestanaKey}`);
+        if (grid) grid.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500">Error al cargar datos.</div>';
+      }
+    }
+  }
+
+  function guardarNuevaSolicitud(e) {
+    e.preventDefault();
+    const nueva = {
+      id: 'REQ-' + Date.now(),
+      fecha: new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' }),
+      solicitante: document.getElementById('req-nombre').value,
+      agencia: document.getElementById('req-agencia').value,
+      telefono: document.getElementById('req-telefono').value,
+      correo: document.getElementById('req-correo').value,
+      tipo: document.getElementById('req-tipo').value,
+      ubicacion: document.getElementById('req-zona').value,
+      presupuesto: document.getElementById('req-presupuesto').value,
+      recamaras: document.getElementById('req-recamaras').value,
+      detalles: document.getElementById('req-detalles').value
+    };
+
+    solicitudesLocales.unshift(nueva);
+    localStorage.setItem('rine_solicitudes', JSON.stringify(solicitudesLocales));
+    catalogoOriginal['Solicitudes'] = [...solicitudesLocales, ...catalogoOriginal['Solicitudes'].filter(x => !x.id || !x.id.startsWith('REQ-'))];
+    
+    closeModal('modalNuevaSolicitud');
+    document.getElementById('formNuevaSolicitud').reset();
+    mostrarToast('¡Solicitud publicada con éxito!');
+    aplicarFiltrosSolicitudes();
+  }
+
+  function aplicarFiltrosSolicitudes() {
+    let lista = [...catalogoOriginal['Solicitudes']];
+    const busqueda = (document.getElementById('search-Solicitudes')?.value || '').toLowerCase();
+    const zonaSel = (document.getElementById('zona-Solicitudes')?.value || '').toLowerCase();
+    const pMax = parseFloat(document.getElementById('precioMax-Solicitudes')?.value) || Infinity;
+    const diasFiltro = parseInt(document.getElementById('fecha-Solicitudes')?.value) || 0;
+
+    lista = lista.filter(item => {
+      const sol = (item.solicitante || item.agente || item.nombre || '').toLowerCase();
+      const ag = (item.agencia || item.inmobiliaria || '').toLowerCase();
+      const ubi = (item.ubicacion || item.ubicación || item.zona || '').toLowerCase();
+      const det = (item.detalles || item.requerimiento || item.descripcion || item.descripción || '').toLowerCase();
+      const tip = (item.tipo || '').toLowerCase();
+      
+      const pNum = extraerNumero(item.presupuesto || item.precio || item.monto);
+      const diasInfo = calcularDiasPublicado(item.fecha || item.publicacion);
+
+      const matchBusqueda = !busqueda || sol.includes(busqueda) || ag.includes(busqueda) || ubi.includes(busqueda) || det.includes(busqueda) || tip.includes(busqueda);
+      const matchZona = !zonaSel || ubi.includes(zonaSel);
+      const matchPrecio = pNum === 0 || pNum <= pMax;
+      
+      let matchFecha = true;
+      if (diasFiltro > 0) {
+        const numDias = parseInt(diasInfo.diasTexto.replace(/[^0-9]/g, '')) || 0;
+        matchFecha = numDias <= diasFiltro;
+      }
+
+      return matchBusqueda && matchZona && matchPrecio && matchFecha;
+    });
+
+    renderizarGridSolicitudes(lista);
+  }
+
+  function renderizarGridSolicitudes(items) {
+    const grid = document.getElementById('grid-solicitudes');
+    if (!grid) return;
+
+    if (items.length === 0) {
+      grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 bg-white rounded-2xl border border-slate-200 shadow-sm"><i class="ph-bold ph-clipboard-text text-4xl text-slate-300 mb-3 block"></i><h3 class="text-lg font-bold text-slate-800">Sin solicitudes que coincidan</h3><p class="text-xs sm:text-sm">Ajusta los filtros o pública la primera solicitud para la comunidad.</p></div>`;
+      return;
+    }
+
+    grid.innerHTML = items.map(item => {
+      const nombre = item.solicitante || item.agente || item.nombre || 'Agente RINE';
+      const agencia = item.agencia || item.inmobiliaria || 'Agencia Independiente';
+      const zona = item.ubicacion || item.ubicación || item.zona || 'Cancún / Riviera Maya';
+      const tipo = item.tipo || 'Propiedad';
+      const presupuesto = item.presupuesto ? `$${extraerNumero(item.presupuesto).toLocaleString('es-MX')} MXN` : 'A convenir';
+      const recamaras = item.recamaras || item.habitaciones || 'N/A';
+      const detalles = item.detalles || item.requerimiento || item.descripcion || item.descripción || 'Cliente calificado buscando opción urgente.';
+      const diasObj = calcularDiasPublicado(item.fecha || item.publicacion);
+
+      let telRaw = (item.telefono || item.celular || item.whatsapp || '529981550066').replace(/[^0-9]/g, '');
+      if (telRaw.length === 10) telRaw = "52" + telRaw;
+
+      const waMsg = encodeURIComponent(`Hola ${nombre}, vi tu solicitud en la Red RINE:\n\nBuscas: ${tipo} en ${zona}\nPresupuesto: ${presupuesto}\n\nTengo una propiedad en mi portafolio que cumple con lo que buscas.`);
+
+      return `
+      <article class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all p-5 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-3 pb-3 border-b border-slate-100">
+            <div>
+              <span class="text-[10px] font-bold text-brand-600 bg-brand-50 border border-brand-100 px-2.5 py-0.5 rounded-full uppercase">${tipo}</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1.5"><i class="ph-bold ph-map-pin text-brand-500 mr-1"></i>${zona}</h3>
+            </div>
+            <div class="text-right">
+              <span class="text-xs text-slate-400 block">${diasObj.diasTexto}</span>
+              <span class="text-xs text-slate-400 font-semibold block">${diasObj.fechaTexto}</span>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-0.5">Presupuesto del cliente</p>
+            <p class="text-xl font-extrabold text-brand-600">${presupuesto}</p>
+          </div>
+
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600 mb-4 leading-relaxed whitespace-pre-line">
+            <span class="font-bold text-slate-800 block mb-1">Requerimientos:</span>
+            ${detalles}
+            ${recamaras !== 'N/A' ? `<span class="block font-semibold mt-1 text-slate-700"><i class="ph-fill ph-bed text-brand-500 mr-1"></i>Mínimo ${recamaras} recámaras</span>` : ''}
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 text-xs text-slate-500 space-y-1 mb-4">
+            <p class="font-bold text-slate-800"><i class="ph-fill ph-user-circle text-brand-500 mr-1"></i>${nombre}</p>
+            <p class="text-slate-500"><i class="ph-bold ph-buildings mr-1"></i>${agencia}</p>
+            ${item.correo ? `<p class="text-slate-400 truncate"><i class="ph-bold ph-envelope mr-1"></i>${item.correo}</p>` : ''}
+          </div>
+        </div>
+
+        <a href="https://wa.me/${telRaw}?text=${waMsg}" target="_blank" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm text-center transition-colors flex items-center justify-center gap-2 shadow-sm">
+          <i class="ph-bold ph-whatsapp-logo text-lg"></i> Contactar Agente
+        </a>
+      </article>`;
+    }).join('');
+  }
+
+  function poblarTablaAgentes() {
+    const agentesMap = new Map();
+    catalogoOriginal['Networking'].forEach(item => {
+      const nombre = item.asesor || item.agente || 'Agente RINE';
+      if(!agentesMap.has(nombre)) {
+        agentesMap.set(nombre, {
+          nombre: nombre,
+          agencia: item.agencia || item.inmobiliaria || 'Red RINE',
+          telefono: item.telefono || item.celular || item.whatsapp || '529981550066'
+        });
+      }
+    });
+
+    const selectAgencia = document.getElementById('filtro-agencia');
+    if(selectAgencia) {
+      const agencias = [...new Set([...agentesMap.values()].map(a => a.agencia))];
+      selectAgencia.innerHTML = '<option value="">Todas las agencias</option>' + agencias.map(ag => `<option value="${ag}">${ag}</option>`).join('');
+    }
+
+    renderizarTablaAgentes([...agentesMap.values()]);
+  }
+
+  function renderizarTablaAgentes(agentes) {
+    const tbody = document.getElementById('tabla-agentes-body');
+    const countEl = document.getElementById('info-agentes-count');
+    if(!tbody) return;
+
+    if(agentes.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4" class="text-center py-8 text-slate-400">No se encontraron agentes.</td></tr>`;
+      if(countEl) countEl.innerText = `Mostrando 0 agentes`;
+      return;
+    }
+
+    if(countEl) countEl.innerText = `Mostrando ${agentes.length} agentes`;
+
+    tbody.innerHTML = agentes.map(ag => {
+      let numTel = ag.telefono.replace(/[^0-9]/g, '');
+      if (numTel.length === 10) numTel = "52" + numTel;
+      const waLink = `https://wa.me/${numTel}?text=${encodeURIComponent(`Hola ${ag.nombre}, me pongo en contacto desde la Red Inmobiliaria RINE.`)}`;
+
+      return `
+        <tr class="hover:bg-slate-50/80 transition-colors">
+          <td class="py-3.5 px-6 font-bold text-slate-900 flex items-center gap-2"><i class="ph-fill ph-user-circle text-brand-500 text-xl"></i> ${ag.nombre}</td>
+          <td class="py-3.5 px-6 text-slate-600">${ag.agencia}</td>
+          <td class="py-3.5 px-6 font-medium text-slate-700">+${numTel}</td>
+          <td class="py-3.5 px-6 text-right">
+            <a href="${waLink}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-600 text-white font-semibold text-xs hover:bg-brand-700 transition-colors">
+              <i class="ph-bold ph-whatsapp-logo"></i> Contactar
+            </a>
+          </td>
+        </tr>`;
+    }).join('');
+  }
+
+  function filtrarAgentes() {
+    const busqueda = (document.getElementById('search-agente')?.value || '').toLowerCase();
+    const agenciaSel = document.getElementById('filtro-agencia')?.value || '';
+
+    const agentesMap = new Map();
+    catalogoOriginal['Networking'].forEach(item => {
+      const nombre = item.asesor || item.agente || 'Agente RINE';
+      const agencia = item.agencia || item.inmobiliaria || 'Red RINE';
+      if(!agentesMap.has(nombre)) {
+        agentesMap.set(nombre, { nombre, agencia, telefono: item.telefono || item.celular || item.whatsapp || '529981550066' });
+      }
+    });
+
+    let lista = [...agentesMap.values()].filter(ag => {
+      const matchBusqueda = ag.nombre.toLowerCase().includes(busqueda) || ag.agencia.toLowerCase().includes(busqueda);
+      const matchAgencia = !agenciaSel || ag.agencia === agenciaSel;
+      return matchBusqueda && matchAgencia;
+    });
+
+    renderizarTablaAgentes(lista);
+  }
+
+  function parseCSV(text) {
+    let p = '', c = '', r = [], q = false, row = [''];
+    for (let i = 0; i < text.length; i++) {
+      c = text[i]; let next = text[i+1];
+      if (c === '"') {
+        if (q && next === '"') { row[row.length - 1] += '"'; i++; } else { q = !q; }
+      } else if (c === ',' && !q) { row.push('');
+      } else if ((c === '\r' || c === '\n') && !q) {
+        if (c === '\r' && next === '\n') i++;
+        r.push(row); row = [''];
+      } else { row[row.length - 1] += c; }
+    }
+    if (row.length > 1 || row[0] !== '') r.push(row);
+    return r;
+  }
+
+  function extraerNumero(texto) {
+    if (!texto) return 0;
+    const num = texto.toString().replace(/[^0-9.]/g, '');
+    return parseFloat(num) || 0;
+  }
+
+  function aplicarFiltros(pestana) {
+    if (pestana === 'Solicitudes') {
+      aplicarFiltrosSolicitudes();
+      return;
+    }
+    let lista = [...catalogoOriginal[pestana]];
+    const busqueda = (document.getElementById(`search-${pestana}`)?.value || '').toLowerCase();
+    const zonaSel = (document.getElementById(`zona-${pestana}`)?.value || '').toLowerCase();
+    const tipo = (document.getElementById(`tipo-${pestana}`)?.value || '').toLowerCase();
+    const precioMin = parseFloat(document.getElementById(`precioMin-${pestana}`)?.value) || 0;
+    const precioMax = parseFloat(document.getElementById(`precioMax-${pestana}`)?.value) || Infinity;
+    const orden = document.getElementById(`orden-${pestana}`)?.value || 'recientes';
+
+    lista = lista.filter(item => {
+      const tit = (item.titulo || '').toLowerCase();
+      const ubi = (item.ubicación || item.ubicacion || '').toLowerCase();
+      const tip = (item.tipo || '').toLowerCase();
+      const pNum = extraerNumero(obtenerPrecioItem(item));
+
+      return (!busqueda || tit.includes(busqueda) || ubi.includes(busqueda)) &&
+             (!zonaSel || ubi.includes(zonaSel)) &&
+             (!tipo || tip.includes(tipo)) &&
+             (pNum === 0 || (pNum >= precioMin && pNum <= precioMax));
+    });
+
+    if (orden === 'precio-desc') lista.sort((a, b) => extraerNumero(obtenerPrecioItem(b)) - extraerNumero(obtenerPrecioItem(a)));
+    else if (orden === 'precio-asc') lista.sort((a, b) => extraerNumero(obtenerPrecioItem(a)) - extraerNumero(obtenerPrecioItem(b)));
+    else if (orden === 'm2-desc') lista.sort((a, b) => extraerNumero(b.terreno) - extraerNumero(a.terreno));
+
+    catalogoFiltrado[pestana] = lista;
+    paginaActual[pestana] = 1;
+    renderizarPagina(pestana);
+  }
+
+  function cambiarPagina(pestana, delta) {
+    const totalPaginas = Math.ceil(catalogoFiltrado[pestana].length / ITEMS_POR_PAGINA) || 1;
+    paginaActual[pestana] = Math.max(1, Math.min(totalPaginas, paginaActual[pestana] + delta));
+    renderizarPagina(pestana);
+    
+    const gridContainer = document.getElementById(`grid-${pestana}`)?.parentElement;
+    if (gridContainer) gridContainer.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderizarPagina(pestana) {
+    const items = catalogoFiltrado[pestana];
+    const pag = paginaActual[pestana];
+    const inicio = (pag - 1) * ITEMS_POR_PAGINA;
+    const fin = Math.min(inicio + ITEMS_POR_PAGINA, items.length);
+
+    document.getElementById(`info-paginacion-${pestana}`).innerText = `Mostrando ${items.length > 0 ? inicio + 1 : 0} a ${fin} de ${items.length} propiedades`;
+    document.getElementById(`num-pagina-${pestana}`).innerText = pag;
+    document.getElementById(`btn-prev-${pestana}`).disabled = (pag === 1);
+    document.getElementById(`btn-next-${pestana}`).disabled = (fin >= items.length);
+
+    renderizarGrid(pestana, items.slice(inicio, fin), inicio);
+  }
+
+  function navegarFotoManual(cardKey, delta, totalFotos, event) {
+    if(event) event.stopPropagation();
+    if (!totalFotos || totalFotos <= 1) return;
+    fotoActualIndex[cardKey] = ((fotoActualIndex[cardKey] || 0) + delta + totalFotos) % totalFotos;
+    const nuevoIndex = fotoActualIndex[cardKey];
+    
+    const imgElem = document.getElementById(`img-${cardKey}`);
+    if (imgElem && imgElem.dataset[`foto${nuevoIndex}`]) {
+      imgElem.src = imgElem.dataset[`foto${nuevoIndex}`];
+    }
+    
+    document.querySelectorAll(`.dot-${cardKey}`).forEach((dot, idx) => {
+      if(idx === nuevoIndex) dot.classList.add('is-active');
+      else dot.classList.remove('is-active');
+    });
+  }
+
+  function renderizarGrid(pestana, items, offsetIndex = 0) {
+    const grid = document.getElementById(`grid-${pestana}`);
+    if (!grid) return;
+
+    if (items.length === 0) {
+      grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 bg-white rounded-2xl border border-slate-200"><i class="ph-bold ph-magnifying-glass text-4xl text-slate-300 mb-3 block"></i><h3 class="text-lg font-bold text-slate-800">Sin resultados</h3><p class="text-xs sm:text-sm">Ajusta los filtros para ver más opciones disponibles.</p></div>`;
+      return;
+    }
+
+    grid.innerHTML = items.map((item, index) => {
+      const realIndex = offsetIndex + index;
+      const cardKey = `${pestana}-${realIndex}`;
+      fotoActualIndex[cardKey] = 0;
+
+      const fotos = extraerTodasLasFotos(item);
+      const datasetFotosAttr = fotos.map((f, i) => `data-foto${i}="${f}"`).join(' ');
+      
+      const ubic = item.ubicación || item.ubicacion || 'Cancún';
+      const precioVal = obtenerPrecioItem(item);
+      const construccion = item.construcción || item.construccion || 'N/A';
+      const terreno = item.terreno || 'N/A';
+      const habitaciones = item.habitaciones || item.recamaras || 'N/A';
+      const banos = item.banos || item.baños || 'N/A';
+      const estacionamientos = item.estacionamientos || item.cajones || 'N/A';
+      
+      const diasObj = calcularDiasPublicado(item.fecha || item.publicacion || item.date);
+      const idUnico = item.id || item.titulo;
+      const esFavorito = favoritosIds.includes(idUnico);
+      
+      let numTelefono = "529981550066";
+      if (pestana === 'Networking' && (item.telefono || item.celular || item.whatsapp)) {
+        numTelefono = (item.telefono || item.celular || item.whatsapp).replace(/[^0-9]/g, '');
+        if (numTelefono.length === 10) numTelefono = "52" + numTelefono;
+      }
+      const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad:\n\n*${item.titulo || 'Propiedad'}*\n Ubicación: ${ubic}\n Precio: ${precioVal}`);
+
+      return `
+      <article onclick="abrirFichaDetallePorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-brand-100/50 transition-all duration-300 overflow-hidden flex flex-col group cursor-pointer">
+        <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden" onclick="event.stopPropagation(); abrirFotoFullscreen(fotoActualIndex['${cardKey}'] || 0, ${JSON.stringify(fotos).replace(/"/g, '&quot;')})">
+          ${fotos[0] ? `<img id="img-${cardKey}" src="${fotos[0]}" ${datasetFotosAttr} loading="lazy" alt="${item.titulo}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-4xl"></i></div>'}
+          <span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur text-brand-700 text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm">${item.estado || 'Disponible'}</span>
+          
+          <button type="button" onclick="toggleFavorito('${idUnico}', event)" class="absolute top-2.5 right-2.5 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 backdrop-blur shadow flex items-center justify-center text-rose-500 hover:scale-110 transition-transform">
+            <i class="${esFavorito ? 'ph-fill ph-heart text-lg' : 'ph ph-heart text-lg'}"></i>
+          </button>
+
+          ${fotos.length > 1 ? `
+            <button type="button" aria-label="Anterior" onclick="navegarFotoManual('${cardKey}', -1,${fotos.length}, event)" class="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-900/40 text-white flex items-center justify-center hover:bg-slate-900/80 transition-colors"><i class="ph-bold ph-caret-left"></i></button>
+            <button type="button" aria-label="Siguiente" onclick="navegarFotoManual('${cardKey}', 1,${fotos.length}, event)" class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-900/40 text-white flex items-center justify-center hover:bg-slate-900/80 transition-colors"><i class="ph-bold ph-caret-right"></i></button>
+            <div class="absolute bottom-2.5 left-0 right-0 flex justify-center gap-1.5">
+              ${fotos.map((f, fIdx) => `<span class="dot-indicator dot-${cardKey} ${fIdx === 0 ? 'is-active' : ''}"></span>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+
+        <div class="p-3.5 sm:p-5 flex flex-col flex-grow">
+          <div class="flex items-center justify-between text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
+            <span class="truncate"><i class="ph-bold ph-map-pin mr-1"></i>${ubic}</span>
+            <span class="text-slate-400" title="${diasObj.fechaTexto}">${diasObj.diasTexto}</span>
+          </div>
+          <h3 class="text-xs sm:text-base font-bold text-slate-900 leading-tight mb-1 line-clamp-1 ml-card-title" title="${item.titulo}">${item.titulo || 'Propiedad Exclusiva'}</h3>
+          <p class="text-sm sm:text-lg font-extrabold text-brand-600 mb-2 sm:mb-3 ml-card-price">${precioVal}</p>
+
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-2 mb-3 sm:mb-4 text-[11px] sm:text-xs font-medium text-slate-700 bg-slate-50 p-2 sm:p-2.5 rounded-xl border border-slate-100">
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Habitac.</span><span class="font-bold truncate"><i class="ph-fill ph-bed text-brand-500 mr-0.5"></i>${habitaciones}</span></div>
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Baños</span><span class="font-bold truncate"><i class="ph-fill ph-bathtub text-brand-500 mr-0.5"></i>${banos}</span></div>
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Estacionam.</span><span class="font-bold truncate"><i class="ph-fill ph-car text-brand-500 mr-0.5"></i>${estacionamientos}</span></div>
+            <div class="flex flex-col col-span-1.5 mt-1 pt-1 border-t border-slate-200/60"><span class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Terreno</span><span class="truncate">${terreno}</span></div>
+            <div class="flex flex-col col-span-1.5 mt-1 pt-1 border-t border-slate-200/60"><span class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold">Construcc.</span><span class="truncate">${construccion}</span></div>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-500 line-clamp-2 mb-3 sm:mb-4 leading-relaxed">${item.descripción || item.descripcion || 'Sin descripción detallada.'}</p>
+          
+          ${pestana === 'Networking' && item.asesor ? `<p class="text-[11px] sm:text-xs font-semibold text-slate-600 mb-3 sm:mb-4 py-1.5 px-2.5 bg-slate-50 rounded-lg border border-slate-100 truncate"><i class="ph-bold ph-user-circle mr-1 text-brand-500"></i> Asesor: ${item.asesor}</p>` : ''}
+
+          <div class="mt-auto grid grid-cols-2 gap-2" onclick="event.stopPropagation()">
+            <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg bg-brand-600 text-white font-semibold text-xs sm:text-sm text-center hover:bg-brand-700 transition-colors flex items-center justify-center"><i class="ph-bold ph-whatsapp-logo mr-1"></i> Chat</a>
+            <button type="button" onclick="generarFichaPDFPorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg border border-slate-200 text-slate-700 font-semibold text-xs sm:text-sm hover:bg-slate-50 transition-colors flex items-center justify-center"><i class="ph-bold ph-file-pdf mr-1"></i> PDF</button>
+          </div>
+        </div>
+      </article>`;
+    }).join('');
+  }
+
+  function abrirFichaDetalleConItem(item) {
+    itemActualDetalle = item;
+    actualizarEstadoLikeDetalle();
+
+    const modalKey = `modal-detail-custom`;
+    fotoActualIndex[modalKey] = 0;
+
+    const fotos = extraerTodasLasFotos(item);
+    const datasetFotosAttr = fotos.map((f, i) => `data-foto${i}="${f}"`).join(' ');
+    
+    const ubic = item.ubicación || item.ubicacion || 'Cancún';
+    const precioVal = obtenerPrecioItem(item);
+    const diasObj = calcularDiasPublicado(item.fecha || item.publicacion || item.date);
+    const terreno = item.terreno || 'N/A';
+    const construccion = item.construcción || item.construccion || 'N/A';
+    const habitaciones = item.habitaciones || item.recamaras || 'N/A';
+    const banos = item.banos || item.baños || 'N/A';
+    const estacionamientos = item.estacionamientos || item.cajones || 'N/A';
+    
+    let numTelefono = "529981550066";
+    if (item.telefono || item.celular || item.whatsapp) {
+      numTelefono = (item.telefono || item.celular || item.whatsapp).replace(/[^0-9]/g, '');
+      if (numTelefono.length === 10) numTelefono = "52" + numTelefono;
+    }
+    const waMsg = encodeURIComponent(`Hola ${item.asesor || 'Edgardo'}, me interesa la propiedad:\n\n*${item.titulo || 'Propiedad'}*\n Ubicación: ${ubic}\n Precio: ${precioVal}`);
+
+    document.getElementById('contenidoDetalleUnico').innerHTML = `
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
+        <div class="flex flex-col gap-4">
+          <div class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm cursor-pointer group" onclick="abrirFotoFullscreen(fotoActualIndex['${modalKey}'] || 0, ${JSON.stringify(fotos).replace(/"/g, '&quot;')})">
+            ${fotos[0] ? `<img id="img-${modalKey}" src="${fotos[0]}" ${datasetFotosAttr} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />` : '<div class="w-full h-full flex items-center justify-center text-slate-300"><i class="ph ph-image-broken text-5xl"></i></div>'}
+            
+            <span class="absolute top-3 left-3 bg-slate-900/80 text-white text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1.5 backdrop-blur-sm"><i class="ph-bold ph-arrows-out-simple"></i> Pantalla completa</span>
+
+            ${fotos.length > 1 ? `
+              <button type="button" onclick="event.stopPropagation(); navegarFotoManual('${modalKey}', -1,${fotos.length})" class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/80 shadow-md text-slate-800 flex items-center justify-center hover:bg-white transition-colors"><i class="ph-bold ph-caret-left text-xl"></i></button>
+              <button type="button" onclick="event.stopPropagation(); navegarFotoManual('${modalKey}', 1,${fotos.length})" class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/80 shadow-md text-slate-800 flex items-center justify-center hover:bg-white transition-colors"><i class="ph-bold ph-caret-right text-xl"></i></button>
+              <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                ${fotos.map((f, fIdx) => `<span class="dot-indicator dot-${modalKey} ${fIdx === 0 ? 'is-active' : ''}"></span>`).join('')}
+              </div>
+            ` : ''}
+          </div>
+
+          ${fotos.length > 1 ? `
+            <div class="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
+              ${fotos.map((f, fIdx) => `
+                <button type="button" onclick="abrirFotoFullscreen(${fIdx}, ${JSON.stringify(fotos).replace(/"/g, '&quot;')})" class="flex-shrink-0 w-20 h-16 sm:w-24 sm:h-20 rounded-xl overflow-hidden border-2 border-transparent focus:border-brand-500 hover:opacity-85 transition-all bg-slate-100">
+                  <img src="${f}" class="w-full h-full object-cover" loading="lazy" />
+                </button>
+              `).join('')}
+            </div>
+          ` : ''}
+        </div>
+
+        <div class="flex flex-col">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-widest"><i class="ph-bold ph-map-pin mr-1"></i>${ubic}</span>
+            <span class="bg-brand-50 text-brand-700 border border-brand-200 text-xs font-bold px-3 py-1 rounded-full shadow-sm">${item.estado || 'Disponible'}</span>
+          </div>
+
+          <!-- Título y precio de menor tamaño -->
+          <h2 class="text-base sm:text-xl font-bold text-slate-900 mb-1 leading-snug">${item.titulo || 'Propiedad Exclusiva'}</h2>
+          <p class="text-lg sm:text-2xl font-extrabold text-brand-600 mb-2">${precioVal}</p>
+          
+          <!-- Fecha exacta y días publicado -->
+          <p class="text-xs text-slate-500 font-semibold mb-4"><i class="ph-bold ph-calendar mr-1"></i> Publicado: ${diasObj.fechaTexto} <span class="text-brand-600 font-bold ml-1">(${diasObj.diasTexto})</span></p>
+
+          <div class="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-3 py-3 border-y border-slate-200 mb-4 bg-slate-50/70 p-3 rounded-xl">
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase">Terreno</span><span class="font-bold text-slate-800 text-xs sm:text-sm truncate">${terreno}</span></div>
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase">Construcc.</span><span class="font-bold text-slate-800 text-xs sm:text-sm truncate">${construccion}</span></div>
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase">Habitac.</span><span class="font-bold text-slate-800 text-xs sm:text-sm truncate">${habitaciones}</span></div>
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase">Baños</span><span class="font-bold text-slate-800 text-xs sm:text-sm truncate">${banos}</span></div>
+            <div class="flex flex-col"><span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase">Estacionam.</span><span class="font-bold text-slate-800 text-xs sm:text-sm truncate">${estacionamientos}</span></div>
+            ${item.asesor ? `<div class="col-span-full pt-2 border-t border-slate-200 text-xs font-semibold text-slate-600"><i class="ph-bold ph-user-circle text-brand-500 mr-1"></i> Asesor: ${item.asesor}</div>` : ''}
+          </div>
+
+          <!-- Mayor espacio para la descripción -->
+          <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2">Descripción completa</h3>
+          <div class="text-slate-600 text-xs sm:text-sm leading-relaxed whitespace-pre-line min-h-[160px] max-h-[350px] sm:max-h-[480px] overflow-y-auto custom-scrollbar p-4 rounded-xl bg-slate-50 border border-slate-200 shadow-inner mb-6">
+            ${item.descripción || item.descripcion || 'Sin descripción detallada.'}
+          </div>
+
+          <div class="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <a href="https://wa.me/${numTelefono}?text=${waMsg}" target="_blank" class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-brand-600 text-white font-bold hover:bg-brand-700 transition-all text-sm">
+              <i class="ph-bold ph-whatsapp-logo text-xl"></i> Solicitar Info
+            </a>
+            <button type="button" onclick="generarFichaPDFPorObjeto(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition-all text-sm">
+              <i class="ph-bold ph-file-pdf text-xl"></i> Descargar PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    openModal('modalDetalleUnico');
+  }
+
+  async function generarFichaPDFPorObjeto(item) {
+    if (!item) return;
+    mostrarToast('Generando presentación PDF ejecutiva con fotos. Por favor espera...');
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'a4');
+
+    const brandDark = [4, 47, 46];
+    const brandMain = [13, 148, 136];
+    const brandLight = [20, 184, 166];
+
+    const precioVal = obtenerPrecioItem(item);
+
+    doc.setFillColor(...brandDark);
+    doc.rect(0, 0, 210, 42, 'F');
+
+    doc.setTextColor(...brandLight);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.text('EDGARDO DE REAL', 15, 18);
+
+    doc.setFontSize(8);
+    doc.setTextColor(240, 253, 250);
+    doc.text('RED INMOBILIARIA DE NETWORKING ESTRATEGICO', 15, 26);
+    doc.text('FICHA TECNICA EJECUTIVA', 140, 26);
+    doc.text(`Publicación: ${item.fecha || item.publicacion || 'Reciente'}`, 140, 32);
+
+    doc.setTextColor(...brandDark);
+    doc.setFontSize(14);
+    doc.text(item.titulo || 'Propiedad Exclusiva', 15, 54);
+
+    doc.setFontSize(10);
+    doc.setTextColor(71, 85, 105);
+    doc.text(`Ubicación: ${item.ubicación || item.ubicacion || 'Cancún, Q. Roo'}`, 15, 63);
+    doc.setTextColor(...brandMain);
+    doc.text(`Precio: ${precioVal}`, 15, 70);
+    doc.setTextColor(71, 85, 105);
+    doc.text(`Terreno: ${item.terreno || 'N/A'}  |  Construcción: ${item.construcción || item.construccion || 'N/A'}  |  Habitaciones: ${item.habitaciones || 'N/A'}`, 15, 77);
+
+    doc.setDrawColor(...brandLight);
+    doc.setLineWidth(0.5);
+    doc.line(15, 83, 195, 83);
+
+    doc.setFontSize(9);
+    doc.setTextColor(51, 65, 85);
+    doc.setFont('helvetica', 'normal');
+    const descLines = doc.splitTextToSize(item.descripción || item.descripcion || 'Propiedad verificada en RINE.', 180);
+    doc.text(descLines, 15, 91);
+
+    const fotos = extraerTodasLasFotos(item);
+    if (fotos.length > 0) {
+      doc.addPage();
+      let yPos = 30;
+      let xPos = 15;
+
+      function renderHeaderGaleria() {
+        doc.setFillColor(...brandDark);
+        doc.rect(0, 0, 210, 20, 'F');
+        doc.setTextColor(...brandLight);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`GALERÍA FOTOGRÁFICA — ${item.titulo || 'Propiedad'}`, 15, 13);
+      }
+
+      renderHeaderGaleria();
+
+      const imgWidth = 85;
+      const imgHeight = 58;
+
+      for (let i = 0; i < fotos.length; i++) {
+        if (yPos > 200) {
+          doc.addPage();
+          renderHeaderGaleria();
+          yPos = 30;
+          xPos = 15;
+        }
 
         try {
-            const response = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: formData
-            });
-
-            const textoResultado = await response.text();
-
-            if (textoResultado.trim() === 'Éxito') {
-                mensajeDiv.className = 'mensaje-estado mensaje-exito';
-                mensajeDiv.innerText = '¡Solicitud registrada correctamente en Google Sheets!';
-                mensajeDiv.style.display = 'block';
-                form.reset();
-            } else {
-                throw new Error(textoResultado);
-            }
-        } catch (error) {
-            mensajeDiv.className = 'mensaje-estado mensaje-error';
-            mensajeDiv.innerText = 'Error al registrar: ' + error.message;
-            mensajeDiv.style.display = 'block';
-        } finally {
-            btn.disabled = false;
-            btn.innerText = 'Enviar Solicitud';
+          const imgBase64 = await cargarImagenBase64(fotos[i]);
+          if (imgBase64) {
+            doc.addImage(imgBase64, 'JPEG', xPos, yPos, imgWidth, imgHeight);
+            if (xPos === 15) { xPos = 110; } 
+            else { xPos = 15; yPos += imgHeight + 10; }
+          }
+        } catch (err) {
+          console.log(`Error procesando foto ${i + 1} para PDF`);
         }
+      }
     }
+
+    const totalPages = doc.internal.getNumberOfPages();
+    for (let p = 1; p <= totalPages; p++) {
+      doc.setPage(p);
+      doc.setFillColor(...brandMain);
+      doc.rect(0, 267, 210, 30, 'F');
+
+      doc.setTextColor(...brandDark);
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'bold');
+      doc.text('CONTACTO DIRECTO & RED DE ALIADOS:', 15, 277);
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`WhatsApp: +${item.telefono || '52 998 155 0066'}  |  Instagram: @edgardodereal_`, 15, 285);
+    }
+
+    const filename = `Ficha_${(item.titulo || 'Propiedad').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+    doc.save(filename);
+    mostrarToast('¡PDF ejecutivo descargado con éxito!');
+  }
+
+  function cargarImagenBase64(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.onload = function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(this, 0, 0);
+        resolve(canvas.toDataURL('image/jpeg'));
+      };
+      img.onerror = () => resolve(null);
+      img.src = url;
+    });
+  }
 </script>
 
 </body>
